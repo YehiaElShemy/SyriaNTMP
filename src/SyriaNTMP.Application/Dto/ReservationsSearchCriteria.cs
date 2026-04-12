@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SyriaNTMP.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,13 @@ namespace SyriaNTMP.Dto
 {
     public class ReservationsSearchCriteria : PagedAndSortedResultRequestDto
     {
+        public string? CompanyName { get; set; }
+        public string? PropertyName { get; set; }
+        public PropertyRatingEnum? PropertyRating { get; set; }
+        public string? ReservationNumber { get; set; }
+        public ReservationStatus? ReservationStatus { get; set; }
+        public ReservationPurpose? ReservationPurpose { get; set; }
+        public string? DateFrom { get; set; }
+        public string? DateTo { get; set; }
     }
 }

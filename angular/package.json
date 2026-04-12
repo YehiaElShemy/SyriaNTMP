@@ -30,6 +30,7 @@
     "@angular/platform-browser": "~19.1.0",
     "@angular/platform-browser-dynamic": "~19.1.0",
     "@angular/router": "~19.1.0",
+    "@babel/runtime": "^7.29.2",
     "@primeng/themes": "^21.0.4",
     "@primeuix/themes": "^2.0.3",
     "primeicons": "^7.0.0",
