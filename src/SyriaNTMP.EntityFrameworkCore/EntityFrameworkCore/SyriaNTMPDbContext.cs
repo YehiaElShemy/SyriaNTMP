@@ -48,6 +48,7 @@ public class SyriaNTMPDbContext :
     public DbSet<IdentitySession> Sessions { get; set; }
 
     #endregion
+    public DbSet<Models.Reservations> Reservations { get; set; }
 
     public SyriaNTMPDbContext(DbContextOptions<SyriaNTMPDbContext> options)
         : base(options)
