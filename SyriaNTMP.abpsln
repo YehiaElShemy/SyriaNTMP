@@ -1,0 +1,51 @@
+{
+  "id": "f458df6c-2cca-4861-81b5-05c5e0b1cd91",
+  "template": "app",
+  "versions": {
+    "AbpFramework": "9.1.0",
+    "AbpStudio": "0.9.25",
+    "TargetDotnetFramework": "net9.0"
+  },
+  "modules": {
+    "SyriaNTMP": {
+      "path": "SyriaNTMP.abpmdl"
+    }
+  },
+  "runProfiles": {
+    "Default": {
+      "path": "etc/abp-studio/run-profiles/Default.abprun.json"
+    }
+  },
+  "options": {
+    "httpRequests": {
+      "ignoredUrls": [
+      
+      ]
+    }
+  },
+  "creatingStudioConfiguration": {
+    "template": "app",
+    "createdAbpStudioVersion": "0.9.25",
+    "tiered": "false",
+    "runInstallLibs": "true",
+    "useLocalReferences": "false",
+    "multiTenancy": "false",
+    "includeTests": "true",
+    "kubernetesConfiguration": "false",
+    "uiFramework": "angular",
+    "mobileFramework": "none",
+    "distributedEventBus": "none",
+    "databaseProvider": "ef",
+    "runDbMigrator": "true",
+    "databaseManagementSystem": "postgresql",
+    "separateTenantSchema": "false",
+    "createInitialMigration": "true",
+    "theme": "basic",
+    "themeStyle": "",
+    "mobileFramework": "none",
+    "progressiveWebApp": "false",
+    "runProgressiveWebAppSupport": "false",
+    "publicWebsite": "false",
+    "socialLogin": ""
+  }
+}

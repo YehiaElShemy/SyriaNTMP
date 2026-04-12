@@ -1,0 +1,13 @@
+FROM mcr.microsoft.com/dotnet/aspnet:9.0  AS base
+COPY bin/Release/net9.0/publish/ app/
+WORKDIR /app
+
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+RUN dotnet dev-certs https -v -ep openiddict.pfx -p cb0b5e22-a70c-47f0-87ae-065d8a677eb7
+
+FROM base AS final
+WORKDIR /app
+COPY --from=build /src .
+
+ENTRYPOINT ["dotnet", "SyriaNTMP.HttpApi.Host.dll"]
