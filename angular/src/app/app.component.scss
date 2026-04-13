@@ -1,0 +1,8 @@
+::ng-deep .navbar-expand-lg.navbar-dark.bg-dark.shadow-sm.flex-column.flex-md-row.mb-4 {
+    display: none !important;
+}
+
+::ng-deep abp-layout-application>div.container{
+    max-width: 100% !important;
+    padding: 0 !important;
+}

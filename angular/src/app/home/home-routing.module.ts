@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './home.component';
+import { SyriaStatsSystemComponent } from '../pages/syria-NTMP/syria-stats-system.component';
 
-const routes: Routes = [{ path: '', component: HomeComponent }];
+const routes: Routes = [{ path: '', component: SyriaStatsSystemComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -1,0 +1,100 @@
+<div>
+  <!-- Toolbar Actions -->
+  <div class="flex justify-between items-center mb-4">
+    <div class="filter-actions flex gap-3 ml-auto">
+      <button pButton label="Export To Excel" icon="pi pi-file-excel" class="p-button-outlined text-gray-700 bg-white border-gray-300"></button>
+      <button pButton label="Filter" icon="pi pi-filter" class="p-button-outlined text-gray-700 bg-white border-gray-300" (click)="toggleFilter()"></button>
+    </div>
+  </div>
+
+  <!-- Filter Grid -->
+  <div *ngIf="showFilter" class="filter-panel bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-semibold text-gray-600">Company</label>
+        <input pInputText type="text" placeholder="Company" class="w-full" [(ngModel)]="filterCompanyName" />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-semibold text-gray-600">Property</label>
+        <input pInputText type="text" placeholder="Property" class="w-full" [(ngModel)]="filterPropertyName" />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-semibold text-gray-600">Property Rating</label>
+        <p-select [options]="ratingsList" placeholder="Property Rating" styleClass="w-full" [(ngModel)]="filterPropertyRating"></p-select>
+      </div>
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-semibold text-gray-600">Reservation Number</label>
+        <input pInputText type="text" placeholder="Reservation Number" class="w-full" [(ngModel)]="filterReservationNumber" />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-semibold text-gray-600">Reservation Status</label>
+        <p-select [options]="statusList" placeholder="Reservation Status" styleClass="w-full" [(ngModel)]="filterReservationStatus"></p-select>
+      </div>
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-semibold text-gray-600">Visit Purpose</label>
+        <p-select [options]="purposeList" placeholder="Visit Purpose" styleClass="w-full" [(ngModel)]="filterReservationPurpose"></p-select>
+      </div>
+      <div class="flex gap-2">
+        <div class="flex flex-col gap-2 w-full">
+          <label class="text-sm font-semibold text-gray-600">From</label>
+          <p-datepicker styleClass="w-full" [iconDisplay]="'input'" [showIcon]="true" inputId="from-date" [(ngModel)]="filterDateFrom"></p-datepicker>
+        </div>
+        <div class="flex flex-col gap-2 w-full">
+          <label class="text-sm font-semibold text-gray-600">To</label>
+          <p-datepicker styleClass="w-full" [iconDisplay]="'input'" [showIcon]="true" inputId="to-date" [(ngModel)]="filterDateTo"></p-datepicker>
+        </div>
+      </div>
+      <div class="flex items-end justify-end gap-2">
+        <button pButton label="" icon="pi pi-times" class="p-button-outlined border-gray-300 text-gray-500 bg-white px-4" (click)="clearFilters()"></button>
+        <button pButton label="Search" icon="pi pi-search" class="p-button-outlined border-gray-300 text-gray-700 bg-white px-6" (click)="onSearch()"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Table -->
+  <p-table
+    [value]="reservations"
+    [paginator]="true"
+    [lazy]="true"
+    [rows]="pageSize"
+    [totalRecords]="totalRecords"
+    [loading]="isLoading"
+    (onLazyLoad)="onPageChange($event)"
+    [rowsPerPageOptions]="[7, 14, 21]"
+    styleClass="p-datatable-sm"
+    class="custom-table w-full">
+
+    <ng-template #header>
+      <tr>
+        <th class="text-xs text-gray-500 font-medium">Company</th>
+        <th class="text-xs text-gray-500 font-medium">Property</th>
+        <th class="text-xs text-gray-500 font-medium">Property rating</th>
+        <th class="text-xs text-gray-500 font-medium">Reservation No.</th>
+        <th class="text-xs text-gray-500 font-medium">Reservation status</th>
+        <th class="text-xs text-gray-500 font-medium">No. of guests</th>
+        <th class="text-xs text-gray-500 font-medium">No. of nights</th>
+        <th class="text-xs text-gray-500 font-medium">Visit purpose</th>
+        <th class="text-xs text-gray-500 font-medium">From</th>
+        <th class="text-xs text-gray-500 font-medium">To</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-res>
+      <tr class="border-b border-gray-100 font-semibold text-sm">
+        <td class="py-4">{{ res.companyName }}</td>
+        <td>{{ res.propertyName }}</td>
+        <td>
+          <p-rating [(ngModel)]="res.propertyRating" [readonly]="true"></p-rating>
+        </td>
+        <td>{{ res.reservationNumber }}</td>
+        <td>
+          <p-tag [value]="statusList[res.reservationStatus - 1]?.label || res.reservationStatus" [severity]="getSeverity(res.reservationStatus)" [rounded]="true"></p-tag>
+        </td>
+        <td>{{ res.numberOfGuests }}</td>
+        <td>{{ res.numberOfNights }}</td>
+        <td>{{ purposeList[res.reservationPurpose - 1]?.label || res.reservationPurpose }}</td>
+        <td class="text-xs font-bold">{{ res.fromDate | date:'dd MMM yyyy' }}</td>
+        <td class="text-xs font-bold">{{ res.toDate | date:'dd MMM yyyy' }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

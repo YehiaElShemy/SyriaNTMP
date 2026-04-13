@@ -1,6 +1,8 @@
 import { authGuard, permissionGuard } from '@abp/ng.core';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { syriaRouteGuard } from './guards/syria-route.guard';
+import { NotfoundComponent } from './pages/notfound/notfound.component';
 
 const routes: Routes = [
   {
@@ -21,6 +23,15 @@ const routes: Routes = [
     loadChildren: () =>
       import('@abp/ng.setting-management').then(m => m.SettingManagementModule.forLazy()),
   },
+   {
+        path: 'syria-stats',
+        canActivate: [syriaRouteGuard],
+        loadComponent: () => import('./pages/syria-NTMP/syria-stats-system.component').then(m => m.SyriaStatsSystemComponent)
+    },
+    {
+      path: '**',
+      component: NotfoundComponent
+    }
 ];
 
 @NgModule({

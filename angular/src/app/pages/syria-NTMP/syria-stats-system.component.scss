@@ -1,0 +1,17 @@
+.main-layout {
+  min-height: 100vh;
+  background-color: #EDF3F5 !important;
+  font-family: 'Montserrat', sans-serif;
+}
+
+::ng-deep .p-togglebutton-checked ,
+::ng-deep .p-togglebutton-checked .p-togglebutton-content{
+
+  background-color: var(--color-primary-dark) !important;
+  color: white !important;
+}
+
+::ng-deep .p-togglebutton-content{
+  background-color: white !important;
+  color: var(--color-primary-dark) !important;
+}

@@ -1,0 +1,62 @@
+<!-- <div class="flex justify-between items-center mb-4">
+  <div class="filter-actions flex ml-auto">
+    <button pButton label="Filter" icon="pi pi-filter" class="p-button-outlined text-gray-700 bg-white border-gray-300"></button>
+  </div>
+</div> -->
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  
+  <!-- Trend Chart -->
+  <div class="col-span-1 lg:col-span-2 bg-white rounded-lg border border-gray-200 p-6 flex flex-col justify-between">
+    <div class="mb-6">
+      <h3 class="text-lg font-bold text-primary-dark m-0 mb-4">Reservations</h3>
+      <div class="bg-gray-200 text-primary-dark inline-block px-4 py-3 rounded-lg shadow-sm border-l-4" style="border-left-color: #94a3b8;">
+        <p class="text-xs font-semibold m-0 mb-1 text-gray-500">Current Week</p>
+        <!-- Adding loading spinner and fallback from API -->
+        <p *ngIf="isLoading" class="text-xl font-bold m-0 text-primary-dark"><i class="pi pi-spin pi-spinner"></i></p>
+        <p *ngIf="!isLoading" class="text-3xl font-bold m-0 text-primary-dark">{{ statsData?.data?.totalCountWeekly ?? 0 }}</p>
+      </div>
+    </div>
+    <div class="w-full flex-grow">
+      <p-chart type="line" [data]="lineData" [options]="lineOptions" height="300px"></p-chart>
+    </div>
+  </div>
+
+  <!-- Distribution Chart -->
+  <div class="col-span-1 bg-white rounded-lg border border-gray-200 p-6 flex flex-col">
+    <div class="mb-4">
+      <h3 class="text-lg font-bold text-primary-dark m-0">Reservations</h3>
+      <p class="text-sm font-semibold text-gray-500 m-0 mt-1">Today {{ todayDate | date:'dd MMM' }}</p>
+    </div>
+    
+    <div class="flex-grow flex justify-center items-center py-6">
+      <p-chart *ngIf="hasTodayData && !isLoading" type="doughnut" [data]="doughnutData" [options]="doughnutOptions" width="220px"></p-chart>
+      <div *ngIf="!hasTodayData && !isLoading" class="flex flex-col items-center justify-center text-center p-6 bg-gray-50 rounded-lg w-full h-full border border-dashed border-gray-300">
+        <i class="pi pi-inbox text-4xl text-gray-400 mb-3"></i>
+        <p class="text-sm font-medium text-gray-500 m-0">No reservations for the current day</p>
+      </div>
+      <div *ngIf="isLoading" class="flex justify-center items-center h-full">
+        <i class="pi pi-spin pi-spinner text-3xl text-primary-dark"></i>
+      </div>
+    </div>
+
+    <div class="flex grid-cols-3 gap-3 mt-4 d-flex flex-row">
+      <div class="bg-slate-800 w-33-33 text-white rounded-lg p-3 flex flex-col items-center justify-center text-center h-20">
+        <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
+        <span *ngIf="!isLoading" class="font-bold text-sm mb-1">{{ percentages.checkedIn }}%</span>
+        <span class="text-xs">Checked In</span>
+      </div>
+      <div class="bg-slate-500 w-33-33 text-white rounded-lg p-3 flex flex-col items-center justify-center text-center h-20">
+        <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
+        <span *ngIf="!isLoading" class="font-bold text-sm mb-1">{{ percentages.checkedOut }}%</span>
+        <span class="text-xs leading-tight">Checked Out</span>
+      </div>
+      <div class="bg-slate-400 w-33-33 text-primary-dark rounded-lg p-3 flex flex-col items-center justify-center text-center h-20">
+        <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
+        <span *ngIf="!isLoading" class="font-bold text-sm mb-1">{{ percentages.cancelled }}%</span>
+        <span class="text-xs">Cancelled</span>
+      </div>
+    </div>
+  </div>
+
+</div>

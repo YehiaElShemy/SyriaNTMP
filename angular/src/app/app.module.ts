@@ -16,12 +16,13 @@ import { providePrimeNG } from 'primeng/config';
 import Lara from '@primeuix/themes/lara';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
+import { NotfoundComponent } from './pages/notfound/notfound.component';
 import { AppComponent } from './app.component';
 import { APP_ROUTE_PROVIDER } from './route.provider';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, NotfoundComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

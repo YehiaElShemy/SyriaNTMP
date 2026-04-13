@@ -1,0 +1,37 @@
+<div class="main-layout">
+  <!-- Navbar Top -->
+  <div class="navbar p-4 flex justify-between items-center ">
+    <div class="logo-section flex items-center gap-3">
+      <img src="assets/images/windows.svg" alt="windows logo" class="w-2rem" style="width: 2rem;" />
+      <h2 class="m-0 text-xl font-bold" style="color: #64748b;">SyriaStats System</h2>
+    </div>
+
+    <div class="profile-section flex items-center gap-1">
+<img src="assets/images/lang.svg" alt="lang" class="w-6"/>      
+      <div class="flex items-center gap-3  px-3 py-2 rounded-lg">
+        <div class="avatar bg-primary-dark text-white rounded-full flex justify-center items-center font-bold" style="width: 32px; height: 32px;">
+          A
+        </div>
+        <div class="profile-info flex flex-col">
+          <span class="font-bold text-sm text-primary-dark m-0 leading-none">Ahmed Mohamed</span>
+          <span class="text-xs text-gray-400 mt-1">Premium Account</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-wrapper p-6 bg-[#eef3f5] min-h-screen">
+    
+    <!-- Toggle Navigation -->
+    <div class="flex justify-end mb-6">
+      <p-selectButton [options]="viewOptions" [(ngModel)]="selectedView" optionLabel="label" optionValue="value" styleClass="custom-select-btn" [allowEmpty]="false"></p-selectButton>
+    </div>
+
+    <!-- Conditional Sub-views -->
+    <div class="view-container bg-white shadow-sm rounded-lg p-5">
+      <app-detailed-statistics *ngIf="selectedView === 'Detailed Statistics'"></app-detailed-statistics>
+      <app-dashboard *ngIf="selectedView === 'Dashboard'"></app-dashboard>
+    </div>
+
+  </div>
+</div>
