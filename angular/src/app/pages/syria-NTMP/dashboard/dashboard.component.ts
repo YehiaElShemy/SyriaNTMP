@@ -26,6 +26,18 @@ export class DashboardComponent implements OnInit {
   doughnutData: any;
   doughnutOptions: any;
 
+  occupancyRateData: any;
+  occupancyRateOptions: any;
+
+  visitPurposeData: any;
+  visitPurposeOptions: any;
+
+  adrData: any;
+  adrOptions: any;
+
+  nationalityData: any;
+  nationalityOptions: any;
+
   ngOnInit() {
     this.initChart();
     this.fetchStats();
@@ -159,6 +171,169 @@ export class DashboardComponent implements OnInit {
         legend: { display: false }
       },
       cutout: '70%'
+    };
+
+    // Occupancy Rate Chart Data
+    this.occupancyRateData = {
+      labels: ['Aleppo', 'Damascus', 'Homs', 'Latakia', 'Hama'],
+      datasets: [
+        {
+          label: 'Occupancy Rate',
+          backgroundColor: '#bcbcbc',
+          data: [48, 33, 30, 0, 0]
+        }
+      ]
+    };
+
+    this.occupancyRateOptions = {
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        x: {
+          ticks: { color: textColorSecondary },
+          grid: { color: surfaceBorder, drawBorder: false }
+        },
+        y: {
+          min: 0,
+          max: 50,
+          ticks: {
+            color: textColorSecondary,
+            stepSize: 5,
+            callback: function(value: any) {
+                return value + '%';
+            }
+          },
+          grid: { color: surfaceBorder, drawBorder: false }
+        }
+      }
+    };
+
+    // Visit Purpose Chart Data
+    this.visitPurposeData = {
+      labels: ['Purpose'],
+      datasets: [
+        {
+          label: 'Tourism',
+          backgroundColor: '#9f6af0', // Purple
+          data: [120]
+        },
+        {
+          label: 'Religious',
+          backgroundColor: '#7bb7d5', // Blue
+          data: [30]
+        },
+        {
+          label: 'Medical',
+          backgroundColor: '#e2ba71', // Yellow
+          data: [60]
+        },
+        {
+          label: 'Other',
+          backgroundColor: '#d66e74', // Red
+          data: [80]
+        }
+      ]
+    };
+
+    this.visitPurposeOptions = {
+      indexAxis: 'y',
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            usePointStyle: true,
+            color: textColorSecondary,
+            boxWidth: 10
+          }
+        }
+      },
+      scales: {
+        x: {
+          stacked: true,
+          ticks: { color: textColorSecondary },
+          grid: { color: surfaceBorder, drawBorder: false }
+        },
+        y: {
+          stacked: true,
+          ticks: { color: textColorSecondary },
+          grid: { display: false, drawBorder: false }
+        }
+      }
+    };
+
+    // ADR Chart Data
+    this.adrData = {
+      labels: ['Aleppo', 'Damascus', 'Homs', 'Latakia', 'Hama'],
+      datasets: [
+        {
+          label: 'ADR',
+          backgroundColor: '#bcbcbc',
+          data: [41000, 30000, 26000, 0, 0]
+        }
+      ]
+    };
+
+    this.adrOptions = {
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        x: {
+          ticks: { color: textColorSecondary },
+          grid: { color: surfaceBorder, drawBorder: false }
+        },
+        y: {
+          min: 0,
+          max: 45000,
+          ticks: {
+            color: textColorSecondary,
+            stepSize: 5000,
+            callback: function(value: any) {
+                return (value === 0 ? '0K' : (value / 1000) + 'K');
+            }
+          },
+          grid: { color: surfaceBorder, drawBorder: false }
+        }
+      }
+    };
+
+    // Nationality Statistics Chart Data
+    this.nationalityData = {
+      labels: ['Syrian', 'Russian', 'Iranian', 'Lebanese', 'Iraqi'],
+      datasets: [
+        {
+          label: 'Nationality',
+          backgroundColor: ['#60a5fa', '#f472b6', '#fbbf24', '#34d399', '#a78bfa'],
+          data: [15000, 8000, 6000, 4500, 3000]
+        }
+      ]
+    };
+
+    this.nationalityOptions = {
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        x: {
+          ticks: { color: textColorSecondary },
+          grid: { color: surfaceBorder, drawBorder: false }
+        },
+        y: {
+          min: 0,
+          ticks: {
+            color: textColorSecondary,
+            callback: function(value: any) {
+                return (value === 0 ? '0' : (value / 1000) + 'K');
+            }
+          },
+          grid: { color: surfaceBorder, drawBorder: false }
+        }
+      }
     };
   }
 }

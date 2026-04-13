@@ -7,3 +7,9 @@
 .bg-slate-400{
     background-color: #c4d7e2 !important;
 }
+
+
+::ng-deep p-chart>div{
+    width: 100% !important;
+    height: 100% !important;
+}
