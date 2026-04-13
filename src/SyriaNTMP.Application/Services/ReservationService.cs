@@ -1,14 +1,10 @@
-﻿using AutoMapper;
-using AutoMapper.Internal.Mappers;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using SyriaNTMP.Dto;
 using SyriaNTMP.Models;
 using SyriaNTMP.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -119,25 +115,45 @@ namespace SyriaNTMP.Services
             return ObjectMapper.Map<Reservations, ReservationsDto>(data);
         }
 
-        public async Task<ReservationsDto> CreateAsync(ReservationsDto dto)
+        public async Task<ReservationResponseDto> CreateAsync(ReservationsDto dto)
         {
             var entity = ObjectMapper.Map<ReservationsDto, Reservations>(dto);
+            // check if item already exists
+            var existingItem = await _reservationsRepository.FirstOrDefaultAsync(x => x.Id == dto.Id);
+            if (existingItem != null)
+            {
+                await _reservationsRepository.UpdateAsync(entity);
+            }
             await _reservationsRepository.InsertAsync(entity);
-            return ObjectMapper.Map<Reservations, ReservationsDto>(entity);
+            await CurrentUnitOfWork.SaveChangesAsync();
+            return new ReservationResponseDto()
+            {
+                BookingNumber = entity.ReservationNumber,
+                Success = true,
+                TransactionId = entity.Id.ToString()
+            };
         }
-
-        public async Task<ReservationsDto> UpdateAsync(ReservationsDto dto)
+        
+        public async Task<ReservationResponseDto> DeleteAsync(int id)
         {
-            var entity = await _reservationsRepository.GetAsync(x => x.Id == dto.Id);
-            entity = ObjectMapper.Map(dto, entity);
-            await _reservationsRepository.UpdateAsync(entity);
-            return ObjectMapper.Map<Reservations, ReservationsDto>(entity);
-        }
-
-        public async Task<bool> DeleteAsync(int id)
-        {
-            await _reservationsRepository.DeleteDirectAsync(x => x.Id == id);
-            return true;
+            var entity = await _reservationsRepository.FirstOrDefaultAsync(x => x.Id == id);
+            if (entity != null)
+            {
+                entity.ReservationStatus = ReservationStatus.Canceled;
+                await _reservationsRepository.UpdateAsync(entity);
+                return new ReservationResponseDto()
+                {
+                    BookingNumber = entity.ReservationNumber,
+                    Success = true,
+                    TransactionId = entity.Id.ToString()
+                };
+            }
+            return new ReservationResponseDto()
+            {
+                BookingNumber = "",
+                Success = false,
+                TransactionId = ""
+            };
         }
     }
 }
