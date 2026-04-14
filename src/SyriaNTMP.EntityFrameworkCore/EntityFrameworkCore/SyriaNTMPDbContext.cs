@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SyriaNTMP.Models;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
@@ -79,5 +80,19 @@ public class SyriaNTMPDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+
+
+        builder.Entity<Reservations>(b =>
+        {
+            b.HasIndex(x => x.ReservationId).IsUnique();
+            b.HasIndex(x => x.PropertyId);
+            b.HasIndex(x => x.CompanyId);
+            b.HasIndex(x => x.ReservationStatus);
+            b.HasIndex(x => x.PropertyRating);
+            b.HasIndex(x => x.ReservationPurpose);
+            b.HasIndex(x => x.FromDate);
+            b.HasIndex(x => x.ToDate);
+            b.HasIndex(x => x.CreatedDate);
+        });
     }
 }
