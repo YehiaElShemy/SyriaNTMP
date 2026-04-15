@@ -22,6 +22,52 @@ namespace SyriaNTMP.Services
             _reservationsRepository = reservationsRepository;
         }
 
+        public async Task<PagedResultDto<ReservationsDto>> GetReservations(ReservationsSearchCriteria searchCriteria)
+        {
+          var queryable = await _reservationsRepository.GetQueryableAsync();
+
+          if (!string.IsNullOrEmpty(searchCriteria.CompanyName))
+            queryable = queryable.Where(r => r.CompanyName.Contains(searchCriteria.CompanyName));
+
+          if (!string.IsNullOrEmpty(searchCriteria.PropertyName))
+            queryable = queryable.Where(r => r.PropertyName.Contains(searchCriteria.PropertyName));
+
+          if (searchCriteria.PropertyRating.HasValue)
+            queryable = queryable.Where(r => r.PropertyRating == searchCriteria.PropertyRating);
+
+          if (!string.IsNullOrEmpty(searchCriteria.ReservationNumber))
+            queryable = queryable.Where(r => r.ReservationNumber == searchCriteria.ReservationNumber);
+
+          if (searchCriteria.ReservationStatus.HasValue)
+            queryable = queryable.Where(r => r.ReservationStatus == searchCriteria.ReservationStatus);
+
+          if (searchCriteria.ReservationPurpose.HasValue)
+            queryable = queryable.Where(r => r.ReservationPurpose == searchCriteria.ReservationPurpose);
+
+          if (!string.IsNullOrEmpty(searchCriteria.DateFrom) && DateTime.TryParse(searchCriteria.DateFrom, out var dateFrom))
+            queryable = queryable.Where(x => dateFrom.Date <= x.CreatedDate.Date);
+
+          if (!string.IsNullOrEmpty(searchCriteria.DateTo) && DateTime.TryParse(searchCriteria.DateTo, out var dateTo))
+            queryable = queryable.Where(x => dateTo.Date >= x.CreatedDate.Date);
+
+          // Apply sorting and paging
+          var sortedQueryable = queryable.OrderBy(x => x.Id);  // or searchCriteria.Sorting
+          var data = sortedQueryable
+              .Skip(searchCriteria.SkipCount)
+              .Take(searchCriteria.MaxResultCount).ToList();
+
+
+          var count = await AsyncExecuter.CountAsync(queryable);  // Count before paging
+
+          var result = new PagedResultDto<ReservationsDto>
+          {
+            Items = ObjectMapper.Map<List<Reservations>, List<ReservationsDto>>(data),
+            TotalCount = count
+          };
+
+          return result;
+        }
+
 
         public async Task<DashboardDto> GetDashboardAsync(DashboardFilterDto filter)
         {
