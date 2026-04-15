@@ -11,5 +11,6 @@ namespace SyriaNTMP.Dto
     public int TotalReservations { get; set; }
     public decimal OccupancyRate { get; set; }
     public decimal CancellationRate { get; set; }
+    public int ActiveProperties { get; set; }
   }
 }

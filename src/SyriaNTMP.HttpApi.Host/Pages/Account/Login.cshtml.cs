@@ -89,8 +89,6 @@ public class LoginModel : AccountPageModel
   {
     await CheckLocalLoginAsync();
 
-    ValidateModel();
-
     ExternalProviders = await GetExternalProviders();
 
     EnableLocalLogin = await SettingProvider.IsTrueAsync(AccountSettingNames.EnableLocalLogin);

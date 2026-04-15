@@ -90,7 +90,7 @@ namespace SyriaNTMP.Services
 
           if (!string.IsNullOrWhiteSpace(filter.HotelName))
           {
-            query = query.Where(x => x.PropertyName.Contains(filter.HotelName));
+            query = query.Where(x => x.PropertyName.Contains(filter.HotelName.ToLower()));
           }
 
           if (filter.HotelStars.HasValue)
@@ -100,21 +100,28 @@ namespace SyriaNTMP.Services
 
           var rawData = await AsyncExecuter.ToListAsync(query);
 
-          var startPeriod = filter.FromDate ?? DateTime.Today.AddDays(-7);
-          var endPeriod = filter.ToDate ?? DateTime.Today;
+          int diff = (7 + (DateTime.Today.DayOfWeek - DayOfWeek.Sunday)) % 7;
+
+          var startPeriod = DateTime.Today.AddDays(-diff).Date;
+          var endPeriod = startPeriod.AddDays(6);
 
           var activeData = rawData.Where(x =>
               x.ReservationStatus != ReservationStatus.Canceled &&
               x.ReservationStatus != ReservationStatus.NoShow).ToList();
 
+          var activeProperties = activeData
+          .Where(x => x.FromDate.Date <= endPeriod && x.ToDate.Date >= startPeriod)
+          .Select(x => x.PropertyName).Distinct().Count();
+
           var weekly = new List<WeeklyDto>();
           for (var date = startPeriod.Date; date <= endPeriod.Date; date = date.AddDays(1))
           {
-            var occupiedCount = activeData.Count(x => date >= x.FromDate.Date && date < x.ToDate.Date);
+            var count = activeData.Count(x =>x.FromDate.Date <= date && x.ToDate.Date >= date);
+
             weekly.Add(new WeeklyDto
             {
               Date = date.ToString("yyyy-MM-dd"),
-              Count = occupiedCount
+              Count = count
             });
           }
 
@@ -129,26 +136,28 @@ namespace SyriaNTMP.Services
               .ToList();
 
           var today = DateTime.Today;
-          var handledToday = rawData.Count(x => x.CreatedDate.Date == today || x.FromDate.Date == today);
+          var totalCreatedToday = rawData.Count(x => x.CreatedDate.Date == today);
           var todayStats = new TodayStatsDto
           {
-            CheckedIn = handledToday == 0 ? 0 : (rawData.Count(x => x.ReservationStatus == ReservationStatus.CheckedIn && x.FromDate.Date == today) * 100 / handledToday),
-            CheckedOut = handledToday == 0 ? 0 : (rawData.Count(x => x.ReservationStatus == ReservationStatus.CheckedOut && x.ToDate.Date == today) * 100 / handledToday),
-            Cancelled = handledToday == 0 ? 0 : (rawData.Count(x => x.ReservationStatus == ReservationStatus.Canceled && x.CreatedDate.Date == today) * 100 / handledToday)
+            CheckedIn = totalCreatedToday == 0 ? 0 : (rawData.Count(x => x.ReservationStatus == ReservationStatus.CheckedIn && x.FromDate.Date == today) * 100 / totalCreatedToday),
+            CheckedOut = totalCreatedToday == 0 ? 0 : (rawData.Count(x => x.ReservationStatus == ReservationStatus.CheckedOut && x.ToDate.Date == today) * 100 / totalCreatedToday),
+            Cancelled = totalCreatedToday == 0 ? 0 : (rawData.Count(x => x.ReservationStatus == ReservationStatus.Canceled && x.CreatedDate.Date == today) * 100 / totalCreatedToday)
           };
 
  
           var totalSoldNights = CalculateTotalSoldNights(activeData, startPeriod, endPeriod);
           var totalRevenue = activeData.Sum(x => x.TotalPrice);
           var portfolioAdr = totalSoldNights == 0 ? 0 : (totalRevenue / totalSoldNights);
+          var periodData = rawData.Where(x => x.FromDate >= startPeriod && x.ToDate <= endPeriod).ToList();
 
           return new DashboardDto
           {
             Summary = new SummaryDto
             {
               TotalReservations = rawData.Count,
-              CancellationRate = rawData.Count == 0 ? 0 : (rawData.Count(x => x.ReservationStatus == ReservationStatus.Canceled) * 100 / rawData.Count),
-              OccupancyRate = CalculateOccupancyPercentage(totalSoldNights, activeData, startPeriod, endPeriod)
+              CancellationRate = periodData.Count == 0 ? 0 : (periodData.Count(x => x.ReservationStatus == ReservationStatus.Canceled) * 100 / periodData.Count),
+              OccupancyRate = CalculateOccupancyPercentage(totalSoldNights, activeData, startPeriod, endPeriod),
+              ActiveProperties = activeProperties 
             },
             PurposeStats = activeData.GroupBy(x => x.ReservationPurpose).Select(g => new PurposeDto { Purpose = g.Key.ToString(), Count = g.Count() }).ToList(),
             NationalityStats = nationality,
@@ -268,11 +277,11 @@ namespace SyriaNTMP.Services
 
         private decimal CalculateOccupancyPercentage(int soldNights, List<Reservations> data, DateTime start, DateTime end)
         {
-          var propertyCount = data.Select(x => x.PropertyName).Distinct().Count();
-          if (propertyCount == 0) return 0;
           int totalDays = (end - start).Days;
           if (totalDays <= 0) totalDays = 1;
-          return ((decimal)soldNights / (propertyCount * totalDays)) * 100;
+          var totalAvailableUnits = data.GroupBy(x => x.PropertyName).Sum(g => g.First().NumberOfRooms * totalDays);
+       
+          return totalAvailableUnits == 0 ? 0 : ((decimal)soldNights / totalAvailableUnits) * 100;
         }
 
   }
