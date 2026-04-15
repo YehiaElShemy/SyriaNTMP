@@ -207,7 +207,51 @@ namespace SyriaNTMP.Services
             };
         }
 
-        private int CalculateTotalSoldNights(List<Reservations> reservations, DateTime start, DateTime end)
+    public async Task<List<LookupDto>> GetCitiesAsync()
+    {
+      var query = await _reservationsRepository.GetQueryableAsync();
+
+      var cities = await AsyncExecuter.ToListAsync(
+          query
+          .Where(x => x.City != null)
+          .Select(x => new
+          {
+            x.City
+          })
+          .Distinct()
+      );
+
+      return cities.Select(x => new LookupDto
+      {
+        Value = x.City,
+        NameEn = x.City,   
+        NameAr = x.City   
+      }).ToList();
+    }
+
+    public async Task<List<LookupDto>> GetPropertiesAsync()
+    {
+      var query = await _reservationsRepository.GetQueryableAsync();
+
+      var properties = await AsyncExecuter.ToListAsync(
+          query
+          .Where(x => x.PropertyName != null)
+          .Select(x => new
+          {
+            x.PropertyName
+          })
+          .Distinct()
+      );
+
+      return properties.Select(x => new LookupDto
+      {
+        Value = x.PropertyName,
+        NameEn = x.PropertyName,
+        NameAr = x.PropertyName
+      }).ToList();
+    }
+
+    private int CalculateTotalSoldNights(List<Reservations> reservations, DateTime start, DateTime end)
         {
           int nights = 0;
           foreach (var res in reservations)
