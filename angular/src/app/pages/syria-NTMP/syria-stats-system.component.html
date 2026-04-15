@@ -1,34 +1,58 @@
 <div class="main-layout">
   <!-- Navbar Top -->
-  <div class="navbar p-4 flex justify-between items-center ">
-    <div class="logo-section flex items-center gap-3">
-      <img src="assets/images/windows.svg" alt="windows logo" class="w-2rem" style="width: 2rem;" />
-      <h2 class="m-0 text-xl font-bold" style="color: #64748b;">SyriaStats System</h2>
+  <div class="navbar py-2 px-3 flex justify-between items-center ">
+    <div class="flex items-center gap-6">
+      <div class="logo-section flex items-center gap-3">
+        <img src="assets/images/windows.svg" alt="windows logo"  />
+        <div class="flex flex-col gap-1">
+          <h2 class="m-0 text-xl font-bold address" >SyriaStats</h2>
+          <p class="show-text">Tourism Monitoring</p>
+        </div>
+      </div>
+
+      <div class="nav-tabs flex items-center gap-6">
+        <button class="nav-tab flex items-center gap-2 py-3 px-1 text-sm font-medium transition-colors"
+                [class.active]="selectedView === 'Dashboard'"
+                (click)="selectedView = 'Dashboard'">
+          <i class="pi pi-home"></i>
+          Dashboard
+        </button>
+        <button class="nav-tab flex items-center gap-2 py-3 px-1 text-sm font-medium transition-colors"
+                [class.active]="selectedView === 'Detailed Statistics'"
+                (click)="selectedView = 'Detailed Statistics'">
+          <i class="pi pi-file"></i>
+          Detailed statistics
+        </button>
+      </div>
+
     </div>
 
-    <div class="profile-section flex items-center gap-1">
-<img src="assets/images/lang.svg" alt="lang" class="w-6"/>      
-      <div class="flex items-center gap-3  px-3 py-2 rounded-lg">
-        <div class="avatar bg-primary-dark text-white rounded-full flex justify-center items-center font-bold" style="width: 32px; height: 32px;">
+    <div class="profile-section flex items-center gap-3">
+      
+      <button (click)="logout()" class="logout-btn px-4 py-2 rounded-xl font-semibold text-sm border transition-colors">
+        Logout
+      </button>
+
+      <button class="icon-btn w-10 h-10 flex justify-center items-center rounded-xl border transition-colors">
+        <i class="pi pi-globe text-lg"></i>
+      </button>
+
+      <div class="profile-badge flex items-center gap-3 rounded-full border">
+        <div class="avatar rounded-full flex justify-center items-center font-bold" style="width: 36px; height: 36px;">
           A
         </div>
-        <div class="profile-info flex flex-col">
-          <span class="font-bold text-sm text-primary-dark m-0 leading-none">Ahmed Mohamed</span>
-          <span class="text-xs text-gray-400 mt-1">Premium Account</span>
+        <div class="profile-info flex flex-col justify-center">
+          <span class="profile-name font-bold text-sm m-0 leading-none">Ahmed Mohamed</span>
+          <span class="profile-role font-semibold tracking-wider uppercase mt-1">Premium</span>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="content-wrapper p-6 bg-[#eef3f5] min-h-screen">
-    
-    <!-- Toggle Navigation -->
-    <div class="flex justify-end mb-6">
-      <p-selectButton [options]="viewOptions" [(ngModel)]="selectedView" optionLabel="label" optionValue="value" styleClass="custom-select-btn" [allowEmpty]="false"></p-selectButton>
-    </div>
+  <div class="content-wrapper p-6 bg-[#F1F1F9] min-h-screen">
 
     <!-- Conditional Sub-views -->
-    <div class="view-container bg-white shadow-sm rounded-lg p-5">
+    <div class="view-container bg-[#F1F1F9] rounded-lg p-3">
       <app-detailed-statistics *ngIf="selectedView === 'Detailed Statistics'"></app-detailed-statistics>
       <app-dashboard *ngIf="selectedView === 'Dashboard'"></app-dashboard>
     </div>

@@ -15,3 +15,76 @@
   background-color: white !important;
   color: var(--color-primary-dark) !important;
 }
+
+.navbar{
+  background-color: white !important;
+  .address{
+    color: #64748b
+  }
+  .show-text{
+    color: #9BADD2;
+    margin: 0;
+  }
+
+  .nav-tabs{
+    border-bottom: none !important;
+  }
+
+  .nav-tab {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    outline: none;
+
+    &:hover {
+      color: black;
+    }
+
+    &.active {
+      color: black;
+      border-bottom: 3px solid #9DB2DC;
+    }
+  }
+
+  .logout-btn {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border-color: #fee2e2;
+
+    &:hover {
+      background-color: #fee2e2;
+    }
+  }
+
+  .icon-btn {
+    color: #6b7280;
+    border-color: #e5e7eb;
+
+    &:hover {
+      background-color: #f9fafb;
+    }
+  }
+
+  .profile-badge {
+    background-color: #f4f3fb;
+    border-color: #e8e6f5;
+    padding: 10px;
+  }
+
+  .avatar {
+    width: 36px;
+    height: 36px;
+    background-color: #e5e1fc;
+    color: #6345ed;
+  }
+
+  .profile-name {
+    color: #2a2a3e;
+  }
+
+  .profile-role {
+    color: #9ca3af;
+    font-size: 10px;
+  }
+}

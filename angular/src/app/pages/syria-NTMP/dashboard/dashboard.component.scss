@@ -1,3 +1,10 @@
+
+::ng-deep p-chart canvas{
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 250px !important;
+}
+
 .bg-slate-800{
     background-color: #1e293b !important;
 }
@@ -12,4 +19,440 @@
 ::ng-deep p-chart>div{
     width: 100% !important;
     height: 100% !important;
+}
+
+// Dashboard Tabs
+
+.tab-item {
+  background: transparent;
+  border: 2px solid transparent;
+  cursor: pointer;
+  outline: none;
+
+  .tab-title {
+    color: #6b7280;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .tab-subtitle {
+    color: #9ca3af;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  &:hover {
+    .tab-title {
+      color: #374151;
+    }
+  }
+
+  &.active {
+    border-bottom: 3px solid #644B96;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+    .tab-title {
+      color: #1f2937;
+      font-weight: 700;
+    }
+
+    .tab-subtitle {
+      color: #644B96;
+    }
+  }
+}
+
+// ========================================
+// Operations Tab Styles
+// ========================================
+
+// Header
+.ops-label {
+  color: #d4a843;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ops-title {
+  color: #644B96;
+  font-size: 22px;
+}
+
+.ops-desc {
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+// Stat Cards
+.stat-card {
+  .purple{
+    color: #644B96;
+  }
+  .blue{
+    color: rgb(163, 217, 238);
+  }
+  .yellow{
+    color: #d4a843;
+  }
+
+  &--purple {
+    border-top: 3px solid #644B96 !important;
+  }
+
+  &--blue {
+    border-top: 3px solid rgb(163, 217, 238) !important;
+  }
+
+  &--yellow {
+    border-top: 3px solid #d4a843 !important;
+  }
+
+  &__label {
+    color: #6b7280;
+    font-size: 11px;
+  }
+
+  &__value {
+    color: #1f2937;
+    font-size: 28px;
+
+    &--green {
+      color: #22c55e;
+    }
+  }
+
+  &__sub {
+    color: #9ca3af;
+    font-size: 12px;
+    display: block;
+  }
+}
+
+// Operations Cards
+.ops-card {
+  &__icon {
+    width: 40px;
+    height: 40px;
+  }
+  &--purple {
+    background-color: #f0ebfa;
+    color: #644B96;
+  }
+
+  &--yellow {
+    background-color: #fef9ee;
+    color: #d4a843;
+  }
+
+  &__title {
+    color: #1f2937;
+    font-size: 14px;
+  }
+
+  &__sub {
+    color: #9ca3af;
+    font-size: 12px;
+  }
+}
+
+.ops-card__title {
+  color: #644B96;
+}
+
+.ops-week-label {
+  color: #d4a843;
+  font-size: 11px;
+}
+
+.ops-week-total {
+  color: #1f2937;
+  font-size: 42px;
+}
+
+.ops-message-box {
+  border-left: 3px solid #22c55e;
+
+  p {
+    color: #6b7280;
+    font-size: 13px;
+  }
+}
+
+.ops-status-icon {
+  font-size: 24PX;
+&--purple{
+  color: #644B96;
+}
+&--green{
+  color: #22c55e;
+}
+&--blue{
+  color: rgb(163, 217, 238);
+}
+
+}
+
+.ops-status-value {
+  color: #1f2937;
+  font-size: 22px;
+}
+
+.ops-status-label {
+  color: #9ca3af;
+  font-size: 10px;
+}
+
+// ========================================
+// Demand & Occupancy Tab Styles
+// ========================================
+
+.demand-label {
+  color: #d4a843;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.demand-title {
+  color: #644B96;
+  font-size: 22px;
+}
+
+.demand-desc-box {
+  border-left: 3px solid #22c55e;
+  // background-color: #f9fafb;
+
+  p {
+    color: #6b7280;
+    font-size: 13px;
+  }
+}
+
+.demand-card {
+  &__icon {
+    width: 40px;
+    height: 40px;
+
+    &--purple {
+      background-color: #f0ebfa;
+      color: #644B96;
+    }
+
+    &--yellow {
+      background-color: #fef9ee;
+      color: #d4a843;
+    }
+  }
+
+  &__title {
+    color: #644B96;
+    font-size: 14px;
+  }
+
+  &__sub {
+    color: #9ca3af;
+    font-size: 12px;
+  }
+}
+
+// ========================================
+// Revenue & ADR Tab Styles
+// ========================================
+
+.rev-label {
+  color: #d4a843;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.rev-title {
+  color: #644B96;
+  font-size: 22px;
+}
+
+.rev-desc-box {
+  border-left: 3px solid #22c55e;
+  // background-color: #f9fafb;
+
+  p {
+    color: #6b7280;
+    font-size: 13px;
+  }
+}
+
+.rev-stat-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+
+  &--purple {
+    background-color: #f0ebfa;
+    color: #644B96;
+  }
+
+  &--blue {
+    background-color: #eaf6fb;
+    color: #7bb7d5;
+  }
+
+  &--yellow {
+    background-color: #fef9ee;
+    color: #d4a843;
+  }
+}
+
+.rev-card {
+  &__icon {
+    width: 40px;
+    height: 40px;
+    background-color: #f0ebfa;
+    color: #644B96;
+  }
+
+  &__title {
+    color: #644B96;
+    font-size: 14px;
+  }
+
+  &__sub {
+    color: #9ca3af;
+    font-size: 12px;
+  }
+}
+
+.rev-filter-btn {
+  width: 36px;
+  height: 36px;
+  background-color: #ffffff;
+  color: #6b7280;
+  border-color: #e5e7eb;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f3f4f6;
+  }
+}
+
+.rev-footer-box {
+  background-color: #f9fafb;
+}
+
+.rev-footer-icon {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  background-color: #f0ebfa;
+  color: #644B96;
+}
+
+.rev-footer-text {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+// ========================================
+// Guest Mix Tab Styles
+// ========================================
+
+.mix-label {
+  color: #a3a3a3;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.mix-title {
+  color: #1f2937;
+  font-size: 22px;
+}
+
+.mix-desc-box {
+  // background-color: #f9fafb;
+
+  p {
+    color: #9ca3af;
+    font-size: 13px;
+  }
+}
+
+.mix-card {
+  &__icon {
+    width: 40px;
+    height: 40px;
+    background-color: #f3f4f6;
+    color: #644B96;
+  }
+
+  &__title {
+    color: #1f2937;
+    font-size: 14px;
+  }
+
+  &__sub {
+    color: #9ca3af;
+    font-size: 12px;
+  }
+}
+
+.mix-filter-btn {
+  width: 36px;
+  height: 36px;
+  background-color: #ffffff;
+  color: #6b7280;
+  border-color: #e5e7eb;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f3f4f6;
+  }
+}
+
+.mix-chart-icon {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+
+  &--purple {
+    background-color: #f0ebfa;
+    color: #644B96;
+  }
+
+  &--green {
+    background-color: #e6f6ec;
+    color: #22c55e;
+  }
+
+  &--yellow {
+    background-color: #fef9ee;
+    color: #d4a843;
+  }
+}
+
+.mix-chart-title {
+  color: #644B96;
+  font-size: 14px;
+}
+
+.mix-chart-sub {
+  color: #9ca3af;
+  font-size: 10px;
+}
+
+
+
+// Fixed size for the filter p-calendar popup panel
+::ng-deep .p-datepicker-panel.p-component {
+  width: 250px !important;
+  height: 250px !important;
+  min-width: 250px !important;
+  
+  // Adjust inner padding slightly to prevent overflow if the box is too small
+  .p-datepicker-header {
+    padding: 0.25rem !important;
+  }
+}
+::ng-deep .p-datepicker-day-view  {
+  margin: 0 !important;
+  font-size: 0.85rem !important;
 }

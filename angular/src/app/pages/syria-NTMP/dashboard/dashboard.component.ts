@@ -2,52 +2,118 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
 import { ButtonModule } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
 import { ReservationService } from '../../../proxy/services';
+import { DashboardDto, WeeklyDto, PurposeDto, NationalityDto, CityOccupancyDto, AdrByCityDto, LookupDto, DashboardFilterDto } from '@proxy/dto';
+import { PropertyRatingEnum } from '../../../proxy/models/enums/property-rating-enum.enum';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, ChartModule, ButtonModule],
+  imports: [CommonModule, ChartModule, ButtonModule, DialogModule, DropdownModule, CalendarModule, FormsModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   reservationService = inject(ReservationService);
-  statsData: any = null;
+  statsData: DashboardDto | null = null;
   isLoading = false;
   error: string | null = null;
   hasTodayData = false;
+  activeTab: string = 'guest-mix';
   
   percentages = { checkedIn: 0, checkedOut: 0, cancelled: 0 };
   todayDate: Date = new Date();
 
+  // Filter states
+  displayFilterDialog: boolean = false;
+  currentFilters: DashboardFilterDto = {};
+  
+  citiesOptions: LookupDto[] = [];
+  propertiesOptions: LookupDto[] = [];
+  starOptions = [
+    { label: 'All', value: null },
+    { label: '1 Star', value: PropertyRatingEnum.OneStar },
+    { label: '2 Stars', value: PropertyRatingEnum.TwoStar },
+    { label: '3 Stars', value: PropertyRatingEnum.ThreeStar },
+    { label: '4 Stars', value: PropertyRatingEnum.FourStar },
+    { label: '5 Stars', value: PropertyRatingEnum.FiveStar },
+  ];
+
   lineData: any;
-  lineOptions: any;
+  opsLineOptions: any;
 
-  doughnutData: any;
-  doughnutOptions: any;
+  // Guest Mix tab charts
+  mixNationalityData: any;
+  mixNationalityOptions: any;
+  mixPurposeData: any;
+  mixPurposeOptions: any;
+  mixAdrData: any;
+  mixAdrOptions: any;
 
-  occupancyRateData: any;
-  occupancyRateOptions: any;
+  // Demand tab charts
+  demandPurposeData: any;
+  demandPurposeOptions: any;
+  demandOccupancyData: any;
+  demandOccupancyOptions: any;
 
-  visitPurposeData: any;
-  visitPurposeOptions: any;
-
-  adrData: any;
-  adrOptions: any;
-
-  nationalityData: any;
-  nationalityOptions: any;
+  // Revenue tab charts
+  revAdrData: any;
+  revAdrOptions: any;
 
   ngOnInit() {
     this.initChart();
+    this.fetchStats();
+    this.getFiltersCities()
+    this.getFiltersProperties()
+  }
+
+  getFiltersCities(){
+    this.reservationService.getCities({
+      
+    }).subscribe({
+      next: (res: LookupDto[]) => {
+        this.citiesOptions = res;
+        console.log(res, "getCities");
+      },
+      error: (err) => {
+        console.log(err, "err");
+      }
+    })
+  }
+
+  getFiltersProperties(){
+    this.reservationService.getProperties({
+      
+    }).subscribe({
+      next: (res: LookupDto[] ) => {
+        this.propertiesOptions = res;
+        console.log(res, "getProperties");
+      },
+      error: (err) => {
+        console.log(err, "err");
+      }
+    })
+  }
+
+  showFilterDialog() {
+    this.displayFilterDialog = true;
+  }
+
+  applyFilters() {
+    this.displayFilterDialog = false;
     this.fetchStats();
   }
 
   fetchStats() {
     this.isLoading = true;
     this.error = null;
-    this.reservationService.getReservationsDashbord().subscribe({
-      next: (res) => {
+
+    this.reservationService.getDashboard(this.currentFilters).subscribe({
+      next: (res:DashboardDto) => {
         this.isLoading = false;
         this.statsData = res;
         this.updateCharts(res);
@@ -60,34 +126,26 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  updateCharts(res: any) {
-    if (!res || !res.data) return;
+  updateCharts(res: DashboardDto) {
+    if (!res) return;
 
-    const data = res.data;
-
-    // Line Chart Update
-    if (data.weeklyReservationCounts && Array.isArray(data.weeklyReservationCounts)) {
-      const labels = data.weeklyReservationCounts.map((item: any) => item.dayName);
-      const chartData = data.weeklyReservationCounts.map((item: any) => item.count);
+    // Operations Line Chart (Weekly)
+    if (res.weeklyReservations && Array.isArray(res.weeklyReservations)) {
+      const labels = res.weeklyReservations.map((item: WeeklyDto) => item.date || '');
+      const chartData = res.weeklyReservations.map((item: WeeklyDto) => item.count);
 
       this.lineData = {
         ...this.lineData,
         labels: labels,
-        datasets: [
-          {
-            ...this.lineData.datasets[0],
-            data: chartData
-          }
-        ]
+        datasets: [{ ...this.lineData.datasets[0], data: chartData }]
       };
     }
 
-    // Doughnut Chart Update
-    if (data.todayReservationStatusCount) {
-      const checkedIn = data.todayReservationStatusCount.checkInStatusCount || 0;
-      const checkedOut = data.todayReservationStatusCount.checkOutStatusCount || 0;
-      const cancelled = data.todayReservationStatusCount.canceledStatusCount || 0;
-      
+    // Today's Activity Percentages
+    if (res.todayStats) {
+      const checkedIn = res.todayStats.checkedIn || 0;
+      const checkedOut = res.todayStats.checkedOut || 0;
+      const cancelled = res.todayStats.cancelled || 0;
       const totalToday = checkedIn + checkedOut + cancelled;
       
       if (totalToday > 0) {
@@ -99,15 +157,58 @@ export class DashboardComponent implements OnInit {
         this.percentages = { checkedIn: 0, checkedOut: 0, cancelled: 0 };
         this.hasTodayData = false;
       }
+    }
 
-      this.doughnutData = {
-        ...this.doughnutData,
-        datasets: [
-          {
-            ...this.doughnutData.datasets[0],
-            data: [checkedIn, checkedOut, cancelled]
-          }
-        ]
+    // Guest Mix - Nationality
+    if (res.nationalityStats && Array.isArray(res.nationalityStats)) {
+      const labels = res.nationalityStats.map((item: NationalityDto) => item.nationality || 'Unknown');
+      const chartData = res.nationalityStats.map((item: NationalityDto) => item.count);
+      this.mixNationalityData = {
+        ...this.mixNationalityData,
+        labels: labels,
+        datasets: [{ ...this.mixNationalityData.datasets[0], data: chartData }]
+      };
+    }
+
+    // Guest Mix & Demand - Purpose
+    if (res.purposeStats && Array.isArray(res.purposeStats)) {
+      const colors = ['#9f6af0', '#7bb7d5', '#e2ba71', '#c87f82', '#644B96'];
+      const purposeDatasets = res.purposeStats.map((item: PurposeDto, index: number) => ({
+        label: item.purpose || 'Other',
+        backgroundColor: colors[index % colors.length],
+        data: [item.count]
+      }));
+
+      this.mixPurposeData = { ...this.mixPurposeData, datasets: purposeDatasets };
+      this.demandPurposeData = { ...this.demandPurposeData, datasets: purposeDatasets };
+    }
+
+    // Guest Mix & Revenue - ADR By City
+    if (res.revenue && res.revenue.meanAdrByCity && Array.isArray(res.revenue.meanAdrByCity)) {
+      const labels = res.revenue.meanAdrByCity.map((item: AdrByCityDto) => item.city || 'Unknown');
+      const chartData = res.revenue.meanAdrByCity.map((item: AdrByCityDto) => item.adr);
+      
+      this.mixAdrData = {
+        ...this.mixAdrData,
+        labels: labels,
+        datasets: [{ ...this.mixAdrData.datasets[0], data: chartData }]
+      };
+      
+      this.revAdrData = {
+        ...this.revAdrData,
+        labels: labels,
+        datasets: [{ ...this.revAdrData.datasets[0], data: chartData }]
+      };
+    }
+
+    // Demand - Occupancy By City
+    if (res.occupancyByCity && Array.isArray(res.occupancyByCity)) {
+      const labels = res.occupancyByCity.map((item: CityOccupancyDto) => item.city || 'Unknown');
+      const chartData = res.occupancyByCity.map((item: CityOccupancyDto) => item.occupancyRate);
+      this.demandOccupancyData = {
+        ...this.demandOccupancyData,
+        labels: labels,
+        datasets: [{ ...this.demandOccupancyData.datasets[0], data: chartData }]
       };
     }
   }
@@ -137,107 +238,58 @@ export class DashboardComponent implements OnInit {
       ]
     };
 
-    this.lineOptions = {
+    // Ops small line chart (sparkline style)
+    this.opsLineOptions = {
       plugins: {
         legend: { display: false }
       },
       scales: {
         x: {
-          ticks: { color: textColorSecondary },
-          grid: { color: surfaceBorder, drawBorder: false }
+          display: false,
+          grid: { display: false }
         },
         y: {
-          min: 0,
-          ticks: { color: textColorSecondary },
-          grid: { color: surfaceBorder, drawBorder: false }
+          display: false,
+          grid: { display: false }
         }
+      },
+      elements: {
+        point: { radius: 0 }
       }
     };
 
-    // Doughnut Chart Data
-    this.doughnutData = {
-      labels: ['Checked In', 'Checked Out', 'Cancelled'],
-      datasets: [
-        {
-          data: [],
-          backgroundColor: ['#1e293b', '#64748b', '#cbd5e1'],
-          hoverBackgroundColor: ['#0f172a', '#475569', '#94a3b8']
-        }
-      ]
-    };
+    // ========================================
+    // Demand Tab Charts
+    // ========================================
 
-    this.doughnutOptions = {
-      plugins: {
-        legend: { display: false }
-      },
-      cutout: '70%'
-    };
-
-    // Occupancy Rate Chart Data
-    this.occupancyRateData = {
-      labels: ['Aleppo', 'Damascus', 'Homs', 'Latakia', 'Hama'],
-      datasets: [
-        {
-          label: 'Occupancy Rate',
-          backgroundColor: '#bcbcbc',
-          data: [48, 33, 30, 0, 0]
-        }
-      ]
-    };
-
-    this.occupancyRateOptions = {
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false }
-      },
-      scales: {
-        x: {
-          ticks: { color: textColorSecondary },
-          grid: { color: surfaceBorder, drawBorder: false }
-        },
-        y: {
-          min: 0,
-          max: 50,
-          ticks: {
-            color: textColorSecondary,
-            stepSize: 5,
-            callback: function(value: any) {
-                return value + '%';
-            }
-          },
-          grid: { color: surfaceBorder, drawBorder: false }
-        }
-      }
-    };
-
-    // Visit Purpose Chart Data
-    this.visitPurposeData = {
-      labels: ['Purpose'],
+    // Visit Purpose - Horizontal Stacked Bar
+    this.demandPurposeData = {
+      labels: ['PURPOSE'],
       datasets: [
         {
           label: 'Tourism',
-          backgroundColor: '#9f6af0', // Purple
-          data: [120]
+          backgroundColor: '#9f6af0',
+          data: [58]
         },
         {
           label: 'Religious',
-          backgroundColor: '#7bb7d5', // Blue
-          data: [30]
+          backgroundColor: '#7bb7d5',
+          data: [22]
         },
         {
           label: 'Medical',
-          backgroundColor: '#e2ba71', // Yellow
-          data: [60]
+          backgroundColor: '#e2ba71',
+          data: [15]
         },
         {
           label: 'Other',
-          backgroundColor: '#d66e74', // Red
-          data: [80]
+          backgroundColor: '#c87f82',
+          data: [15]
         }
       ]
     };
 
-    this.visitPurposeOptions = {
+    this.demandPurposeOptions = {
       indexAxis: 'y',
       maintainAspectRatio: false,
       plugins: {
@@ -246,15 +298,17 @@ export class DashboardComponent implements OnInit {
           labels: {
             usePointStyle: true,
             color: textColorSecondary,
-            boxWidth: 10
+            boxWidth: 10,
+            padding: 16
           }
         }
       },
       scales: {
         x: {
           stacked: true,
-          ticks: { color: textColorSecondary },
-          grid: { color: surfaceBorder, drawBorder: false }
+          ticks: { color: textColorSecondary, stepSize: 25 },
+          grid: { color: surfaceBorder, drawBorder: false },
+          max: 150
         },
         y: {
           stacked: true,
@@ -264,73 +318,169 @@ export class DashboardComponent implements OnInit {
       }
     };
 
-    // ADR Chart Data
-    this.adrData = {
-      labels: ['Aleppo', 'Damascus', 'Homs', 'Latakia', 'Hama'],
+    // Occupancy Rate by City - Vertical Bar
+    this.demandOccupancyData = {
+      labels: ['Damascus', 'Aleppo', 'Latakia', 'Homs', 'Hama', 'Tartus', 'Idlib', 'Sweida'],
       datasets: [
         {
-          label: 'ADR',
-          backgroundColor: '#bcbcbc',
-          data: [41000, 30000, 26000, 0, 0]
+          label: 'Occupancy %',
+          backgroundColor: ['#644B96', '#644B96', '#7bb7d5', '#7bb7d5', '#d4a843', '#d4a843', '#22c55e', '#22c55e'],
+          data: [46, 48, 48, 48, 47, 49, 44, 42],
+          borderRadius: 4
         }
       ]
     };
 
-    this.adrOptions = {
+    this.demandOccupancyOptions = {
       maintainAspectRatio: false,
       plugins: {
         legend: { display: false }
       },
       scales: {
         x: {
-          ticks: { color: textColorSecondary },
-          grid: { color: surfaceBorder, drawBorder: false }
+          ticks: { color: textColorSecondary, font: { size: 10 } },
+          grid: { display: false, drawBorder: false }
+        },
+        y: {
+          display: false,
+          grid: { display: false }
+        }
+      }
+    };
+
+    // ========================================
+    // Revenue Tab Charts
+    // ========================================
+
+    this.revAdrData = {
+      labels: ['Damascus', 'Aleppo', 'Latakia', 'Homs', 'Hama', 'Tartus', 'Idlib', 'Sweida'],
+      datasets: [
+        {
+          label: 'ADR ($)',
+          backgroundColor: ['#644B96', '#7bb7d5', '#22c55e', '#d4a843', '#facc15', '#644B96', '#7bb7d5', '#22c55e'],
+          data: [105, 75, 205, 45, 55, 185, 40, 65],
+          borderRadius: 4,
+          barThickness: 32
+        }
+      ]
+    };
+
+    this.revAdrOptions = {
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        x: {
+          ticks: { color: textColorSecondary, font: { size: 10 } },
+          grid: { display: false, drawBorder: false }
         },
         y: {
           min: 0,
-          max: 45000,
+          max: 250,
           ticks: {
             color: textColorSecondary,
-            stepSize: 5000,
-            callback: function(value: any) {
-                return (value === 0 ? '0K' : (value / 1000) + 'K');
-            }
+            stepSize: 25
           },
           grid: { color: surfaceBorder, drawBorder: false }
         }
       }
     };
 
-    // Nationality Statistics Chart Data
-    this.nationalityData = {
-      labels: ['Syrian', 'Russian', 'Iranian', 'Lebanese', 'Iraqi'],
+    // ========================================
+    // Guest Mix Tab Charts
+    // ========================================
+
+    // 1. Nationality statistics
+    this.mixNationalityData = {
+      labels: ['Syrian', 'German', 'Lebanese', 'Russian', 'Italian', 'French'],
       datasets: [
         {
           label: 'Nationality',
-          backgroundColor: ['#60a5fa', '#f472b6', '#fbbf24', '#34d399', '#a78bfa'],
-          data: [15000, 8000, 6000, 4500, 3000]
+          backgroundColor: ['#4412a8', '#638fd6', '#71c5a7', '#d09f19', '#e8df1c', '#4412c1'],
+          data: [16, 11, 10, 10, 10, 9],
+          barThickness: 36
         }
       ]
     };
 
-    this.nationalityOptions = {
+    this.mixNationalityOptions = {
       maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false }
-      },
+      plugins: { legend: { display: false } },
       scales: {
         x: {
-          ticks: { color: textColorSecondary },
-          grid: { color: surfaceBorder, drawBorder: false }
+          ticks: { color: textColorSecondary, font: { size: 10 }, maxRotation: 45, minRotation: 45 },
+          grid: { display: false, drawBorder: false }
         },
         y: {
           min: 0,
-          ticks: {
-            color: textColorSecondary,
-            callback: function(value: any) {
-                return (value === 0 ? '0' : (value / 1000) + 'K');
-            }
-          },
+          max: 18,
+          ticks: { color: textColorSecondary, stepSize: 3 },
+          grid: { color: surfaceBorder, drawBorder: false }
+        }
+      }
+    };
+
+    // 2. Visit Purpose
+    this.mixPurposeData = {
+      labels: ['PURPOSE'],
+      datasets: [
+        { label: 'Tourism', backgroundColor: '#9f6af0', data: [26] },
+        { label: 'Religious', backgroundColor: '#7bb7d5', data: [4] },
+        { label: 'Medical', backgroundColor: '#e2ba71', data: [5] },
+        { label: 'Other', backgroundColor: '#c87f82', data: [23] }
+      ]
+    };
+
+    this.mixPurposeOptions = {
+      indexAxis: 'y',
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { usePointStyle: true, color: textColorSecondary, boxWidth: 10, padding: 16 }
+        }
+      },
+      scales: {
+        x: {
+          stacked: true,
+          ticks: { color: textColorSecondary, stepSize: 10 },
+          grid: { color: surfaceBorder, drawBorder: false },
+          max: 90
+        },
+        y: {
+          stacked: true,
+          ticks: { color: textColorSecondary },
+          grid: { display: false, drawBorder: false }
+        }
+      }
+    };
+
+    // 3. ADR (Average Daily Rate by City)
+    this.mixAdrData = {
+      labels: ['Aleppo', 'Damascus', 'Homs', 'Latakia', 'Hama'],
+      datasets: [
+        {
+          label: 'ADR',
+          backgroundColor: ['#4412c1', '#638fd6', '#71c5a7', '#d09f19', '#e8df1c'],
+          data: [75, 105, 45, 205, 55],
+          barThickness: 36
+        }
+      ]
+    };
+
+    this.mixAdrOptions = {
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: {
+          ticks: { color: textColorSecondary, font: { size: 10 }, maxRotation: 45, minRotation: 45 },
+          grid: { display: false, drawBorder: false }
+        },
+        y: {
+          min: 0,
+          max: 250,
+          ticks: { color: textColorSecondary, stepSize: 25 },
           grid: { color: surfaceBorder, drawBorder: false }
         }
       }

@@ -1039,17 +1039,87 @@
               "allowAnonymous": false,
               "implementFrom": "SyriaNTMP.Services.ReservationService"
             },
-            "GetReservationsDashbord": {
-              "uniqueName": "GetReservationsDashbord",
-              "name": "GetReservationsDashbord",
+            "GetDashboardAsyncByFilter": {
+              "uniqueName": "GetDashboardAsyncByFilter",
+              "name": "GetDashboardAsync",
               "httpMethod": "GET",
-              "url": "api/app/reservation/reservations-dashbord",
+              "url": "api/app/reservation/dashboard",
               "supportedVersions": [],
-              "parametersOnMethod": [],
-              "parameters": [],
+              "parametersOnMethod": [
+                {
+                  "name": "filter",
+                  "typeAsString": "SyriaNTMP.Dto.DashboardFilterDto, SyriaNTMP.Application",
+                  "type": "SyriaNTMP.Dto.DashboardFilterDto",
+                  "typeSimple": "SyriaNTMP.Dto.DashboardFilterDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "filter",
+                  "name": "FromDate",
+                  "jsonName": null,
+                  "type": "System.DateTime?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "filter"
+                },
+                {
+                  "nameOnMethod": "filter",
+                  "name": "ToDate",
+                  "jsonName": null,
+                  "type": "System.DateTime?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "filter"
+                },
+                {
+                  "nameOnMethod": "filter",
+                  "name": "City",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "filter"
+                },
+                {
+                  "nameOnMethod": "filter",
+                  "name": "HotelName",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "filter"
+                },
+                {
+                  "nameOnMethod": "filter",
+                  "name": "HotelStars",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "filter"
+                }
+              ],
               "returnValue": {
-                "type": "SyriaNTMP.Dto.DashbordResponseDto",
-                "typeSimple": "SyriaNTMP.Dto.DashbordResponseDto"
+                "type": "SyriaNTMP.Dto.DashboardDto",
+                "typeSimple": "SyriaNTMP.Dto.DashboardDto"
               },
               "allowAnonymous": false,
               "implementFrom": "SyriaNTMP.Services.ReservationService"
@@ -1122,45 +1192,8 @@
                 }
               ],
               "returnValue": {
-                "type": "SyriaNTMP.Dto.ReservationsDto",
-                "typeSimple": "SyriaNTMP.Dto.ReservationsDto"
-              },
-              "allowAnonymous": false,
-              "implementFrom": "SyriaNTMP.Services.ReservationService"
-            },
-            "UpdateAsyncByDto": {
-              "uniqueName": "UpdateAsyncByDto",
-              "name": "UpdateAsync",
-              "httpMethod": "PUT",
-              "url": "api/app/reservation",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "dto",
-                  "typeAsString": "SyriaNTMP.Dto.ReservationsDto, SyriaNTMP.Application",
-                  "type": "SyriaNTMP.Dto.ReservationsDto",
-                  "typeSimple": "SyriaNTMP.Dto.ReservationsDto",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "dto",
-                  "name": "dto",
-                  "jsonName": null,
-                  "type": "SyriaNTMP.Dto.ReservationsDto",
-                  "typeSimple": "SyriaNTMP.Dto.ReservationsDto",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "Body",
-                  "descriptorName": ""
-                }
-              ],
-              "returnValue": {
-                "type": "SyriaNTMP.Dto.ReservationsDto",
-                "typeSimple": "SyriaNTMP.Dto.ReservationsDto"
+                "type": "SyriaNTMP.Dto.ReservationResponseDto",
+                "typeSimple": "SyriaNTMP.Dto.ReservationResponseDto"
               },
               "allowAnonymous": false,
               "implementFrom": "SyriaNTMP.Services.ReservationService"
@@ -1196,8 +1229,38 @@
                 }
               ],
               "returnValue": {
-                "type": "System.Boolean",
-                "typeSimple": "boolean"
+                "type": "SyriaNTMP.Dto.ReservationResponseDto",
+                "typeSimple": "SyriaNTMP.Dto.ReservationResponseDto"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "SyriaNTMP.Services.ReservationService"
+            },
+            "GetCitiesAsync": {
+              "uniqueName": "GetCitiesAsync",
+              "name": "GetCitiesAsync",
+              "httpMethod": "GET",
+              "url": "api/app/reservation/cities",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<SyriaNTMP.Dto.LookupDto>",
+                "typeSimple": "[SyriaNTMP.Dto.LookupDto]"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "SyriaNTMP.Services.ReservationService"
+            },
+            "GetPropertiesAsync": {
+              "uniqueName": "GetPropertiesAsync",
+              "name": "GetPropertiesAsync",
+              "httpMethod": "GET",
+              "url": "api/app/reservation/properties",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<SyriaNTMP.Dto.LookupDto>",
+                "typeSimple": "[SyriaNTMP.Dto.LookupDto]"
               },
               "allowAnonymous": false,
               "implementFrom": "SyriaNTMP.Services.ReservationService"
@@ -3301,7 +3364,7 @@
     }
   },
   "types": {
-    "SyriaNTMP.Dto.DashbordResponseDto": {
+    "SyriaNTMP.Dto.AdrByCityDto": {
       "baseType": null,
       "isEnum": false,
       "enumNames": null,
@@ -3309,10 +3372,10 @@
       "genericArguments": null,
       "properties": [
         {
-          "name": "TodayReservationStatusCount",
+          "name": "City",
           "jsonName": null,
-          "type": "SyriaNTMP.Dto.TodayReservationStatusCountDto",
-          "typeSimple": "SyriaNTMP.Dto.TodayReservationStatusCountDto",
+          "type": "System.String",
+          "typeSimple": "string",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -3321,10 +3384,31 @@
           "regex": null
         },
         {
-          "name": "WeeklyReservationCounts",
+          "name": "Adr",
           "jsonName": null,
-          "type": "[SyriaNTMP.Dto.WeeklyReservationCount]",
-          "typeSimple": "[SyriaNTMP.Dto.WeeklyReservationCount]",
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "SyriaNTMP.Dto.CityOccupancyDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "City",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -3333,10 +3417,361 @@
           "regex": null
         },
         {
-          "name": "TotalCountWeekly",
+          "name": "OccupancyRate",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "SyriaNTMP.Dto.DashboardDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Summary",
+          "jsonName": null,
+          "type": "SyriaNTMP.Dto.SummaryDto",
+          "typeSimple": "SyriaNTMP.Dto.SummaryDto",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "PurposeStats",
+          "jsonName": null,
+          "type": "[SyriaNTMP.Dto.PurposeDto]",
+          "typeSimple": "[SyriaNTMP.Dto.PurposeDto]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "NationalityStats",
+          "jsonName": null,
+          "type": "[SyriaNTMP.Dto.NationalityDto]",
+          "typeSimple": "[SyriaNTMP.Dto.NationalityDto]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "OccupancyByCity",
+          "jsonName": null,
+          "type": "[SyriaNTMP.Dto.CityOccupancyDto]",
+          "typeSimple": "[SyriaNTMP.Dto.CityOccupancyDto]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "WeeklyReservations",
+          "jsonName": null,
+          "type": "[SyriaNTMP.Dto.WeeklyDto]",
+          "typeSimple": "[SyriaNTMP.Dto.WeeklyDto]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "TodayStats",
+          "jsonName": null,
+          "type": "SyriaNTMP.Dto.TodayStatsDto",
+          "typeSimple": "SyriaNTMP.Dto.TodayStatsDto",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Revenue",
+          "jsonName": null,
+          "type": "SyriaNTMP.Dto.RevenueDto",
+          "typeSimple": "SyriaNTMP.Dto.RevenueDto",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "SyriaNTMP.Dto.DashboardFilterDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "FromDate",
+          "jsonName": null,
+          "type": "System.DateTime?",
+          "typeSimple": "string?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "ToDate",
+          "jsonName": null,
+          "type": "System.DateTime?",
+          "typeSimple": "string?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "City",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "HotelName",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "HotelStars",
+          "jsonName": null,
+          "type": "SyriaNTMP.Models.Enums.PropertyRatingEnum?",
+          "typeSimple": "enum?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "SyriaNTMP.Dto.LookupDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "NameEn",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "NameAr",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Value",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "SyriaNTMP.Dto.NationalityDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Nationality",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Count",
           "jsonName": null,
           "type": "System.Int32",
           "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "SyriaNTMP.Dto.PeakCityDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "City",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Adr",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "SyriaNTMP.Dto.PurposeDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Purpose",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Count",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "SyriaNTMP.Dto.ReservationResponseDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Success",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "TransactionId",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "BookingNumber",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -3640,7 +4075,7 @@
         }
       ]
     },
-    "SyriaNTMP.Dto.TodayReservationStatusCountDto": {
+    "SyriaNTMP.Dto.RevenueDto": {
       "baseType": null,
       "isEnum": false,
       "enumNames": null,
@@ -3648,9 +4083,9 @@
       "genericArguments": null,
       "properties": [
         {
-          "name": "CheckInStatusCount",
+          "name": "PortfolioAdr",
           "jsonName": null,
-          "type": "System.Int64",
+          "type": "System.Decimal",
           "typeSimple": "number",
           "isRequired": false,
           "minLength": null,
@@ -3660,9 +4095,42 @@
           "regex": null
         },
         {
-          "name": "CheckOutStatusCount",
+          "name": "PeakCity",
           "jsonName": null,
-          "type": "System.Int64",
+          "type": "SyriaNTMP.Dto.PeakCityDto",
+          "typeSimple": "SyriaNTMP.Dto.PeakCityDto",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "MeanAdrByCity",
+          "jsonName": null,
+          "type": "[SyriaNTMP.Dto.AdrByCityDto]",
+          "typeSimple": "[SyriaNTMP.Dto.AdrByCityDto]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "SyriaNTMP.Dto.SummaryDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "TotalReservations",
+          "jsonName": null,
+          "type": "System.Int32",
           "typeSimple": "number",
           "isRequired": false,
           "minLength": null,
@@ -3672,9 +4140,21 @@
           "regex": null
         },
         {
-          "name": "CanceledStatusCount",
+          "name": "OccupancyRate",
           "jsonName": null,
-          "type": "System.Int64",
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CancellationRate",
+          "jsonName": null,
+          "type": "System.Decimal",
           "typeSimple": "number",
           "isRequired": false,
           "minLength": null,
@@ -3685,7 +4165,52 @@
         }
       ]
     },
-    "SyriaNTMP.Dto.WeeklyReservationCount": {
+    "SyriaNTMP.Dto.TodayStatsDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "CheckedIn",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CheckedOut",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Cancelled",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "SyriaNTMP.Dto.WeeklyDto": {
       "baseType": null,
       "isEnum": false,
       "enumNames": null,
@@ -3705,21 +4230,9 @@
           "regex": null
         },
         {
-          "name": "DayName",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
           "name": "Count",
           "jsonName": null,
-          "type": "System.Int64",
+          "type": "System.Int32",
           "typeSimple": "number",
           "isRequired": false,
           "minLength": null,

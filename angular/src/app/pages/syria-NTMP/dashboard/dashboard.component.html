@@ -1,107 +1,436 @@
-<!-- <div class="flex justify-between items-center mb-4">
-  <div class="filter-actions flex ml-auto">
-    <button pButton label="Filter" icon="pi pi-filter" class="p-button-outlined text-gray-700 bg-white border-gray-300"></button>
+<!-- Dashboard Tabs -->
+<div class="dashboard-tabs flex items-center gap-4 mb-6 p-1 rounded-xl">
+  <button class="tab-item flex flex-col items-start gap-1  p-2 rounded-lg font-medium transition-all"
+          [class.active]="activeTab === 'guest-mix'"
+          (click)="activeTab = 'guest-mix'">
+    <span class="tab-title">Guest mix</span>
+    <span class="tab-subtitle">NATIONALITY & CITY</span>
+  </button>
+  <button class="tab-item flex flex-col items-start gap-1  p-2 rounded-lg font-medium transition-all"
+          [class.active]="activeTab === 'revenue'"
+          (click)="activeTab = 'revenue'">
+    <span class="tab-title">Revenue & ADR</span>
+    <span class="tab-subtitle">RATES BY MARKET</span>
+  </button>
+  <button class="tab-item flex flex-col items-start gap-1  p-2 rounded-lg font-medium transition-all"
+          [class.active]="activeTab === 'demand'"
+          (click)="activeTab = 'demand'">
+    <span class="tab-title">Demand & occupancy</span>
+    <span class="tab-subtitle">PURPOSE & CAPACITY</span>
+  </button>
+  <button class="tab-item flex flex-col items-start gap-1  p-2 rounded-lg font-medium transition-all"
+          [class.active]="activeTab === 'operations'"
+          (click)="activeTab = 'operations'">
+    <span class="tab-title">Operations</span>
+    <span class="tab-subtitle">WEEK & TODAY</span>
+  </button>
+</div>
+
+<!-- Tab Content -->
+<div *ngIf="activeTab === 'guest-mix'" class="tab-content">
+
+  <!-- Header -->
+  <div class="mix-header mb-6">
+    <span class="mix-label font-semibold uppercase tracking-wider">MARKET COMPOSITION</span>
+    <h2 class="mix-title font-bold m-0 mt-1">Nationality statistics</h2>
+    <div class="mix-desc-box mt-2 py-2">
+      <p class="m-0">Slice the reservation set with filters; the breakdown row shows nationality (guests), visit purpose (stacked stays), and mean ADR by city together.</p>
+    </div>
   </div>
-</div> -->
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-  
-  <!-- Trend Chart -->
-  <div class="col-span-1 lg:col-span-2 bg-white rounded-lg border border-gray-200 p-6 flex flex-col justify-between">
-    <div class="mb-6">
-      <h3 class="text-lg font-bold text-primary-dark m-0 mb-4">Reservations</h3>
-      <div class="bg-gray-200 text-primary-dark inline-block px-4 py-3 rounded-lg shadow-sm border-l-4" style="border-left-color: #94a3b8;">
-        <p class="text-xs font-semibold m-0 mb-1 text-gray-500">Current Week</p>
-        <!-- Adding loading spinner and fallback from API -->
-        <p *ngIf="isLoading" class="text-xl font-bold m-0 text-primary-dark"><i class="pi pi-spin pi-spinner"></i></p>
-        <p *ngIf="!isLoading" class="text-3xl font-bold m-0 text-primary-dark">{{ statsData?.data?.totalCountWeekly ?? 0 }}</p>
+  <!-- Breakdown Card -->
+  <div class="mix-card bg-white rounded-lg p-6 border border-gray-200">
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center gap-3">
+        <div class="mix-card__icon rounded-lg flex justify-center items-center">
+          <i class="pi pi-th-large"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="mix-card__title font-bold">Breakdown</span>
+          <span class="mix-card__sub">Three charts — nationality (guests), visit purpose (stacked), and mean ADR by city — all follow the same filters.</span>
+        </div>
       </div>
-    </div>
-    <div class="w-full flex-grow">
-      <p-chart type="line" [data]="lineData" [options]="lineOptions" height="300px"></p-chart>
-    </div>
-  </div>
-
-  <!-- Distribution Chart -->
-  <div class="col-span-1 bg-white rounded-lg border border-gray-200 p-6 flex flex-col">
-    <div class="mb-4">
-      <h3 class="text-lg font-bold text-primary-dark m-0">Reservations</h3>
-      <p class="text-sm font-semibold text-gray-500 m-0 mt-1">Today {{ todayDate | date:'dd MMM' }}</p>
-    </div>
-    
-    <div class="flex-grow flex justify-center items-center py-6">
-      <p-chart *ngIf="hasTodayData && !isLoading" type="doughnut" [data]="doughnutData" [options]="doughnutOptions" width="220px"></p-chart>
-      <div *ngIf="!hasTodayData && !isLoading" class="flex flex-col items-center justify-center text-center p-6 bg-gray-50 rounded-lg w-full h-full border border-dashed border-gray-300">
-        <i class="pi pi-inbox text-4xl text-gray-400 mb-3"></i>
-        <p class="text-sm font-medium text-gray-500 m-0">No reservations for the current day</p>
-      </div>
-      <div *ngIf="isLoading" class="flex justify-center items-center h-full">
-        <i class="pi pi-spin pi-spinner text-3xl text-primary-dark"></i>
-      </div>
+      <button class="mix-filter-btn flex justify-center items-center rounded-lg border transition-colors" (click)="showFilterDialog()">
+        <i class="pi pi-filter"></i>
+      </button>
     </div>
 
-    <div class="flex grid-cols-3 gap-3 mt-4 d-flex flex-row">
-      <div class="bg-slate-800 w-33-33 text-white rounded-lg p-3 flex flex-col items-center justify-center text-center h-20">
-        <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-        <span *ngIf="!isLoading" class="font-bold text-sm mb-1">{{ percentages.checkedIn }}%</span>
-        <span class="text-xs">Checked In</span>
+    <!-- Three Charts Row -->
+    <div class="flex flex-col gap-4">
+
+      <!-- Nationality Statistics -->
+      <div class="flex flex-col">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <div class="mix-chart-icon mix-chart-icon--purple rounded-md flex justify-center items-center">
+              <i class="pi pi-globe"></i>
+            </div>
+            <span class="mix-chart-title font-bold">Nationality statistics</span>
+          </div>
+        
+        </div>
+        <div class="w-full" style="min-height: 220px;">
+          <p-chart type="bar" [data]="mixNationalityData" [options]="mixNationalityOptions"></p-chart>
+        </div>
       </div>
-      <div class="bg-slate-500 w-33-33 text-white rounded-lg p-3 flex flex-col items-center justify-center text-center h-20">
-        <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-        <span *ngIf="!isLoading" class="font-bold text-sm mb-1">{{ percentages.checkedOut }}%</span>
-        <span class="text-xs leading-tight">Checked Out</span>
+
+      <!-- Visit Purpose -->
+      <div class="flex flex-col">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <div class="mix-chart-icon mix-chart-icon--green rounded-md flex justify-center items-center">
+              <i class="pi pi-compass"></i>
+            </div>
+            <span class="mix-chart-title font-bold">Visit purpose</span>
+          </div>
+          
+        </div>
+        <div class="w-full" style="min-height: 220px;">
+          <p-chart type="bar" [data]="mixPurposeData" [options]="mixPurposeOptions"></p-chart>
+        </div>
       </div>
-      <div class="bg-slate-400 w-33-33 text-primary-dark rounded-lg p-3 flex flex-col items-center justify-center text-center h-20">
-        <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-        <span *ngIf="!isLoading" class="font-bold text-sm mb-1">{{ percentages.cancelled }}%</span>
-        <span class="text-xs">Cancelled</span>
+
+      <!-- ADR by City -->
+      <div class="flex flex-col">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <div class="mix-chart-icon mix-chart-icon--yellow rounded-md flex justify-center items-center">
+              <i class="pi pi-dollar"></i>
+            </div>
+            <div class="flex flex-col">
+              <span class="mix-chart-title font-bold">ADR</span>
+              <span class="mix-chart-sub uppercase tracking-wider font-semibold">AVERAGE DAILY RATE BY CITY</span>
+            </div>
+          </div>
+          
+        </div>
+        <div class="w-full" style="min-height: 220px;">
+          <p-chart type="bar" [data]="mixAdrData" [options]="mixAdrOptions"></p-chart>
+        </div>
       </div>
+
     </div>
   </div>
 
 </div>
 
-<!-- Static Charts Row -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 pb-6">
-  
-  <!-- Occupancy Rate -->
-  <div class="col-span-1 bg-white rounded-lg border border-gray-200 p-6 flex flex-col min-h-[400px]">
-    <div class="mb-4">
-      <h3 class="text-lg font-bold text-primary-dark m-0">Occupancy Rate</h3>
-    </div>
-    <div class="flex-grow w-full relative relative-chart">
-      <p-chart type="bar" [data]="occupancyRateData" [options]="occupancyRateOptions" class="absolute inset-0 w-full h-full"></p-chart>
+<div *ngIf="activeTab === 'revenue'" class="tab-content">
+
+  <!-- Header -->
+  <div class="rev-header mb-6">
+    <span class="rev-label font-semibold uppercase tracking-wider">PRICING</span>
+    <h2 class="rev-title font-bold m-0 mt-1">ADR (average daily rate)</h2>
+    <div class="rev-desc-box mt-2 px-3 py-2">
+      <p class="m-0">Compare mean nightly rates by city for the selected period. Averages are computed from dummy reservation rows — wire to your PMS for production figures.</p>
     </div>
   </div>
 
-  <!-- Nationality Statistics -->
-  <div class="col-span-1 bg-white rounded-lg border border-gray-200 p-6 flex flex-col min-h-[400px]">
-    <div class="mb-4">
-      <h3 class="text-lg font-bold text-primary-dark m-0">Nationality Statistics</h3>
+  <!-- Stat Cards Row -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div class="stat-card stat-card--purple bg-white rounded-lg p-3 border flex items-start gap-3">
+      <div class="rev-stat-icon rev-stat-icon--purple rounded-lg flex justify-center items-center">
+        <i class="pi pi-dollar"></i>
+      </div>
+      <div class="flex flex-col">
+        <span class="stat-card__label uppercase font-semibold tracking-wider">PORTFOLIO ADR</span>
+        <p class="stat-card__value font-bold m-0 mt-1">
+          <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
+          <span class="purple" *ngIf="!isLoading">${{ statsData?.revenue?.portfolioAdr || 0 }}</span>
+        </p>
+        <span class="stat-card__sub mt-1">Mean USD / night in selection</span>
+      </div>
     </div>
-    <div class="flex-grow w-full relative relative-chart">
-      <p-chart type="bar" [data]="nationalityData" [options]="nationalityOptions" class="absolute inset-0 w-full h-full"></p-chart>
+    <div class="stat-card stat-card--blue bg-white rounded-lg p-3 border flex items-start gap-3">
+      <div class="rev-stat-icon rev-stat-icon--blue rounded-lg flex justify-center items-center">
+        <i class="pi pi-users"></i>
+      </div>
+      <div class="flex flex-col">
+        <span class="stat-card__label uppercase font-semibold tracking-wider">STAYS IN VIEW</span>
+        <p class="stat-card__value font-bold m-0 mt-1">
+          <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
+          <span class="blue" *ngIf="!isLoading">{{ statsData?.summary?.totalReservations || 0 }}</span>
+        </p>
+        <span class="stat-card__sub mt-1">Rows used for the chart</span>
+      </div>
+    </div>
+    <div class="stat-card stat-card--yellow bg-white rounded-lg p-3 border flex items-start gap-3">
+      <div class="rev-stat-icon rev-stat-icon--yellow rounded-lg flex justify-center items-center">
+        <i class="pi pi-bullseye"></i>
+      </div>
+      <div class="flex flex-col">
+        <span class="stat-card__label uppercase font-semibold tracking-wider">PEAK CITY (MEAN)</span>
+        <p class="stat-card__value font-bold m-0 mt-1">
+          <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
+          <span class="yellow" *ngIf="!isLoading">{{ statsData?.revenue?.peakCity?.city || '-' }} (${{ statsData?.revenue?.peakCity?.adr || 0 }})</span>
+        </p>
+        <span class="stat-card__sub mt-1">Highest average among cities</span>
+      </div>
     </div>
   </div>
 
-  <!-- Visit Purpose -->
-  <div class="col-span-1 bg-white rounded-lg border border-gray-200 p-6 flex flex-col min-h-[400px]">
-    <div class="mb-4">
-      <h3 class="text-lg font-bold text-primary-dark m-0">Visit Purpose</h3>
+  <!-- Chart Card -->
+  <div class="rev-card bg-white rounded-lg p-6 border border-gray-200 mb-4">
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-3">
+        <div class="rev-card__icon rounded-lg flex justify-center items-center">
+          <i class="pi pi-chart-bar"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="rev-card__title font-bold">Scope & chart</span>
+          <span class="rev-card__sub">Mean ADR by city; open filters to change period or property scope</span>
+        </div>
+      </div>
+      <button class="rev-filter-btn flex justify-center items-center rounded-lg border transition-colors" (click)="showFilterDialog()">
+        <i class="pi pi-filter"></i>
+      </button>
     </div>
-    <div class="flex-grow w-full relative relative-chart">
-      <p-chart type="bar" [data]="visitPurposeData" [options]="visitPurposeOptions" class="absolute inset-0 w-full h-full"></p-chart>
+    <div class="w-full">
+      <p-chart type="bar" [data]="revAdrData" [options]="revAdrOptions"></p-chart>
     </div>
   </div>
 
-  <!-- ADR -->
-  <div class="col-span-1 bg-white rounded-lg border border-gray-200 p-6 flex flex-col min-h-[400px]">
-    <div class="mb-4">
-      <h3 class="text-lg font-bold text-primary-dark m-0">ADR</h3>
+  <!-- Footer Info -->
+  <div class="rev-footer-box rounded-lg p-4 flex items-center gap-3 border border-gray-200">
+    <div class="rev-footer-icon rounded-full flex justify-center items-center">
+      <i class="pi pi-info-circle"></i>
     </div>
-    <div class="flex-grow w-full relative relative-chart ">
-      <p-chart type="bar" [data]="adrData" [options]="adrOptions" class="absolute inset-0 w-full h-full"></p-chart>
-    </div>
+    <p class="m-0 rev-footer-text">Weighted average rate in selection: ~${{ statsData?.revenue?.portfolioAdr || 0 }} / night. Cities show mean ADR among matching stays.</p>
   </div>
 
 </div>
+
+<div *ngIf="activeTab === 'demand'" class="tab-content">
+
+  <!-- Header -->
+  <div class="demand-header mb-6">
+    <span class="demand-label font-semibold uppercase tracking-wider">TRIP INTENT & LOAD</span>
+    <h2 class="demand-title font-bold m-0 mt-1">Demand & occupancy signals</h2>
+    <div class="demand-desc-box mt-2 p-3">
+      <p class="m-0">Purpose mix explains why guests travel; occupancy bars are illustrative placeholders until you plug in real room-night inventory.</p>
+    </div>
+  </div>
+
+  <!-- Stat Cards Row -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div class="stat-card stat-card--purple bg-white rounded-lg p-3 border">
+      <span class="stat-card__label uppercase font-semibold tracking-wider">RESERVATIONS (SAMPLE)</span>
+      <p class="stat-card__value font-bold m-0 mt-2">
+        <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
+        <span class="purple" *ngIf="!isLoading">{{ statsData?.summary?.totalReservations || 0 }}</span>
+      </p>
+      <span class="stat-card__sub mt-1">All dummy rows in prototype</span>
+    </div>
+    <div class="stat-card stat-card--blue bg-white rounded-lg p-3 border">
+      <span class="stat-card__label uppercase font-semibold tracking-wider">PURPOSE COUNT</span>
+      <p class="stat-card__value font-bold m-0 mt-2">
+        <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
+        <span class="blue" *ngIf="!isLoading">{{ statsData?.purposeStats?.length || 0 }}</span>
+      </p>
+      <span class="stat-card__sub mt-1">Most frequent trip intent</span>
+    </div>
+    <div class="stat-card stat-card--yellow bg-white rounded-lg p-3 border">
+      <span class="stat-card__label uppercase font-semibold tracking-wider">AVG. OCCUPANCY INDEX</span>
+      <p class="stat-card__value font-bold m-0 mt-2">
+        <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
+        <span class="yellow" *ngIf="!isLoading">{{ statsData?.summary?.occupancyRate || 0 }}%</span>
+      </p>
+      <span class="stat-card__sub mt-1">Mean of city placeholder %</span>
+    </div>
+  </div>
+
+  <!-- Two Charts Row -->
+  <div class="flex flex-col gap-4">
+
+    <!-- Visit Purpose -->
+    <div class="demand-card bg-white rounded-lg p-6 border border-gray-200">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="demand-card__icon demand-card__icon--purple rounded-lg flex justify-center items-center">
+            <i class="pi pi-list"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="demand-card__title font-bold">Visit purpose</span>
+            <span class="demand-card__sub">Share of trip intent (dummy)</span>
+          </div>
+        </div>
+        <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8" (click)="showFilterDialog()">
+          <i class="pi pi-filter"></i>
+        </button>
+      </div>
+      <div class="w-full" style="min-height: 200px;">
+        <p-chart type="bar" [data]="demandPurposeData" [options]="demandPurposeOptions"></p-chart>
+      </div>
+    </div>
+
+    <!-- Occupancy Rate -->
+    <div class="demand-card bg-white rounded-lg p-6 border border-gray-200">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="demand-card__icon demand-card__icon--yellow rounded-lg flex justify-center items-center">
+            <i class="pi pi-building"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="demand-card__title font-bold">Occupancy rate</span>
+            <span class="demand-card__sub">By city — dummy</span>
+          </div>
+        </div>
+        <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8" (click)="showFilterDialog()">
+          <i class="pi pi-filter"></i>
+        </button>
+      </div>
+      <div class="w-full" style="min-height: 250px;">
+        <p-chart type="bar" [data]="demandOccupancyData" [options]="demandOccupancyOptions"></p-chart>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div *ngIf="activeTab === 'operations'" class="tab-content">
+
+  <!-- Header -->
+  <div class="ops-header mb-6">
+    <span class="ops-label font-semibold uppercase tracking-wider">RHYTHM OF THE PROPERTY</span>
+    <h2 class="ops-title font-bold m-0 mt-1">Operations pulse</h2>
+    <p class="ops-desc mt-1 m-0">A lightweight weekly trend and a same-day snapshot. Replace placeholders with live operational queues when backend data is available.</p>
+  </div>
+
+  <!-- Stat Cards Row -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div class="stat-card stat-card--purple bg-white rounded-lg p-3 border ">
+      <span class="stat-card__label uppercase font-semibold tracking-wider">RESERVATIONS</span>
+      <p class="stat-card__value font-bold m-0 mt-2">
+        <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
+        <span class="purple" *ngIf="!isLoading">{{ statsData?.summary?.totalReservations || 0 }}</span>
+      </p>
+      <span class="stat-card__sub mt-1">Sum of nights in dummy set</span>
+    </div>
+    <div class="stat-card stat-card--blue bg-white rounded-lg p-3 border ">
+      <span class="stat-card__label uppercase font-semibold tracking-wider">ACTIVE PROPERTIES</span>
+      <p class="stat-card__value font-bold m-0 mt-2">
+        <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
+        <span class="blue" *ngIf="!isLoading">11</span>
+      </p>
+      <span class="stat-card__sub mt-1">Distinct hotels in data</span>
+    </div>
+    <div class="stat-card stat-card--yellow bg-white rounded-lg p-3 border ">
+      <span class="stat-card__label uppercase font-semibold tracking-wider">CANCELLATION RATE</span>
+      <p class="stat-card__value stat-card__value--green font-bold m-0 mt-2">
+        <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
+        <span class="yellow" *ngIf="!isLoading">{{ percentages.cancelled }}%</span>
+      </p>
+      <span class="stat-card__sub mt-1">Share of cancelled rows</span>
+    </div>
+  </div>
+
+  <!-- Two Cards Row -->
+  <div class="flex flex-col gap-3">
+
+    <!-- Reservations This Week -->
+    <div class="ops-card bg-white rounded-lg p-6 border border-gray-200">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="ops-card__icon ops-card--purple rounded-lg flex justify-center items-center">
+            <i class="pi pi-calendar"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="ops-card__title font-bold">Reservations — this week</span>
+            <span class="ops-card__sub">Weekly total</span>
+          </div>
+        </div>
+        <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8" (click)="showFilterDialog()">
+          <i class="pi pi-filter"></i>
+        </button>
+      </div>
+      <div class="flex items-end justify-between">
+        <span class="ops-week-label font-bold uppercase tracking-wider mb-3 block">CURRENT WEEK</span>
+        <p class="ops-week-total font-bold m-0">
+          <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
+          <span *ngIf="!isLoading">{{ statsData?.summary?.totalReservations || 0 }}</span>
+        </p>
+      </div>
+
+      
+      <div class="flex-grow" style="max-width: 100%;">
+        <p-chart type="line" [data]="lineData" [options]="opsLineOptions" height="120px"></p-chart>
+      </div>
+    </div>
+
+    <!-- Today's Activity -->
+    <div class="ops-card bg-white rounded-lg p-6 border border-gray-200">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="ops-card__icon ops-card--yellow rounded-lg flex justify-center items-center">
+          <i class="pi pi-sun"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="ops-card__title font-bold">Today's activity</span>
+          <span class="ops-card__sub">Today — {{ todayDate | date:'dd MMM yyyy' }}</span>
+        </div>
+      </div>
+
+      <div class="ops-message-box p-3 mb-5">
+        <p class="m-0">Sample message: reservations for the selected day appear here.</p>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4">
+        <div class="flex flex-col items-center gap-1">
+          <i class="ops-status-icon ops-status-icon--purple pi pi-users"></i>
+          <span class="ops-status-value font-bold">
+            <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
+            <span *ngIf="!isLoading">{{ percentages.checkedIn }}%</span>
+          </span>
+          <span class="ops-status-label uppercase font-semibold tracking-wider">CHECKED IN</span>
+        </div>
+        <div class="flex flex-col items-center gap-1">
+          <i class="ops-status-icon ops-status-icon--blue pi pi-sign-out"></i>
+          <span class="ops-status-value font-bold">
+            <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
+            <span *ngIf="!isLoading">{{ percentages.checkedOut }}%</span>
+          </span>
+          <span class="ops-status-label uppercase font-semibold tracking-wider">CHECKED OUT</span>
+        </div>
+        <div class="flex flex-col items-center gap-1">
+          <i class="ops-status-icon ops-status-icon--green pi pi-times-circle"></i>
+          <span class="ops-status-value font-bold">
+            <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
+            <span *ngIf="!isLoading">{{ percentages.cancelled }}%</span>
+          </span>
+          <span class="ops-status-label uppercase font-semibold tracking-wider">CANCELLED</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Filter Dialog -->
+<p-dialog header="Dashboard Filters" [(visible)]="displayFilterDialog" [modal]="true" [style]="{width: '75vw', maxWidth: '1000px'}">
+  <div class="grid grid-cols-1 md:grid-cols-5 gap-4 py-4">
+    <div class="flex flex-col gap-2">
+      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">From</label>
+      <p-calendar appendTo="body" [(ngModel)]="currentFilters.fromDate" dateFormat="mm/dd/yy" [showIcon]="true" placeholder="Select Date"></p-calendar>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">To</label>
+      <p-calendar appendTo="body" [(ngModel)]="currentFilters.toDate" dateFormat="mm/dd/yy" [showIcon]="true" placeholder="Select Date"></p-calendar>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">City</label>
+      <p-dropdown appendTo="body" [options]="citiesOptions" [(ngModel)]="currentFilters.city" optionLabel="nameEn" optionValue="value" placeholder="All cities" [showClear]="true"></p-dropdown>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">Hotel Stars</label>
+      <p-dropdown appendTo="body" [options]="starOptions" [(ngModel)]="currentFilters.hotelStars" optionLabel="label" optionValue="value" placeholder="All" [showClear]="true"></p-dropdown>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">Hotel Name</label>
+      <p-dropdown appendTo="body" [options]="propertiesOptions" [(ngModel)]="currentFilters.hotelName" optionLabel="nameEn" optionValue="value" placeholder="All hotels" [showClear]="true"></p-dropdown>
+    </div>
+  </div>
+  <div class="mt-4 flex">
+    <button pButton label="Apply" class="w-full md:w-auto px-8" style="background-color: #4c1d95; color: white;" (click)="applyFilters()"></button>
+  </div>
+</p-dialog>
+
