@@ -1115,6 +1115,30 @@
                   "constraintTypes": null,
                   "bindingSourceId": "ModelBinding",
                   "descriptorName": "filter"
+                },
+                {
+                  "nameOnMethod": "filter",
+                  "name": "Nationality",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "filter"
+                },
+                {
+                  "nameOnMethod": "filter",
+                  "name": "Purpose",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "filter"
                 }
               ],
               "returnValue": {
@@ -1255,6 +1279,36 @@
               "name": "GetPropertiesAsync",
               "httpMethod": "GET",
               "url": "api/app/reservation/properties",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<SyriaNTMP.Dto.LookupDto>",
+                "typeSimple": "[SyriaNTMP.Dto.LookupDto]"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "SyriaNTMP.Services.ReservationService"
+            },
+            "GetNationalitiesAsync": {
+              "uniqueName": "GetNationalitiesAsync",
+              "name": "GetNationalitiesAsync",
+              "httpMethod": "GET",
+              "url": "api/app/reservation/nationalities",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<SyriaNTMP.Dto.LookupDto>",
+                "typeSimple": "[SyriaNTMP.Dto.LookupDto]"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "SyriaNTMP.Services.ReservationService"
+            },
+            "GetPurposesAsync": {
+              "uniqueName": "GetPurposesAsync",
+              "name": "GetPurposesAsync",
+              "httpMethod": "GET",
+              "url": "api/app/reservation/purposes",
               "supportedVersions": [],
               "parametersOnMethod": [],
               "parameters": [],
@@ -3589,6 +3643,30 @@
           "minimum": null,
           "maximum": null,
           "regex": null
+        },
+        {
+          "name": "Nationality",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Purpose",
+          "jsonName": null,
+          "type": "SyriaNTMP.Models.Enums.ReservationPurpose?",
+          "typeSimple": "enum?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
         }
       ]
     },
@@ -4155,6 +4233,18 @@
           "name": "CancellationRate",
           "jsonName": null,
           "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "ActiveProperties",
+          "jsonName": null,
+          "type": "System.Int32",
           "typeSimple": "number",
           "isRequired": false,
           "minLength": null,

@@ -56,7 +56,7 @@
     </div>
 
     <!-- Three Charts Row -->
-    <div class="flex flex-col gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
 
       <!-- Nationality Statistics -->
       <div class="flex flex-col">
@@ -239,7 +239,7 @@
   </div>
 
   <!-- Two Charts Row -->
-  <div class="flex flex-col gap-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
 
     <!-- Visit Purpose -->
     <div class="demand-card bg-white rounded-lg p-6 border border-gray-200">
@@ -325,7 +325,7 @@
   </div>
 
   <!-- Two Cards Row -->
-  <div class="flex flex-col gap-3">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
 
     <!-- Reservations This Week -->
     <div class="ops-card bg-white rounded-lg p-6 border border-gray-200">
@@ -359,14 +359,19 @@
 
     <!-- Today's Activity -->
     <div class="ops-card bg-white rounded-lg p-6 border border-gray-200">
-      <div class="flex items-center gap-3 mb-4">
-        <div class="ops-card__icon ops-card--yellow rounded-lg flex justify-center items-center">
-          <i class="pi pi-sun"></i>
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="ops-card__icon ops-card--yellow rounded-lg flex justify-center items-center">
+            <i class="pi pi-sun"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="ops-card__title font-bold">Today's activity</span>
+            <span class="ops-card__sub">Today — {{ todayDate | date:'dd MMM yyyy' }}</span>
+          </div>
         </div>
-        <div class="flex flex-col">
-          <span class="ops-card__title font-bold">Today's activity</span>
-          <span class="ops-card__sub">Today — {{ todayDate | date:'dd MMM yyyy' }}</span>
-        </div>
+        <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8" (click)="showFilterDialog()">
+          <i class="pi pi-filter"></i>
+        </button>
       </div>
 
       <div class="ops-message-box p-3 mb-5">
@@ -407,7 +412,7 @@
 
 <!-- Filter Dialog -->
 <p-dialog header="Dashboard Filters" [(visible)]="displayFilterDialog" [modal]="true" [style]="{width: '75vw', maxWidth: '1000px'}">
-  <div class="grid grid-cols-1 md:grid-cols-5 gap-4 py-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 py-4">
     <div class="flex flex-col gap-2">
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">From</label>
       <p-calendar appendTo="body" [(ngModel)]="currentFilters.fromDate" dateFormat="mm/dd/yy" [showIcon]="true" placeholder="Select Date"></p-calendar>
@@ -427,6 +432,14 @@
     <div class="flex flex-col gap-2">
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">Hotel Name</label>
       <p-dropdown appendTo="body" [options]="propertiesOptions" [(ngModel)]="currentFilters.hotelName" optionLabel="nameEn" optionValue="value" placeholder="All hotels" [showClear]="true"></p-dropdown>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">Nationality</label>
+      <p-dropdown appendTo="body" [options]="nationalityOptions" [(ngModel)]="currentFilters.nationality" optionLabel="nameEn" optionValue="value" placeholder="All nationalities" [showClear]="true"></p-dropdown>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">Purpose</label>
+      <p-dropdown appendTo="body" [options]="purposeOptions" [(ngModel)]="currentFilters.purpose" optionLabel="nameEn" optionValue="value" placeholder="All purposes" [showClear]="true"></p-dropdown>
     </div>
   </div>
   <div class="mt-4 flex">
