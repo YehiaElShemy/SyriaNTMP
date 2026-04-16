@@ -14,5 +14,7 @@ namespace SyriaNTMP.Dto
     public string? City { get; set; }
     public string? HotelName { get; set; }
     public PropertyRatingEnum? HotelStars { get; set; }
+    public string? Nationality { get; set; }
+    public ReservationPurpose? Purpose { get; set; }
   }
 }

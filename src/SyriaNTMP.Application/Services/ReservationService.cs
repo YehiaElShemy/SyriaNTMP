@@ -90,12 +90,22 @@ namespace SyriaNTMP.Services
 
           if (!string.IsNullOrWhiteSpace(filter.HotelName))
           {
-            query = query.Where(x => x.PropertyName.Contains(filter.HotelName.ToLower()));
+            query = query.Where(x => x.PropertyName.ToLower().Contains(filter.HotelName.ToLower()));
           }
 
           if (filter.HotelStars.HasValue)
           {
             query = query.Where(x => x.PropertyRating == filter.HotelStars);
+          }
+
+          if (!string.IsNullOrWhiteSpace(filter.Nationality))
+          {
+            query = query.Where(x => x.GuestNationality == filter.Nationality);
+          }
+
+          if (filter.Purpose.HasValue)
+          {
+            query = query.Where(x => x.ReservationPurpose == filter.Purpose.Value);
           }
 
           var rawData = await AsyncExecuter.ToListAsync(query);
@@ -257,6 +267,39 @@ namespace SyriaNTMP.Services
         Value = x.PropertyName,
         NameEn = x.PropertyName,
         NameAr = x.PropertyName
+      }).ToList();
+    }
+
+    public async Task<List<LookupDto>> GetNationalitiesAsync()
+    {
+      var query = await _reservationsRepository.GetQueryableAsync();
+
+      var list = await AsyncExecuter.ToListAsync(
+          query
+          .Where(x => x.GuestNationality != null)
+          .Select(x => x.GuestNationality)
+          .Distinct()
+      );
+
+      return list.Select(nationality => new LookupDto
+      {
+        Value = nationality,
+        NameEn = nationality,
+        NameAr = nationality
+      }).ToList();
+    }
+
+    public async Task<List<LookupDto>> GetPurposesAsync()
+    {
+      var values = Enum.GetValues(typeof(ReservationPurpose))
+                       .Cast<ReservationPurpose>()
+                       .ToList();
+
+      return values.Select(x => new LookupDto
+      {
+        Value = ((int)x).ToString(),
+        NameEn = x.ToString(),
+        NameAr = x.ToString()
       }).ToList();
     }
 
