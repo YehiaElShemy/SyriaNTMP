@@ -439,20 +439,3 @@
   font-size: 10px;
 }
 
-
-
-// Fixed size for the filter p-calendar popup panel
-::ng-deep .p-datepicker-panel.p-component {
-  width: 250px !important;
-  height: 250px !important;
-  min-width: 250px !important;
-  
-  // Adjust inner padding slightly to prevent overflow if the box is too small
-  .p-datepicker-header {
-    padding: 0.25rem !important;
-  }
-}
-::ng-deep .p-datepicker-day-view  {
-  margin: 0 !important;
-  font-size: 0.85rem !important;
-}
