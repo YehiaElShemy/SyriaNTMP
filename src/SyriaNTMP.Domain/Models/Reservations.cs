@@ -15,7 +15,7 @@ namespace SyriaNTMP.Models
         public string CompanyName { get; set; } = string.Empty;
         public string PropertyId { get; set; } = string.Empty;
         public string PropertyName { get; set; } = string.Empty;
-        public string City { get; set; }
+        public string City { get; set; } = string.Empty;
         public PropertyRatingEnum? PropertyRating { get; set; }
         public string ReservationNumber { get; set; } = string.Empty;
         public ReservationStatus ReservationStatus { get; set; }
@@ -25,7 +25,7 @@ namespace SyriaNTMP.Models
         public ReservationPurpose ReservationPurpose { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
-        public string GuestNationality { get; set; }
+        public string GuestNationality { get; set; } = string.Empty;
         public decimal TotalPrice { get; set; }
         public DateTime CreatedDate { get; set; }
       }
