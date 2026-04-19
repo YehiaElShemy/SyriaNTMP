@@ -1,7 +1,7 @@
 import type { PropertyRatingEnum } from '../models/enums/property-rating-enum.enum';
+import type { ReservationPurpose } from '../models/enums/reservation-purpose.enum';
 import type { EntityDto, PagedAndSortedResultRequestDto } from '@abp/ng.core';
 import type { ReservationStatus } from '../models/enums/reservation-status.enum';
-import type { ReservationPurpose } from '../models/enums/reservation-purpose.enum';
 
 export interface AdrByCityDto {
   city?: string;
@@ -29,6 +29,8 @@ export interface DashboardFilterDto {
   city?: string;
   hotelName?: string;
   hotelStars?: PropertyRatingEnum;
+  nationality?: string;
+  purpose?: ReservationPurpose;
 }
 
 export interface LookupDto {
@@ -97,6 +99,7 @@ export interface SummaryDto {
   totalReservations: number;
   occupancyRate: number;
   cancellationRate: number;
+  activeProperties: number;
 }
 
 export interface TodayStatsDto {

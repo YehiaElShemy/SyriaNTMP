@@ -47,7 +47,15 @@ export class ReservationService {
     this.restService.request<any, DashboardDto>({
       method: 'GET',
       url: '/api/app/reservation/dashboard',
-      params: { fromDate: filter.fromDate, toDate: filter.toDate, city: filter.city, hotelName: filter.hotelName, hotelStars: filter.hotelStars },
+      params: { fromDate: filter.fromDate, toDate: filter.toDate, city: filter.city, hotelName: filter.hotelName, hotelStars: filter.hotelStars, nationality: filter.nationality, purpose: filter.purpose },
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getNationalities = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, LookupDto[]>({
+      method: 'GET',
+      url: '/api/app/reservation/nationalities',
     },
     { apiName: this.apiName,...config });
   
@@ -56,6 +64,14 @@ export class ReservationService {
     this.restService.request<any, LookupDto[]>({
       method: 'GET',
       url: '/api/app/reservation/properties',
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getPurposes = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, LookupDto[]>({
+      method: 'GET',
+      url: '/api/app/reservation/purposes',
     },
     { apiName: this.apiName,...config });
   

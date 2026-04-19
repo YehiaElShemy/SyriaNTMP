@@ -63,12 +63,47 @@ export class DashboardComponent implements OnInit {
   // Revenue tab charts
   revAdrData: any;
   revAdrOptions: any;
+  nationalityOptions: LookupDto[];
+  purposeOptions: LookupDto[];
 
   ngOnInit() {
     this.initChart();
     this.fetchStats();
+    this.getFilters()
+  }
+
+  getFilters(){
     this.getFiltersCities()
     this.getFiltersProperties()
+    this.getNationalities()
+    this.getPurposes()
+  }
+
+  getNationalities(){
+    this.reservationService.getNationalities({
+      
+    }).subscribe({
+      next: (res: LookupDto[]) => {
+        this.nationalityOptions = res;
+        console.log(res, "getNationalities");
+      },
+      error: (err) => {
+        console.log(err, "err");
+      }
+    })
+  }
+  getPurposes(){
+    this.reservationService.getPurposes({
+      
+    }).subscribe({
+      next: (res: LookupDto[]) => {
+        this.purposeOptions = res;
+        console.log(res, "getPurposes");
+      },
+      error: (err) => {
+        console.log(err, "err");
+      }
+    })
   }
 
   getFiltersCities(){
