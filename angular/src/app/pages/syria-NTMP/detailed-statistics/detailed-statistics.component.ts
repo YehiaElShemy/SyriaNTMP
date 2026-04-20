@@ -107,9 +107,9 @@ export class DetailedStatisticsComponent implements OnInit {
     this.reservationService.getReservationsBySearchCriteria(payload).subscribe({
       next: (res: any) => {
         console.log('Real API Data:', res);
-        this.reservations = res.data?.result || [];
+        this.reservations = res?.items || [];
         // Read totalCount from res.data.paging (the actual API shape)
-        this.totalRecords = res.data?.paging?.totalCount ?? this.reservations.length;
+        this.totalRecords = res?.totalCount ?? this.reservations.length;
         this.isLoading = false;
       },
       error: (err: any) => {
