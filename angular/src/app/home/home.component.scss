@@ -1,61 +1,22 @@
 /* Styles for the home component */
-.card-bg-image {
-  position: absolute;
-  width: 630px;
-  height: auto;
-  bottom: 0;
-  right: 0;
-  z-index: 1;
+.landing-page {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-.starting-content {
-  position: relative;
-  z-index: 2;
+.perspective-1000 {
+  perspective: 1000px;
 }
 
-.bg-check-icon {
-  width: 20px;
-  height: 20px;
-  color: #f72585 !important;
-  background-color: rgba(247, 37, 133, 0.1) !important;
+.rotate-x-2 {
+  transform: rotateX(2deg);
 }
 
-.abp-logo {
-  background-repeat: no-repeat;
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
-.abp-support {
-  width: 178px;
-  height: 30px;
-  background-image: url('/assets/images/getting-started/abp-support.svg');
-}
-
-.abp-community {
-  width: 215px;
-  height: 30px;
-  background-image: url('/assets/images/getting-started/abp-community.svg');
-}
-
-.abp-blog {
-  width: 142px;
-  height: 30px;
-  background-image: url('/assets/images/getting-started/abp-blog.svg');
-}
-
-.logo-x {
-  width: 20px;
-  height: 20px;
-  background-image: url('/assets/images/getting-started/x.svg');
-}
-
-@media (min-width: 1199px) {
-  .h-lg-100 {
-    height: 100% !important;
-  }
-}
-
-@media (min-width: 768px) {
-  .h-md-100 {
-    height: 100% !important;
-  }
+.navbar{
+  padding-left: 20px !important;
+  padding-right: 20px !important;
 }
