@@ -17,9 +17,6 @@ export class HomeComponent {
     setTimeout(() => {
       if(this.authService.isAuthenticated){
         this.router.navigate(['/syria-stats']);
-        console.log('authenticated');
-      }else{
-        console.log('not authenticated');
       }
     }, 1000);
     }
