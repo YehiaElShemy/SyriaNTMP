@@ -414,7 +414,7 @@ export class DashboardComponent implements OnInit {
         },
         y: {
           min: 0,
-          max: 18,
+          max: 70,
           ticks: { color: textColorSecondary, stepSize: 3 },
           grid: { color: surfaceBorder, drawBorder: false }
         }
