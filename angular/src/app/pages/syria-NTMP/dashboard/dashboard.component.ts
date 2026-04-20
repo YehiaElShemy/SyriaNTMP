@@ -200,7 +200,11 @@ export class DashboardComponent implements OnInit {
       const chartData = res.nationalityStats.map((item: NationalityDto) => item.count);
       this.mixNationalityData = {
         labels: labels,
-        datasets: [{  data: chartData }]
+        datasets: [{ 
+          label: 'Nationality',
+          backgroundColor: '#3b82f6',
+          data: chartData 
+        }]
       };
     }
 
@@ -213,23 +217,33 @@ export class DashboardComponent implements OnInit {
         data: [item.count]
       }));
 
-      this.mixPurposeData = {  datasets: purposeDatasets };
-      this.demandPurposeData = { datasets: purposeDatasets };
+      this.mixPurposeData = { labels: ['PURPOSE'], datasets: purposeDatasets };
+      this.demandPurposeData = { labels: ['PURPOSE'], datasets: purposeDatasets };
     }
 
     // Guest Mix & Revenue - ADR By City
     if (res.revenue && res.revenue.meanAdrByCity && Array.isArray(res.revenue.meanAdrByCity)) {
       const labels = res.revenue.meanAdrByCity.map((item: AdrByCityDto) => item.city || 'Unknown');
       const chartData = res.revenue.meanAdrByCity.map((item: AdrByCityDto) => item.adr);
-      
+      const colors = ['#4412c1', '#638fd6', '#71c5a7', '#d09f19', '#e8df1c', '#9f6af0', '#7bb7d5', '#c87f82'];
+      const bgColors = labels.map((_, i) => colors[i % colors.length]);
+
       this.mixAdrData = {
         labels: labels,
-        datasets: [{  data: chartData }]
+        datasets: [{ 
+          label: 'ADR',
+          backgroundColor: bgColors,
+          data: chartData 
+        }]
       };
       
       this.revAdrData = {
         labels: labels,
-        datasets: [{  data: chartData }]
+        datasets: [{ 
+          label: 'ADR',
+          backgroundColor: bgColors,
+          data: chartData 
+        }]
       };
     }
 
@@ -237,10 +251,17 @@ export class DashboardComponent implements OnInit {
     if (res.occupancyByCity && Array.isArray(res.occupancyByCity)) {
       const labels = res.occupancyByCity.map((item: CityOccupancyDto) => item.city || 'Unknown');
       const chartData = res.occupancyByCity.map((item: CityOccupancyDto) => item.occupancyRate);
+      const colors = ['#644B96', '#644B96', '#7bb7d5', '#7bb7d5', '#d4a843', '#d4a843', '#22c55e', '#22c55e', '#4412c1', '#638fd6'];
+      const bgColors = labels.map((_, i) => colors[i % colors.length]);
+
       this.demandOccupancyData = {
-        ...this.demandOccupancyData,
         labels: labels,
-        datasets: [{ ...this.demandOccupancyData.datasets[0], data: chartData }]
+        datasets: [{ 
+          label: 'Occupancy %',
+          backgroundColor: bgColors,
+          data: chartData,
+          borderRadius: 4
+        }]
       };
     }
   }
@@ -297,28 +318,7 @@ export class DashboardComponent implements OnInit {
     // Visit Purpose - Horizontal Stacked Bar
     this.demandPurposeData = {
       labels: ['PURPOSE'],
-      datasets: [
-        {
-          label: 'Tourism',
-          backgroundColor: '#9f6af0',
-          data: [58]
-        },
-        {
-          label: 'Religious',
-          backgroundColor: '#7bb7d5',
-          data: [22]
-        },
-        {
-          label: 'Medical',
-          backgroundColor: '#e2ba71',
-          data: [15]
-        },
-        {
-          label: 'Other',
-          backgroundColor: '#c87f82',
-          data: [15]
-        }
-      ]
+      datasets: []
     };
 
     this.demandPurposeOptions = {
@@ -352,15 +352,8 @@ export class DashboardComponent implements OnInit {
 
     // Occupancy Rate by City - Vertical Bar
     this.demandOccupancyData = {
-      labels: ['Damascus', 'Aleppo', 'Latakia', 'Homs', 'Hama', 'Tartus', 'Idlib', 'Sweida'],
-      datasets: [
-        {
-          label: 'Occupancy %',
-          backgroundColor: ['#644B96', '#644B96', '#7bb7d5', '#7bb7d5', '#d4a843', '#d4a843', '#22c55e', '#22c55e'],
-          data: [46, 48, 48, 48, 47, 49, 44, 42],
-          borderRadius: 4
-        }
-      ]
+      labels: [],
+      datasets: []
     };
 
     this.demandOccupancyOptions = {
@@ -454,17 +447,10 @@ export class DashboardComponent implements OnInit {
     };
 
     // 3. ADR (Average Daily Rate by City)
-    // this.mixAdrData = {
-    //   labels: ['Aleppo', 'Damascus', 'Homs', 'Latakia', 'Hama'],
-    //   datasets: [
-    //     {
-    //       label: 'ADR',
-    //       backgroundColor: ['#4412c1', '#638fd6', '#71c5a7', '#d09f19', '#e8df1c'],
-    //       data: [75, 105, 45, 205, 55],
-    //       barThickness: 36
-    //     }
-    //   ]
-    // };
+    this.mixAdrData = {
+      labels: [],
+      datasets: []
+    };
 
     this.mixAdrOptions = {
       maintainAspectRatio: false,
