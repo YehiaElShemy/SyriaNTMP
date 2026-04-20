@@ -310,7 +310,7 @@
       <span class="stat-card__label uppercase font-semibold tracking-wider">ACTIVE PROPERTIES</span>
       <p class="stat-card__value font-bold m-0 mt-2">
         <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-        <span class="blue" *ngIf="!isLoading">11</span>
+        <span class="blue" *ngIf="!isLoading">{{statsData?.summary?.activeProperties || 0}}</span>
       </p>
       <span class="stat-card__sub mt-1">Distinct hotels in data</span>
     </div>
@@ -318,7 +318,7 @@
       <span class="stat-card__label uppercase font-semibold tracking-wider">CANCELLATION RATE</span>
       <p class="stat-card__value stat-card__value--green font-bold m-0 mt-2">
         <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-        <span class="yellow" *ngIf="!isLoading">{{ percentages.cancelled }}%</span>
+        <span class="yellow" *ngIf="!isLoading">{{ statsData?.summary?.cancellationRate||0 }}%</span>
       </p>
       <span class="stat-card__sub mt-1">Share of cancelled rows</span>
     </div>

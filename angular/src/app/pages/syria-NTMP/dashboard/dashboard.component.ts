@@ -85,7 +85,7 @@ export class DashboardComponent implements OnInit {
     }).subscribe({
       next: (res: LookupDto[]) => {
         this.nationalityOptions = res;
-        console.log(res, "getNationalities");
+        // console.log(res, "getNationalities");
       },
       error: (err) => {
         console.log(err, "err");
@@ -98,7 +98,7 @@ export class DashboardComponent implements OnInit {
     }).subscribe({
       next: (res: LookupDto[]) => {
         this.purposeOptions = res;
-        console.log(res, "getPurposes");
+        // console.log(res, "getPurposes");
       },
       error: (err) => {
         console.log(err, "err");
@@ -112,7 +112,7 @@ export class DashboardComponent implements OnInit {
     }).subscribe({
       next: (res: LookupDto[]) => {
         this.citiesOptions = res;
-        console.log(res, "getCities");
+        // console.log(res, "getCities");
       },
       error: (err) => {
         console.log(err, "err");
@@ -126,7 +126,7 @@ export class DashboardComponent implements OnInit {
     }).subscribe({
       next: (res: LookupDto[] ) => {
         this.propertiesOptions = res;
-        console.log(res, "getProperties");
+        // console.log(res, "getProperties");
       },
       error: (err) => {
         console.log(err, "err");
@@ -199,9 +199,8 @@ export class DashboardComponent implements OnInit {
       const labels = res.nationalityStats.map((item: NationalityDto) => item.nationality || 'Unknown');
       const chartData = res.nationalityStats.map((item: NationalityDto) => item.count);
       this.mixNationalityData = {
-        ...this.mixNationalityData,
         labels: labels,
-        datasets: [{ ...this.mixNationalityData.datasets[0], data: chartData }]
+        datasets: [{  data: chartData }]
       };
     }
 
@@ -214,8 +213,8 @@ export class DashboardComponent implements OnInit {
         data: [item.count]
       }));
 
-      this.mixPurposeData = { ...this.mixPurposeData, datasets: purposeDatasets };
-      this.demandPurposeData = { ...this.demandPurposeData, datasets: purposeDatasets };
+      this.mixPurposeData = {  datasets: purposeDatasets };
+      this.demandPurposeData = { datasets: purposeDatasets };
     }
 
     // Guest Mix & Revenue - ADR By City
@@ -224,15 +223,13 @@ export class DashboardComponent implements OnInit {
       const chartData = res.revenue.meanAdrByCity.map((item: AdrByCityDto) => item.adr);
       
       this.mixAdrData = {
-        ...this.mixAdrData,
         labels: labels,
-        datasets: [{ ...this.mixAdrData.datasets[0], data: chartData }]
+        datasets: [{  data: chartData }]
       };
       
       this.revAdrData = {
-        ...this.revAdrData,
         labels: labels,
-        datasets: [{ ...this.revAdrData.datasets[0], data: chartData }]
+        datasets: [{  data: chartData }]
       };
     }
 
@@ -387,18 +384,7 @@ export class DashboardComponent implements OnInit {
     // Revenue Tab Charts
     // ========================================
 
-    this.revAdrData = {
-      labels: ['Damascus', 'Aleppo', 'Latakia', 'Homs', 'Hama', 'Tartus', 'Idlib', 'Sweida'],
-      datasets: [
-        {
-          label: 'ADR ($)',
-          backgroundColor: ['#644B96', '#7bb7d5', '#22c55e', '#d4a843', '#facc15', '#644B96', '#7bb7d5', '#22c55e'],
-          data: [105, 75, 205, 45, 55, 185, 40, 65],
-          borderRadius: 4,
-          barThickness: 32
-        }
-      ]
-    };
+
 
     this.revAdrOptions = {
       maintainAspectRatio: false,
@@ -422,22 +408,8 @@ export class DashboardComponent implements OnInit {
       }
     };
 
-    // ========================================
-    // Guest Mix Tab Charts
-    // ========================================
 
-    // 1. Nationality statistics
-    this.mixNationalityData = {
-      labels: ['Syrian', 'German', 'Lebanese', 'Russian', 'Italian', 'French'],
-      datasets: [
-        {
-          label: 'Nationality',
-          backgroundColor: ['#4412a8', '#638fd6', '#71c5a7', '#d09f19', '#e8df1c', '#4412c1'],
-          data: [16, 11, 10, 10, 10, 9],
-          barThickness: 36
-        }
-      ]
-    };
+
 
     this.mixNationalityOptions = {
       maintainAspectRatio: false,
@@ -456,16 +428,6 @@ export class DashboardComponent implements OnInit {
       }
     };
 
-    // 2. Visit Purpose
-    this.mixPurposeData = {
-      labels: ['PURPOSE'],
-      datasets: [
-        { label: 'Tourism', backgroundColor: '#9f6af0', data: [26] },
-        { label: 'Religious', backgroundColor: '#7bb7d5', data: [4] },
-        { label: 'Medical', backgroundColor: '#e2ba71', data: [5] },
-        { label: 'Other', backgroundColor: '#c87f82', data: [23] }
-      ]
-    };
 
     this.mixPurposeOptions = {
       indexAxis: 'y',
@@ -492,17 +454,17 @@ export class DashboardComponent implements OnInit {
     };
 
     // 3. ADR (Average Daily Rate by City)
-    this.mixAdrData = {
-      labels: ['Aleppo', 'Damascus', 'Homs', 'Latakia', 'Hama'],
-      datasets: [
-        {
-          label: 'ADR',
-          backgroundColor: ['#4412c1', '#638fd6', '#71c5a7', '#d09f19', '#e8df1c'],
-          data: [75, 105, 45, 205, 55],
-          barThickness: 36
-        }
-      ]
-    };
+    // this.mixAdrData = {
+    //   labels: ['Aleppo', 'Damascus', 'Homs', 'Latakia', 'Hama'],
+    //   datasets: [
+    //     {
+    //       label: 'ADR',
+    //       backgroundColor: ['#4412c1', '#638fd6', '#71c5a7', '#d09f19', '#e8df1c'],
+    //       data: [75, 105, 45, 205, 55],
+    //       barThickness: 36
+    //     }
+    //   ]
+    // };
 
     this.mixAdrOptions = {
       maintainAspectRatio: false,
