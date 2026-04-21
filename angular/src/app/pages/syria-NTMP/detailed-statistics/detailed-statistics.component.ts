@@ -42,7 +42,7 @@ export class DetailedStatisticsComponent implements OnInit {
   filterReservationPurpose: number | null = null;
   filterDateFrom: Date | null = null;
   filterDateTo: Date | null = null;
-  
+
   // Make enum available to template
   ReservationStatus = ReservationStatus;
   PropertyRatingEnum = PropertyRatingEnum;
@@ -83,16 +83,7 @@ export class DetailedStatisticsComponent implements OnInit {
     this.isLoading = true;
 
     const payload : ReservationsSearchCriteria = {
-      // paging: {
-      //   pagingEnabled: true,
-      //   pageIndex: this.pageIndex,
-      //   pageSize: this.pageSize,
-      //   totalCount: 0,
-      //   subTotalCount: 0,
-      //   skip: this.pageIndex * this.pageSize
-      // },
-      // orderByDirection: 1,
-      // orderByCultureMode: 1,
+      skipCount: this.pageIndex * this.pageSize,
       maxResultCount: this.pageSize,
       companyName: this.filterCompanyName || null,
       propertyName: this.filterPropertyName || null,

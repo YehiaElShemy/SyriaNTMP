@@ -53,7 +53,7 @@ namespace SyriaNTMP.Services
                 queryable = queryable.Where(x => dateTo.Date >= x.CreatedDate.Date);
 
             // Apply sorting and paging
-            var sortedQueryable = queryable.OrderBy(x => x.Id); // or searchCriteria.Sorting
+            var sortedQueryable = queryable.OrderByDescending(x => x.Id); // or searchCriteria.Sorting
             var data = sortedQueryable
                 .Skip(searchCriteria.SkipCount)
                 .Take(searchCriteria.MaxResultCount).ToList();
