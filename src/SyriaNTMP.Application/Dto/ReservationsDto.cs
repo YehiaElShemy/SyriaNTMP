@@ -25,5 +25,6 @@ namespace SyriaNTMP.Dto
         public DateTime ToDate { get; set; }
         public string GuestNationality { get; set; }
         public decimal TotalPrice { get; set; }
+        public int? TotalNumberOfPropertyUnits { get; set; }
     }
 }

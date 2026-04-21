@@ -191,14 +191,24 @@ namespace SyriaNTMP.Services
                 NationalityStats = nationality,
                 WeeklyReservations = weekly,
                 TodayStats = todayStats,
-                Revenue = new RevenueDto { PortfolioAdr = portfolioAdr },
+                Revenue = new RevenueDto
+                {
+                    PortfolioAdr = portfolioAdr,
+                    MeanAdrByCity = activeData.GroupBy(x => x.City).Select(g => new AdrByCityDto
+                    {
+                        City = g.Key,
+                        Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod)
+                    }).ToList(),
+                },
                 OccupancyByCity = activeData.GroupBy(x => x.City).Select(g => new CityOccupancyDto
                 {
                     City = g.Key,
                     OccupancyRate = CalculateOccupancyPercentage(
                         CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod), g.ToList(), startPeriod,
                         endPeriod)
-                }).ToList()
+                }).ToList(),
+                
+                
             };
         }
 
@@ -229,10 +239,12 @@ namespace SyriaNTMP.Services
                 existingItem.ReservationStatus = entity.ReservationStatus;
                 existingItem.ReservationPurpose = entity.ReservationPurpose;
                 existingItem.ToDate = entity.ToDate;
+                existingItem.TotalNumberOfPropertyUnits = entity.TotalNumberOfPropertyUnits;
                 await _reservationsRepository.UpdateAsync(existingItem);
             }
             else
             {
+                entity.CreatedDate = DateTime.Now;
                 await _reservationsRepository.InsertAsync(entity);
             }
             
@@ -369,6 +381,17 @@ namespace SyriaNTMP.Services
             var totalAvailableUnits = data.GroupBy(x => x.PropertyName).Sum(g => g.First().NumberOfRooms * totalDays);
 
             return totalAvailableUnits == 0 ? 0 : ((decimal)soldNights / totalAvailableUnits) * 100;
+        }
+        
+        private decimal CalculateAdrPercentage(List<Reservations> data, DateTime start,
+            DateTime end)
+        {
+            int totalDays = (end - start).Days;
+            if (totalDays <= 0) totalDays = 1;
+            var totalPrice = data.Sum(g => g.TotalPrice);
+            var totalUnits = data.GroupBy(x => x.PropertyName).Sum(g => g.First().NumberOfRooms);
+            
+            return totalPrice == 0 || totalUnits == 0 ? 0 : totalPrice / totalDays * totalUnits;
         }
     }
 }

@@ -5,7 +5,7 @@ const baseUrl = 'http://localhost:4200';
 const oAuthConfig = {
   issuer: 'https://localhost:44329/',
   redirectUri: baseUrl,
-  clientId: 'SyriaNTMP_App',
+  clientId: 'SyriaNTMP_App_local',
   responseType: 'code',
   scope: 'offline_access SyriaNTMP',
   requireHttps: true,

@@ -108,6 +108,33 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             );
         }
         
+        var angularLocalClientId = configurationSection["SyriaNTMP_App_local:ClientId"];
+        if (!angularLocalClientId.IsNullOrWhiteSpace())
+        {   
+            var consoleAndAngularClientRootUrl = configurationSection["SyriaNTMP_App_local:RootUrl"]?.TrimEnd('/');
+            await CreateApplicationAsync(
+                applicationType: OpenIddictConstants.ApplicationTypes.Web,
+                name: angularLocalClientId!,
+                type: OpenIddictConstants.ClientTypes.Public,
+                consentType: OpenIddictConstants.ConsentTypes.Implicit,
+                displayName: "Console Test / Angular Application",
+                secret: null,
+                grantTypes: new List<string> {
+                    OpenIddictConstants.GrantTypes.AuthorizationCode,
+                    OpenIddictConstants.GrantTypes.Password,
+                    OpenIddictConstants.GrantTypes.ClientCredentials,
+                    OpenIddictConstants.GrantTypes.RefreshToken,
+                    "LinkLogin",
+                    "Impersonation"
+                },
+                scopes: commonScopes,
+                redirectUri: consoleAndAngularClientRootUrl,
+                postLogoutRedirectUri: consoleAndAngularClientRootUrl,
+                clientUri: consoleAndAngularClientRootUrl,
+                logoUri: "/images/clients/angular.svg"
+            );
+        }
+        
 
         // Swagger Client
         var swaggerClientId = configurationSection["SyriaNTMP_Swagger:ClientId"];
