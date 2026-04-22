@@ -46,11 +46,11 @@ namespace SyriaNTMP.Services
 
             if (!string.IsNullOrEmpty(searchCriteria.DateFrom) &&
                 DateTime.TryParse(searchCriteria.DateFrom, out var dateFrom))
-                queryable = queryable.Where(x => dateFrom.Date <= x.CreatedDate.Date);
+                queryable = queryable.Where(x => dateFrom.Date <= x.FromDate.Date);
 
             if (!string.IsNullOrEmpty(searchCriteria.DateTo) &&
                 DateTime.TryParse(searchCriteria.DateTo, out var dateTo))
-                queryable = queryable.Where(x => dateTo.Date >= x.CreatedDate.Date);
+                queryable = queryable.Where(x => dateTo.Date >= x.ToDate.Date);
 
             // Apply sorting and paging
             var sortedQueryable = queryable.OrderByDescending(x => x.Id); // or searchCriteria.Sorting
