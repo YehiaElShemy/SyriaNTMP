@@ -2,9 +2,9 @@
   <!-- Toolbar Actions -->
   <div class="flex justify-between items-center mb-4">
     <div class="filter-actions flex gap-3 ml-auto">
-      <button pButton label="Export To Excel" icon="pi pi-file-excel"
+      <button pButton label="{{ 'table.exportExcel' | translate }}" icon="pi pi-file-excel"
         class="p-button-outlined text-gray-700 bg-white border-gray-300"></button>
-      <button pButton label="Filter" icon="pi pi-filter"
+      <button pButton label="{{ 'table.filter' | translate }}" icon="pi pi-filter"
         class="p-button-outlined text-gray-700 bg-white border-gray-300" (click)="toggleFilter()"></button>
     </div>
   </div>
@@ -13,41 +13,43 @@
   <div *ngIf="showFilter" class="filter-panel bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-6">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
       <div class="flex flex-col gap-2">
-        <label class="text-sm font-semibold text-gray-600">Company</label>
-        <input pInputText type="text" placeholder="Company" class="w-full" [(ngModel)]="filterCompanyName" />
+        <label class="text-sm font-semibold text-gray-600">{{ 'table.company' | translate }}</label>
+        <input pInputText type="text" placeholder="{{ 'table.company' | translate }}" class="w-full"
+          [(ngModel)]="filterCompanyName" />
       </div>
       <div class="flex flex-col gap-2">
-        <label class="text-sm font-semibold text-gray-600">Property</label>
-        <input pInputText type="text" placeholder="Property" class="w-full" [(ngModel)]="filterPropertyName" />
+        <label class="text-sm font-semibold text-gray-600">{{ 'table.property' | translate }}</label>
+        <input pInputText type="text" placeholder="{{ 'table.property' | translate }}" class="w-full"
+          [(ngModel)]="filterPropertyName" />
       </div>
       <div class="flex flex-col gap-2">
-        <label class="text-sm font-semibold text-gray-600">Property Rating</label>
-        <p-select [options]="ratingsList" placeholder="Property Rating" styleClass="w-full"
+        <label class="text-sm font-semibold text-gray-600">{{ 'table.propertyRating' | translate }}</label>
+        <p-select [options]="ratingsList" placeholder="{{ 'table.propertyRating' | translate }}" styleClass="w-full"
           [(ngModel)]="filterPropertyRating" [showClear]="true"></p-select>
       </div>
       <div class="flex flex-col gap-2">
-        <label class="text-sm font-semibold text-gray-600">Reservation Number</label>
-        <input pInputText type="text" placeholder="Reservation Number" class="w-full"
+        <label class="text-sm font-semibold text-gray-600">{{ 'table.reservationNumber' | translate }}</label>
+        <input pInputText type="text" placeholder="{{ 'table.reservationNumber' | translate }}" class="w-full"
           [(ngModel)]="filterReservationNumber" />
       </div>
       <div class="flex flex-col gap-2">
-        <label class="text-sm font-semibold text-gray-600">Reservation Status</label>
-        <p-select [options]="statusList" placeholder="Reservation Status" styleClass="w-full"
+        <label class="text-sm font-semibold text-gray-600">{{ 'table.reservationStatus' | translate }}</label>
+        <p-select [options]="statusList" placeholder="{{ 'table.reservationStatus' | translate }}" styleClass="w-full"
           [(ngModel)]="filterReservationStatus" [showClear]="true"></p-select>
       </div>
       <div class="flex flex-col gap-2">
-        <label class="text-sm font-semibold text-gray-600">Visit Purpose</label>
-        <p-select [options]="purposeList" placeholder="Visit Purpose" styleClass="w-full"
+        <label class="text-sm font-semibold text-gray-600">{{ 'table.visitPurpose' | translate }}</label>
+        <p-select [options]="purposeList" placeholder="{{ 'table.visitPurpose' | translate }}" styleClass="w-full"
           [(ngModel)]="filterReservationPurpose" [showClear]="true"></p-select>
       </div>
       <div class="flex gap-2">
         <div class="flex flex-col gap-2 w-full">
-          <label class="text-sm font-semibold text-gray-600">From</label>
+          <label class="text-sm font-semibold text-gray-600">{{ 'table.from' | translate }}</label>
           <p-datepicker styleClass="w-full" [iconDisplay]="'input'" [showIcon]="true" inputId="from-date"
             [(ngModel)]="filterDateFrom" [showIcon]="true" [showClear]="true"></p-datepicker>
         </div>
         <div class="flex flex-col gap-2 w-full">
-          <label class="text-sm font-semibold text-gray-600">To</label>
+          <label class="text-sm font-semibold text-gray-600">{{ 'table.to' | translate }}</label>
           <p-datepicker styleClass="w-full" [iconDisplay]="'input'" [showIcon]="true" inputId="to-date"
             [(ngModel)]="filterDateTo" [showIcon]="true" [showClear]="true"></p-datepicker>
         </div>
@@ -55,7 +57,7 @@
       <div class="flex items-end justify-end gap-2">
         <button pButton label="" icon="pi pi-times"
           class="p-button-outlined border-gray-300 text-gray-500 bg-white px-4" (click)="clearFilters()"></button>
-        <button pButton label="Search" icon="pi pi-search"
+        <button pButton label="{{ 'table.search' | translate }}" icon="pi pi-search"
           class="p-button-outlined border-gray-300 text-gray-700 bg-white px-6" (click)="onSearch()"></button>
       </div>
     </div>
@@ -68,18 +70,19 @@
 
     <ng-template #header>
       <tr>
-        <th class="text-xs text-gray-500 font-medium">Company</th>
-        <th class="text-xs text-gray-500 font-medium">Property</th>
-        <th class="text-xs text-gray-500 font-medium">Property rating</th>
-        <th class="text-xs text-gray-500 font-medium">Reservation No.</th>
-        <th class="text-xs text-gray-500 font-medium">Reservation status</th>
-        <th class="text-xs text-gray-500 font-medium">No. of guests</th>
-        <th class="text-xs text-gray-500 font-medium">No. of nights</th>
-        <th class="text-xs text-gray-500 font-medium">Visit purpose</th>
-        <th class="text-xs text-gray-500 font-medium">From</th>
-        <th class="text-xs text-gray-500 font-medium">To</th>
+        <th class="text-xs text-gray-500 font-medium">{{ 'table.company' | translate }}</th>
+        <th class="text-xs text-gray-500 font-medium">{{ 'table.property' | translate }}</th>
+        <th class="text-xs text-gray-500 font-medium">{{ 'table.propertyRating' | translate }}</th>
+        <th class="text-xs text-gray-500 font-medium">{{ 'table.reservationNo' | translate }}</th>
+        <th class="text-xs text-gray-500 font-medium">{{ 'table.reservationStatus' | translate }}</th>
+        <th class="text-xs text-gray-500 font-medium">{{ 'table.guests' | translate }}</th>
+        <th class="text-xs text-gray-500 font-medium">{{ 'table.nights' | translate }}</th>
+        <th class="text-xs text-gray-500 font-medium">{{ 'table.visitPurpose' | translate }}</th>
+        <th class="text-xs text-gray-500 font-medium">{{ 'table.from' | translate }}</th>
+        <th class="text-xs text-gray-500 font-medium">{{ 'table.to' | translate }}</th>
       </tr>
     </ng-template>
+
     <ng-template #body let-res>
       <tr class="border-b border-gray-100 font-semibold text-sm">
         <td class="py-4">{{ res.companyName }}</td>

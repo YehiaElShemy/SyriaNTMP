@@ -1,28 +1,24 @@
 <!-- Dashboard Tabs -->
 <div class="dashboard-tabs flex items-center gap-4 mb-6 p-1 rounded-xl">
   <button class="tab-item flex flex-col items-start gap-1  p-2 rounded-lg font-medium transition-all"
-          [class.active]="activeTab === 'guest-mix'"
-          (click)="activeTab = 'guest-mix'">
-    <span class="tab-title">Guest mix</span>
-    <span class="tab-subtitle">NATIONALITY & CITY</span>
+    [class.active]="activeTab === 'guest-mix'" (click)="activeTab = 'guest-mix'">
+    <span class="tab-title">{{ 'dashboard.guestMixTitle' | translate }}</span>
+    <span class="tab-subtitle">{{ 'dashboard.guestMixSubtitle' | translate }}</span>
   </button>
   <button class="tab-item flex flex-col items-start gap-1  p-2 rounded-lg font-medium transition-all"
-          [class.active]="activeTab === 'revenue'"
-          (click)="activeTab = 'revenue'">
-    <span class="tab-title">Revenue & ADR</span>
-    <span class="tab-subtitle">RATES BY MARKET</span>
+    [class.active]="activeTab === 'revenue'" (click)="activeTab = 'revenue'">
+    <span class="tab-title">{{ 'dashboard.revenueTitle' | translate }}</span>
+    <span class="tab-subtitle">{{ 'dashboard.revenueSubtitle' | translate }}</span>
   </button>
   <button class="tab-item flex flex-col items-start gap-1  p-2 rounded-lg font-medium transition-all"
-          [class.active]="activeTab === 'demand'"
-          (click)="activeTab = 'demand'">
-    <span class="tab-title">Demand & occupancy</span>
-    <span class="tab-subtitle">PURPOSE & CAPACITY</span>
+    [class.active]="activeTab === 'demand'" (click)="activeTab = 'demand'">
+    <span class="tab-title">{{ 'dashboard.demandTitle' | translate }}</span>
+    <span class="tab-subtitle">{{ 'dashboard.demandSubtitle' | translate }}</span>
   </button>
   <button class="tab-item flex flex-col items-start gap-1  p-2 rounded-lg font-medium transition-all"
-          [class.active]="activeTab === 'operations'"
-          (click)="activeTab = 'operations'">
-    <span class="tab-title">Operations</span>
-    <span class="tab-subtitle">WEEK & TODAY</span>
+    [class.active]="activeTab === 'operations'" (click)="activeTab = 'operations'">
+    <span class="tab-title">{{ 'dashboard.operationsTitle' | translate }}</span>
+    <span class="tab-subtitle">{{ 'dashboard.operationsSubtitle' | translate }}</span>
   </button>
 </div>
 
@@ -31,10 +27,11 @@
 
   <!-- Header -->
   <div class="mix-header mb-6">
-    <span class="mix-label font-semibold uppercase tracking-wider">MARKET COMPOSITION</span>
-    <h2 class="mix-title font-bold m-0 mt-1">Nationality statistics</h2>
+    <span class="mix-label font-semibold uppercase tracking-wider">{{ 'dashboard.marketComposition' | translate
+      }}</span>
+    <h2 class="mix-title font-bold m-0 mt-1">{{ 'dashboard.nationalityStatistics' | translate }}</h2>
     <div class="mix-desc-box mt-2 py-2">
-      <p class="m-0">Slice the reservation set with filters; the breakdown row shows nationality (guests), visit purpose (stacked stays), and mean ADR by city together.</p>
+      <p class="m-0">{{ 'dashboard.guestMixDescription' | translate }}</p>
     </div>
   </div>
 
@@ -46,11 +43,12 @@
           <i class="pi pi-th-large"></i>
         </div>
         <div class="flex flex-col">
-          <span class="mix-card__title font-bold">Breakdown</span>
-          <span class="mix-card__sub">Three charts — nationality (guests), visit purpose (stacked), and mean ADR by city — all follow the same filters.</span>
+          <span class="mix-card__title font-bold">{{ 'dashboard.breakdown' | translate }}</span>
+          <span class="mix-card__sub">{{ 'dashboard.breakdownDesc' | translate }}</span>
         </div>
       </div>
-      <button class="mix-filter-btn flex justify-center items-center rounded-lg border transition-colors" (click)="showFilterDialog()">
+      <button class="mix-filter-btn flex justify-center items-center rounded-lg border transition-colors"
+        (click)="showFilterDialog()">
         <i class="pi pi-filter"></i>
       </button>
     </div>
@@ -65,9 +63,9 @@
             <div class="mix-chart-icon mix-chart-icon--purple rounded-md flex justify-center items-center">
               <i class="pi pi-globe"></i>
             </div>
-            <span class="mix-chart-title font-bold">Nationality statistics</span>
+            <span class="mix-chart-title font-bold">{{ 'dashboard.nationalityStatistics' | translate }}</span>
           </div>
-        
+
         </div>
         <div class="w-full" style="min-height: 220px;">
           <p-chart type="bar" [data]="mixNationalityData" [options]="mixNationalityOptions"></p-chart>
@@ -81,9 +79,9 @@
             <div class="mix-chart-icon mix-chart-icon--green rounded-md flex justify-center items-center">
               <i class="pi pi-compass"></i>
             </div>
-            <span class="mix-chart-title font-bold">Visit purpose</span>
+            <span class="mix-chart-title font-bold">{{ 'dashboard.visitPurpose' | translate }}</span>
           </div>
-          
+
         </div>
         <div class="w-full" style="min-height: 220px;">
           <p-chart type="bar" [data]="mixPurposeData" [options]="mixPurposeOptions"></p-chart>
@@ -98,11 +96,12 @@
               <i class="pi pi-dollar"></i>
             </div>
             <div class="flex flex-col">
-              <span class="mix-chart-title font-bold">ADR</span>
-              <span class="mix-chart-sub uppercase tracking-wider font-semibold">AVERAGE DAILY RATE BY CITY</span>
+              <span class="mix-chart-title font-bold">{{ 'dashboard.adr' | translate }}</span>
+              <span class="mix-chart-sub uppercase tracking-wider font-semibold">{{ 'dashboard.adrByCity' | translate
+                }}</span>
             </div>
           </div>
-          
+
         </div>
         <div class="w-full" style="min-height: 220px;">
           <p-chart type="bar" [data]="mixAdrData" [options]="mixAdrOptions"></p-chart>
@@ -118,10 +117,10 @@
 
   <!-- Header -->
   <div class="rev-header mb-6">
-    <span class="rev-label font-semibold uppercase tracking-wider">PRICING</span>
-    <h2 class="rev-title font-bold m-0 mt-1">ADR (average daily rate)</h2>
+    <span class="rev-label font-semibold uppercase tracking-wider">{{ 'dashboard.pricing' | translate }}</span>
+    <h2 class="rev-title font-bold m-0 mt-1">{{ 'dashboard.adrTitle' | translate }}</h2>
     <div class="rev-desc-box mt-2 px-3 py-2">
-      <p class="m-0">Compare mean nightly rates by city for the selected period. Averages are computed from dummy reservation rows — wire to your PMS for production figures.</p>
+      <p class="m-0">{{ 'dashboard.revenueDescription' | translate }}</p>
     </div>
   </div>
 
@@ -132,12 +131,13 @@
         <i class="pi pi-dollar"></i>
       </div>
       <div class="flex flex-col">
-        <span class="stat-card__label uppercase font-semibold tracking-wider">PORTFOLIO ADR</span>
+        <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.portfolioAdr' | translate
+          }}</span>
         <p class="stat-card__value font-bold m-0 mt-1">
           <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
           <span class="purple" *ngIf="!isLoading">${{ statsData?.revenue?.portfolioAdr || 0 }}</span>
         </p>
-        <span class="stat-card__sub mt-1">Mean USD / night in selection</span>
+        <span class="stat-card__sub mt-1">{{ 'dashboard.portfolioAdrSub' | translate }}</span>
       </div>
     </div>
     <div class="stat-card stat-card--blue bg-white rounded-lg p-3 border flex items-start gap-3">
@@ -145,12 +145,13 @@
         <i class="pi pi-users"></i>
       </div>
       <div class="flex flex-col">
-        <span class="stat-card__label uppercase font-semibold tracking-wider">STAYS IN VIEW</span>
+        <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.staysInView' | translate
+          }}</span>
         <p class="stat-card__value font-bold m-0 mt-1">
           <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
           <span class="blue" *ngIf="!isLoading">{{ statsData?.summary?.totalReservations || 0 }}</span>
         </p>
-        <span class="stat-card__sub mt-1">Rows used for the chart</span>
+        <span class="stat-card__sub mt-1">{{ 'dashboard.staysInViewSub' | translate }}</span>
       </div>
     </div>
     <div class="stat-card stat-card--yellow bg-white rounded-lg p-3 border flex items-start gap-3">
@@ -158,12 +159,14 @@
         <i class="pi pi-bullseye"></i>
       </div>
       <div class="flex flex-col">
-        <span class="stat-card__label uppercase font-semibold tracking-wider">PEAK CITY (MEAN)</span>
+        <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.peakCity' | translate
+          }}</span>
         <p class="stat-card__value font-bold m-0 mt-1">
           <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-          <span class="yellow" *ngIf="!isLoading">{{ statsData?.revenue?.peakCity?.city || '-' }} (${{ statsData?.revenue?.peakCity?.adr || 0 }})</span>
+          <span class="yellow" *ngIf="!isLoading">{{ statsData?.revenue?.peakCity?.city || '-' }} (${{
+            statsData?.revenue?.peakCity?.adr || 0 }})</span>
         </p>
-        <span class="stat-card__sub mt-1">Highest average among cities</span>
+        <span class="stat-card__sub mt-1">{{ 'dashboard.peakCitySub' | translate }}</span>
       </div>
     </div>
   </div>
@@ -176,11 +179,12 @@
           <i class="pi pi-chart-bar"></i>
         </div>
         <div class="flex flex-col">
-          <span class="rev-card__title font-bold">Scope & chart</span>
-          <span class="rev-card__sub">Mean ADR by city; open filters to change period or property scope</span>
+          <span class="rev-card__title font-bold">{{ 'dashboard.scopeChart' | translate }}</span>
+          <span class="rev-card__sub">{{ 'dashboard.scopeChartSub' | translate }}</span>
         </div>
       </div>
-      <button class="rev-filter-btn flex justify-center items-center rounded-lg border transition-colors" (click)="showFilterDialog()">
+      <button class="rev-filter-btn flex justify-center items-center rounded-lg border transition-colors"
+        (click)="showFilterDialog()">
         <i class="pi pi-filter"></i>
       </button>
     </div>
@@ -194,7 +198,7 @@
     <div class="rev-footer-icon rounded-full flex justify-center items-center">
       <i class="pi pi-info-circle"></i>
     </div>
-    <p class="m-0 rev-footer-text">Weighted average rate in selection: ~${{ statsData?.revenue?.portfolioAdr || 0 }} / night. Cities show mean ADR among matching stays.</p>
+    <p class="m-0 rev-footer-text">{{ 'dashboard.footerInfo' | translate }}</p>
   </div>
 
 </div>
@@ -203,38 +207,41 @@
 
   <!-- Header -->
   <div class="demand-header mb-6">
-    <span class="demand-label font-semibold uppercase tracking-wider">TRIP INTENT & LOAD</span>
-    <h2 class="demand-title font-bold m-0 mt-1">Demand & occupancy signals</h2>
+    <span class="demand-label font-semibold uppercase tracking-wider">{{ 'dashboard.tripIntent' | translate }}</span>
+    <h2 class="demand-title font-bold m-0 mt-1">{{ 'dashboard.demandTitle' | translate }}</h2>
     <div class="demand-desc-box mt-2 p-3">
-      <p class="m-0">Purpose mix explains why guests travel; occupancy bars are illustrative placeholders until you plug in real room-night inventory.</p>
+      <p class="m-0">{{ 'dashboard.demandDescription' | translate }}</p>
     </div>
   </div>
 
   <!-- Stat Cards Row -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     <div class="stat-card stat-card--purple bg-white rounded-lg p-3 border">
-      <span class="stat-card__label uppercase font-semibold tracking-wider">RESERVATIONS (SAMPLE)</span>
+      <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.reservationsSample' |
+        translate }}</span>
       <p class="stat-card__value font-bold m-0 mt-2">
         <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
         <span class="purple" *ngIf="!isLoading">{{ statsData?.summary?.totalReservations || 0 }}</span>
       </p>
-      <span class="stat-card__sub mt-1">All dummy rows in prototype</span>
+      <span class="stat-card__sub mt-1">{{ 'dashboard.reservationsSampleSub' | translate }}</span>
     </div>
     <div class="stat-card stat-card--blue bg-white rounded-lg p-3 border">
-      <span class="stat-card__label uppercase font-semibold tracking-wider">PURPOSE COUNT</span>
+      <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.purposeCount' | translate
+        }}</span>
       <p class="stat-card__value font-bold m-0 mt-2">
         <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
         <span class="blue" *ngIf="!isLoading">{{ statsData?.purposeStats?.length || 0 }}</span>
       </p>
-      <span class="stat-card__sub mt-1">Most frequent trip intent</span>
+      <span class="stat-card__sub mt-1">{{ 'dashboard.purposeCountSub' | translate }}</span>
     </div>
     <div class="stat-card stat-card--yellow bg-white rounded-lg p-3 border">
-      <span class="stat-card__label uppercase font-semibold tracking-wider">AVG. OCCUPANCY INDEX</span>
+      <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.avgOccupancyIndex' | translate
+        }}</span>
       <p class="stat-card__value font-bold m-0 mt-2">
         <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
         <span class="yellow" *ngIf="!isLoading">{{ statsData?.summary?.occupancyRate || 0 }}%</span>
       </p>
-      <span class="stat-card__sub mt-1">Mean of city placeholder %</span>
+      <span class="stat-card__sub mt-1">{{ 'dashboard.avgOccupancyIndexSub' | translate }}</span>
     </div>
   </div>
 
@@ -249,11 +256,13 @@
             <i class="pi pi-list"></i>
           </div>
           <div class="flex flex-col">
-            <span class="demand-card__title font-bold">Visit purpose</span>
-            <span class="demand-card__sub">Share of trip intent (dummy)</span>
+            <span class="demand-card__title font-bold">{{ 'dashboard.visitPurpose' | translate }}</span>
+            <span class="demand-card__sub">{{ 'dashboard.visitPurposeSub' | translate }}</span>
           </div>
         </div>
-        <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8" (click)="showFilterDialog()">
+        <button
+          class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8"
+          (click)="showFilterDialog()">
           <i class="pi pi-filter"></i>
         </button>
       </div>
@@ -270,11 +279,13 @@
             <i class="pi pi-building"></i>
           </div>
           <div class="flex flex-col">
-            <span class="demand-card__title font-bold">Occupancy rate</span>
-            <span class="demand-card__sub">By city — dummy</span>
+            <span class="demand-card__title font-bold">{{ 'dashboard.occupancyRate' | translate }}</span>
+            <span class="demand-card__sub">{{ 'dashboard.occupancyRateSub' | translate }}</span>
           </div>
         </div>
-        <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8" (click)="showFilterDialog()">
+        <button
+          class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8"
+          (click)="showFilterDialog()">
           <i class="pi pi-filter"></i>
         </button>
       </div>
@@ -291,36 +302,39 @@
 
   <!-- Header -->
   <div class="ops-header mb-6">
-    <span class="ops-label font-semibold uppercase tracking-wider">RHYTHM OF THE PROPERTY</span>
-    <h2 class="ops-title font-bold m-0 mt-1">Operations pulse</h2>
-    <p class="ops-desc mt-1 m-0">A lightweight weekly trend and a same-day snapshot. Replace placeholders with live operational queues when backend data is available.</p>
+    <span class="ops-label font-semibold uppercase tracking-wider">{{ 'dashboard.rhythmOfProperty' | translate }}</span>
+    <h2 class="ops-title font-bold m-0 mt-1">{{ 'dashboard.operationsPulse' | translate }}</h2>
+    <p class="ops-desc mt-1 m-0">{{ 'dashboard.operationsDescription' | translate }}</p>
   </div>
 
   <!-- Stat Cards Row -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     <div class="stat-card stat-card--purple bg-white rounded-lg p-3 border ">
-      <span class="stat-card__label uppercase font-semibold tracking-wider">RESERVATIONS</span>
+      <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.reservations' | translate
+        }}</span>
       <p class="stat-card__value font-bold m-0 mt-2">
         <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
         <span class="purple" *ngIf="!isLoading">{{ statsData?.summary?.totalReservations || 0 }}</span>
       </p>
-      <span class="stat-card__sub mt-1">Sum of nights in dummy set</span>
+      <span class="stat-card__sub mt-1">{{ 'dashboard.reservationsSub' | translate }}</span>
     </div>
     <div class="stat-card stat-card--blue bg-white rounded-lg p-3 border ">
-      <span class="stat-card__label uppercase font-semibold tracking-wider">ACTIVE PROPERTIES</span>
+      <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.activeProperties' | translate
+        }}</span>
       <p class="stat-card__value font-bold m-0 mt-2">
         <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
         <span class="blue" *ngIf="!isLoading">{{statsData?.summary?.activeProperties || 0}}</span>
       </p>
-      <span class="stat-card__sub mt-1">Distinct hotels in data</span>
+      <span class="stat-card__sub mt-1">{{ 'dashboard.activePropertiesSub' | translate }}</span>
     </div>
     <div class="stat-card stat-card--yellow bg-white rounded-lg p-3 border ">
-      <span class="stat-card__label uppercase font-semibold tracking-wider">CANCELLATION RATE</span>
+      <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.cancellationRate' | translate
+        }}</span>
       <p class="stat-card__value stat-card__value--green font-bold m-0 mt-2">
         <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
         <span class="yellow" *ngIf="!isLoading">{{ statsData?.summary?.cancellationRate||0 }}%</span>
       </p>
-      <span class="stat-card__sub mt-1">Share of cancelled rows</span>
+      <span class="stat-card__sub mt-1">{{ 'dashboard.cancellationRateSub' | translate }}</span>
     </div>
   </div>
 
@@ -335,23 +349,25 @@
             <i class="pi pi-calendar"></i>
           </div>
           <div class="flex flex-col">
-            <span class="ops-card__title font-bold">Reservations — this week</span>
-            <span class="ops-card__sub">Weekly total</span>
+            <span class="ops-card__title font-bold">{{ 'dashboard.reservationsThisWeek' | translate }}</span>
+            <span class="ops-card__sub">{{ 'dashboard.weeklyTotal' | translate }}</span>
           </div>
         </div>
-        <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8" (click)="showFilterDialog()">
+        <button
+          class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8"
+          (click)="showFilterDialog()">
           <i class="pi pi-filter"></i>
         </button>
       </div>
       <div class="flex items-end justify-between">
-        <span class="ops-week-label font-bold uppercase tracking-wider mb-3 block">CURRENT WEEK</span>
+        <span class="ops-week-label font-bold uppercase tracking-wider mb-3 block">{{ 'dashboard.currentWeek' |
+          translate }}</span>
         <p class="ops-week-total font-bold m-0">
           <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
           <span *ngIf="!isLoading">{{ statsData?.summary?.totalReservations || 0 }}</span>
         </p>
       </div>
 
-      
       <div class="flex-grow" style="max-width: 100%;">
         <p-chart type="line" [data]="lineData" [options]="opsLineOptions" height="120px"></p-chart>
       </div>
@@ -365,17 +381,20 @@
             <i class="pi pi-sun"></i>
           </div>
           <div class="flex flex-col">
-            <span class="ops-card__title font-bold">Today's activity</span>
-            <span class="ops-card__sub">Today — {{ todayDate | date:'dd MMM yyyy' }}</span>
+            <span class="ops-card__title font-bold">{{ 'dashboard.todayActivity' | translate }}</span>
+            <span class="ops-card__sub">{{ 'dashboard.today' | translate }} — {{ todayDate | date:'dd MMM yyyy'
+              }}</span>
           </div>
         </div>
-        <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8" (click)="showFilterDialog()">
+        <button
+          class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8"
+          (click)="showFilterDialog()">
           <i class="pi pi-filter"></i>
         </button>
       </div>
 
       <div class="ops-message-box p-3 mb-5">
-        <p class="m-0">Sample message: reservations for the selected day appear here.</p>
+        <p class="m-0">{{ 'dashboard.todayMessage' | translate }}</p>
       </div>
 
       <div class="grid grid-cols-3 gap-4">
@@ -385,7 +404,8 @@
             <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
             <span *ngIf="!isLoading">{{ percentages.checkedIn }}%</span>
           </span>
-          <span class="ops-status-label uppercase font-semibold tracking-wider">CHECKED IN</span>
+          <span class="ops-status-label uppercase font-semibold tracking-wider">{{ 'dashboard.checkedIn' | translate
+            }}</span>
         </div>
         <div class="flex flex-col items-center gap-1">
           <i class="ops-status-icon ops-status-icon--blue pi pi-sign-out"></i>
@@ -393,7 +413,8 @@
             <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
             <span *ngIf="!isLoading">{{ percentages.checkedOut }}%</span>
           </span>
-          <span class="ops-status-label uppercase font-semibold tracking-wider">CHECKED OUT</span>
+          <span class="ops-status-label uppercase font-semibold tracking-wider">{{ 'dashboard.checkedOut' | translate
+            }}</span>
         </div>
         <div class="flex flex-col items-center gap-1">
           <i class="ops-status-icon ops-status-icon--green pi pi-times-circle"></i>
@@ -401,7 +422,8 @@
             <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
             <span *ngIf="!isLoading">{{ percentages.cancelled }}%</span>
           </span>
-          <span class="ops-status-label uppercase font-semibold tracking-wider">CANCELLED</span>
+          <span class="ops-status-label uppercase font-semibold tracking-wider">{{ 'dashboard.cancelled' | translate
+            }}</span>
         </div>
       </div>
     </div>
@@ -411,39 +433,56 @@
 </div>
 
 <!-- Filter Dialog -->
-<p-dialog header="Dashboard Filters" [(visible)]="displayFilterDialog" [modal]="true" [style]="{width: '75vw', maxWidth: '1000px'}">
+<p-dialog [header]="'dashboard.dashboardFilters' | translate" [(visible)]="displayFilterDialog" [modal]="true"
+  [style]="{width: '75vw', maxWidth: '1000px'}">
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 py-4">
     <div class="flex flex-col gap-2">
-      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">From</label>
-      <p-calendar appendTo="body" [(ngModel)]="currentFilters.fromDate" dateFormat="mm/dd/yy" [showIcon]="true" placeholder="Select Date"></p-calendar>
+      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.from' | translate
+        }}</label>
+      <p-datepicker appendTo="body" showClear="true" [(ngModel)]="currentFilters.fromDate" dateFormat="mm/dd/yy"
+        [showIcon]="true" [iconDisplay]="'input'" styleClass="w-full" [placeholder]="'dashboard.selectDate' | translate"></p-datepicker>
     </div>
     <div class="flex flex-col gap-2">
-      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">To</label>
-      <p-calendar appendTo="body" [(ngModel)]="currentFilters.toDate" dateFormat="mm/dd/yy" [showIcon]="true" placeholder="Select Date"></p-calendar>
+      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.to' | translate
+        }}</label>
+      <p-datepicker appendTo="body" showClear="true" [(ngModel)]="currentFilters.toDate" dateFormat="mm/dd/yy"
+        [showIcon]="true" [iconDisplay]="'input'" styleClass="w-full" [placeholder]="'dashboard.selectDate' | translate"></p-datepicker>
     </div>
     <div class="flex flex-col gap-2">
-      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">City</label>
-      <p-dropdown appendTo="body" [options]="citiesOptions" [(ngModel)]="currentFilters.city" optionLabel="nameEn" optionValue="value" placeholder="All cities" [showClear]="true"></p-dropdown>
+      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.city' | translate
+        }}</label>
+      <p-dropdown appendTo="body" [options]="citiesOptions" [(ngModel)]="currentFilters.city" optionLabel="nameEn"
+        optionValue="value" [placeholder]="'dashboard.allCities' | translate" [showClear]="true"></p-dropdown>
     </div>
     <div class="flex flex-col gap-2">
-      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">Hotel Stars</label>
-      <p-dropdown appendTo="body" [options]="starOptions" [(ngModel)]="currentFilters.hotelStars" optionLabel="label" optionValue="value" placeholder="All" [showClear]="true"></p-dropdown>
+      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.hotelStars' | translate
+        }}</label>
+      <p-dropdown appendTo="body" [options]="starOptions" [(ngModel)]="currentFilters.hotelStars" optionLabel="label"
+        optionValue="value" [placeholder]="'dashboard.all' | translate" [showClear]="true"></p-dropdown>
     </div>
     <div class="flex flex-col gap-2">
-      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">Hotel Name</label>
-      <p-dropdown appendTo="body" [options]="propertiesOptions" [(ngModel)]="currentFilters.hotelName" optionLabel="nameEn" optionValue="value" placeholder="All hotels" [showClear]="true"></p-dropdown>
+      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.hotelName' | translate
+        }}</label>
+      <p-dropdown appendTo="body" [options]="propertiesOptions" [(ngModel)]="currentFilters.hotelName"
+        optionLabel="nameEn" optionValue="value" [placeholder]="'dashboard.allHotels' | translate"
+        [showClear]="true"></p-dropdown>
     </div>
     <div class="flex flex-col gap-2">
-      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">Nationality</label>
-      <p-dropdown appendTo="body" [options]="nationalityOptions" [(ngModel)]="currentFilters.nationality" optionLabel="nameEn" optionValue="value" placeholder="All nationalities" [showClear]="true"></p-dropdown>
+      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.nationality' | translate
+        }}</label>
+      <p-dropdown appendTo="body" [options]="nationalityOptions" [(ngModel)]="currentFilters.nationality"
+        optionLabel="nameEn" optionValue="value" [placeholder]="'dashboard.allNationalities' | translate"
+        [showClear]="true"></p-dropdown>
     </div>
     <div class="flex flex-col gap-2">
-      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">Purpose</label>
-      <p-dropdown appendTo="body" [options]="purposeOptions" [(ngModel)]="currentFilters.purpose" optionLabel="nameEn" optionValue="value" placeholder="All purposes" [showClear]="true"></p-dropdown>
+      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.purpose' | translate
+        }}</label>
+      <p-dropdown appendTo="body" [options]="purposeOptions" [(ngModel)]="currentFilters.purpose" optionLabel="nameEn"
+        optionValue="value" [placeholder]="'dashboard.allPurposes' | translate" [showClear]="true"></p-dropdown>
     </div>
   </div>
   <div class="mt-4 flex">
-    <button pButton label="Apply" class="w-full md:w-auto px-8" style="background-color: #4c1d95; color: white;" (click)="applyFilters()"></button>
+    <button pButton [label]="'dashboard.apply' | translate" class="w-full md:w-auto px-8"
+      style="background-color: #4c1d95; color: white;" (click)="applyFilters()"></button>
   </div>
 </p-dialog>
-

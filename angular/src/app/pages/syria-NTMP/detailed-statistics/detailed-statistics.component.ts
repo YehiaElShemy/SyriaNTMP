@@ -14,18 +14,20 @@ import { ReservationsSearchCriteria } from '@proxy/dto';
 import { ReservationStatus } from '@proxy/models/enums';
 import { PropertyRatingEnum } from '@proxy/models/enums';
 import { ReservationPurpose } from '@proxy/models/enums';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-detailed-statistics',
   standalone: true,
-  imports: [CommonModule, TableModule, ButtonModule, InputTextModule, SelectModule, RatingModule, TagModule, FormsModule, DatePickerModule],
+  imports: [CommonModule, TableModule, ButtonModule, InputTextModule, SelectModule, RatingModule, TagModule, FormsModule, DatePickerModule, TranslateModule],
   templateUrl: './detailed-statistics.component.html',
   styleUrl: './detailed-statistics.component.scss'
 
 })
 export class DetailedStatisticsComponent implements OnInit {
   reservationService = inject(ReservationService);
+  translateService = inject(TranslateService);
   showFilter: boolean = false;
   reservations: any[] = [];
   ratingsList: any[] = [];
@@ -49,28 +51,35 @@ export class DetailedStatisticsComponent implements OnInit {
   ReservationPurpose = ReservationPurpose;
 
   ngOnInit() {
-    this.ratingsList = Object.keys(PropertyRatingEnum)
-      .filter(key => isNaN(Number(key)))
-      .map(key => ({
-        label: key.replace('Star', ' Star').trim(), // Format "OneStar" to "One Star"
-        value: PropertyRatingEnum[key as keyof typeof PropertyRatingEnum]
-      }));
+    this.translateService.onLangChange.subscribe(() => {
+      this.buildLists();
+    });
+    this.buildLists();
+  }
 
-    // Filter out numeric keys to just get the string names, and map them to label/value pairs
-    this.statusList = Object.keys(ReservationStatus)
-      .filter(key => isNaN(Number(key)))
-      .map(key => ({
-        label: key.replace(/([A-Z])/g, ' $1').trim(), // Add space before capitals (e.g. 'CheckedIn' -> 'Checked In')
-        value: ReservationStatus[key as keyof typeof ReservationStatus] // value is the numeric value (e.g., 5)
-      }));
+  buildLists() {
+    this.translateService.get('enums').subscribe(enumsTranslations => {
+      this.ratingsList = Object.keys(PropertyRatingEnum)
+        .filter(key => isNaN(Number(key)))
+        .map(key => ({
+          label: enumsTranslations?.PropertyRatingEnum?.[key] || key.replace('Star', ' Star').trim(),
+          value: PropertyRatingEnum[key as keyof typeof PropertyRatingEnum]
+        }));
 
-    this.purposeList = Object.keys(ReservationPurpose)
-      .filter(key => isNaN(Number(key)))
-      .map(key => ({
-        label: key.replace(/([A-Z])/g, ' $1').trim(), // Add space before capitals
-        value: ReservationPurpose[key as keyof typeof ReservationPurpose]
-      }));
+      this.statusList = Object.keys(ReservationStatus)
+        .filter(key => isNaN(Number(key)))
+        .map(key => ({
+          label: enumsTranslations?.ReservationStatus?.[key] || key.replace(/([A-Z])/g, ' $1').trim(),
+          value: ReservationStatus[key as keyof typeof ReservationStatus]
+        }));
 
+      this.purposeList = Object.keys(ReservationPurpose)
+        .filter(key => isNaN(Number(key)))
+        .map(key => ({
+          label: enumsTranslations?.ReservationPurpose?.[key] || key.replace(/([A-Z])/g, ' $1').trim(),
+          value: ReservationPurpose[key as keyof typeof ReservationPurpose]
+        }));
+    });
     this.fetchReservations();
   }
 
@@ -82,7 +91,7 @@ export class DetailedStatisticsComponent implements OnInit {
   fetchReservations() {
     this.isLoading = true;
 
-    const payload : ReservationsSearchCriteria = {
+    const payload: ReservationsSearchCriteria = {
       skipCount: this.pageIndex * this.pageSize,
       maxResultCount: this.pageSize,
       companyName: this.filterCompanyName || null,

@@ -5,43 +5,38 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
-import { CalendarModule } from 'primeng/calendar';
+import { DatePickerModule } from 'primeng/datepicker';
 import { ReservationService } from '../../../proxy/services';
 import { DashboardDto, WeeklyDto, PurposeDto, NationalityDto, CityOccupancyDto, AdrByCityDto, LookupDto, DashboardFilterDto } from '@proxy/dto';
 import { PropertyRatingEnum } from '../../../proxy/models/enums/property-rating-enum.enum';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, ChartModule, ButtonModule, DialogModule, DropdownModule, CalendarModule, FormsModule],
+  imports: [CommonModule, ChartModule, ButtonModule, DialogModule, DropdownModule, DatePickerModule, FormsModule, TranslateModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   reservationService = inject(ReservationService);
+  translateService = inject(TranslateService);
   statsData: DashboardDto | null = null;
   isLoading = false;
   error: string | null = null;
   hasTodayData = false;
   activeTab: string = 'guest-mix';
-  
+
   percentages = { checkedIn: 0, checkedOut: 0, cancelled: 0 };
   todayDate: Date = new Date();
 
   // Filter states
   displayFilterDialog: boolean = false;
   currentFilters: DashboardFilterDto = {};
-  
+
   citiesOptions: LookupDto[] = [];
   propertiesOptions: LookupDto[] = [];
-  starOptions = [
-    { label: 'All', value: null },
-    { label: '1 Star', value: PropertyRatingEnum.OneStar },
-    { label: '2 Stars', value: PropertyRatingEnum.TwoStar },
-    { label: '3 Stars', value: PropertyRatingEnum.ThreeStar },
-    { label: '4 Stars', value: PropertyRatingEnum.FourStar },
-    { label: '5 Stars', value: PropertyRatingEnum.FiveStar },
-  ];
+  starOptions: any[] = [];
 
   lineData: any;
   opsLineOptions: any;
@@ -69,19 +64,40 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.initChart();
     this.fetchStats();
-    this.getFilters()
+    this.getFilters();
+
+    this.translateService.onLangChange.subscribe(() => {
+      this.buildLists();
+    });
+    this.buildLists();
   }
 
-  getFilters(){
+  buildLists() {
+    this.translateService.get(['dashboard.all', 'enums.PropertyRatingEnum']).subscribe(translations => {
+      const allLabel = translations['dashboard.all'];
+      const starTranslations = translations['enums.PropertyRatingEnum'];
+
+      this.starOptions = [
+        { label: allLabel, value: null },
+        { label: starTranslations?.OneStar || '1 Star', value: PropertyRatingEnum.OneStar },
+        { label: starTranslations?.TwoStar || '2 Stars', value: PropertyRatingEnum.TwoStar },
+        { label: starTranslations?.ThreeStar || '3 Stars', value: PropertyRatingEnum.ThreeStar },
+        { label: starTranslations?.FourStar || '4 Stars', value: PropertyRatingEnum.FourStar },
+        { label: starTranslations?.FiveStar || '5 Stars', value: PropertyRatingEnum.FiveStar },
+      ];
+    });
+  }
+
+  getFilters() {
     this.getFiltersCities()
     this.getFiltersProperties()
     this.getNationalities()
     this.getPurposes()
   }
 
-  getNationalities(){
+  getNationalities() {
     this.reservationService.getNationalities({
-      
+
     }).subscribe({
       next: (res: LookupDto[]) => {
         this.nationalityOptions = res;
@@ -92,9 +108,9 @@ export class DashboardComponent implements OnInit {
       }
     })
   }
-  getPurposes(){
+  getPurposes() {
     this.reservationService.getPurposes({
-      
+
     }).subscribe({
       next: (res: LookupDto[]) => {
         this.purposeOptions = res;
@@ -106,9 +122,9 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  getFiltersCities(){
+  getFiltersCities() {
     this.reservationService.getCities({
-      
+
     }).subscribe({
       next: (res: LookupDto[]) => {
         this.citiesOptions = res;
@@ -120,11 +136,11 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  getFiltersProperties(){
+  getFiltersProperties() {
     this.reservationService.getProperties({
-      
+
     }).subscribe({
-      next: (res: LookupDto[] ) => {
+      next: (res: LookupDto[]) => {
         this.propertiesOptions = res;
         // console.log(res, "getProperties");
       },
@@ -148,7 +164,7 @@ export class DashboardComponent implements OnInit {
     this.error = null;
 
     this.reservationService.getDashboard(this.currentFilters).subscribe({
-      next: (res:DashboardDto) => {
+      next: (res: DashboardDto) => {
         this.isLoading = false;
         this.statsData = res;
         this.updateCharts(res);
@@ -182,7 +198,7 @@ export class DashboardComponent implements OnInit {
       const checkedOut = res.todayStats.checkedOut || 0;
       const cancelled = res.todayStats.cancelled || 0;
       const totalToday = checkedIn + checkedOut + cancelled;
-      
+
       if (totalToday > 0) {
         this.percentages.checkedIn = Math.round((checkedIn / totalToday) * 100);
         this.percentages.checkedOut = Math.round((checkedOut / totalToday) * 100);
@@ -200,10 +216,10 @@ export class DashboardComponent implements OnInit {
       const chartData = res.nationalityStats.map((item: NationalityDto) => item.count);
       this.mixNationalityData = {
         labels: labels,
-        datasets: [{ 
+        datasets: [{
           label: 'Nationality',
           backgroundColor: '#3b82f6',
-          data: chartData 
+          data: chartData
         }]
       };
     }
@@ -230,19 +246,19 @@ export class DashboardComponent implements OnInit {
 
       this.mixAdrData = {
         labels: labels,
-        datasets: [{ 
+        datasets: [{
           label: 'ADR',
           backgroundColor: bgColors,
-          data: chartData 
+          data: chartData
         }]
       };
-      
+
       this.revAdrData = {
         labels: labels,
-        datasets: [{ 
+        datasets: [{
           label: 'ADR',
           backgroundColor: bgColors,
-          data: chartData 
+          data: chartData
         }]
       };
     }
@@ -256,7 +272,7 @@ export class DashboardComponent implements OnInit {
 
       this.demandOccupancyData = {
         labels: labels,
-        datasets: [{ 
+        datasets: [{
           label: 'Occupancy %',
           backgroundColor: bgColors,
           data: chartData,
