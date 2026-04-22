@@ -240,6 +240,8 @@ namespace SyriaNTMP.Services
                 existingItem.ReservationPurpose = entity.ReservationPurpose;
                 existingItem.ToDate = entity.ToDate;
                 existingItem.TotalNumberOfPropertyUnits = entity.TotalNumberOfPropertyUnits;
+                existingItem.City = entity.City;
+
                 await _reservationsRepository.UpdateAsync(existingItem);
             }
             else
@@ -389,7 +391,7 @@ namespace SyriaNTMP.Services
             int totalDays = (end - start).Days;
             if (totalDays <= 0) totalDays = 1;
             var totalPrice = data.Sum(g => g.TotalPrice);
-            var totalUnits = data.GroupBy(x => x.PropertyName).Sum(g => g.First().NumberOfRooms);
+            var totalUnits = data.GroupBy(x => x.PropertyName).Sum(g => g.First()?.TotalNumberOfPropertyUnits??0);
             
             return totalPrice == 0 || totalUnits == 0 ? 0 : totalPrice / totalDays * totalUnits;
         }
