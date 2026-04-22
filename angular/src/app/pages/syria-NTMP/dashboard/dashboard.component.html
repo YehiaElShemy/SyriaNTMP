@@ -440,19 +440,22 @@
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.from' | translate
         }}</label>
       <p-datepicker appendTo="body" showClear="true" [(ngModel)]="currentFilters.fromDate" dateFormat="mm/dd/yy"
-        [showIcon]="true" [iconDisplay]="'input'" styleClass="w-full" [placeholder]="'dashboard.selectDate' | translate"></p-datepicker>
+        [showIcon]="true" [iconDisplay]="'input'" styleClass="w-full"
+        [placeholder]="'dashboard.selectDate' | translate"></p-datepicker>
     </div>
     <div class="flex flex-col gap-2">
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.to' | translate
         }}</label>
       <p-datepicker appendTo="body" showClear="true" [(ngModel)]="currentFilters.toDate" dateFormat="mm/dd/yy"
-        [showIcon]="true" [iconDisplay]="'input'" styleClass="w-full" [placeholder]="'dashboard.selectDate' | translate"></p-datepicker>
+        [showIcon]="true" [iconDisplay]="'input'" styleClass="w-full"
+        [placeholder]="'dashboard.selectDate' | translate"></p-datepicker>
     </div>
     <div class="flex flex-col gap-2">
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.city' | translate
         }}</label>
-      <p-dropdown appendTo="body" [options]="citiesOptions" [(ngModel)]="currentFilters.city" optionLabel="nameEn"
-        optionValue="value" [placeholder]="'dashboard.allCities' | translate" [showClear]="true"></p-dropdown>
+      <p-dropdown appendTo="body" [options]="citiesOptions" [(ngModel)]="currentFilters.city"
+        [optionLabel]="isAr? 'nameAr' : 'nameEn'" optionValue="value" [placeholder]="'dashboard.allCities' | translate"
+        [showClear]="true"></p-dropdown>
     </div>
     <div class="flex flex-col gap-2">
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.hotelStars' | translate
@@ -464,21 +467,22 @@
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.hotelName' | translate
         }}</label>
       <p-dropdown appendTo="body" [options]="propertiesOptions" [(ngModel)]="currentFilters.hotelName"
-        optionLabel="nameEn" optionValue="value" [placeholder]="'dashboard.allHotels' | translate"
+        [optionLabel]="isAr? 'nameAr' : 'nameEn'" optionValue="value" [placeholder]="'dashboard.allHotels' | translate"
         [showClear]="true"></p-dropdown>
     </div>
     <div class="flex flex-col gap-2">
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.nationality' | translate
         }}</label>
       <p-dropdown appendTo="body" [options]="nationalityOptions" [(ngModel)]="currentFilters.nationality"
-        optionLabel="nameEn" optionValue="value" [placeholder]="'dashboard.allNationalities' | translate"
-        [showClear]="true"></p-dropdown>
+        [optionLabel]="isAr? 'nameAr' : 'nameEn'" optionValue="value"
+        [placeholder]="'dashboard.allNationalities' | translate" [showClear]="true"></p-dropdown>
     </div>
     <div class="flex flex-col gap-2">
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.purpose' | translate
         }}</label>
-      <p-dropdown appendTo="body" [options]="purposeOptions" [(ngModel)]="currentFilters.purpose" optionLabel="nameEn"
-        optionValue="value" [placeholder]="'dashboard.allPurposes' | translate" [showClear]="true"></p-dropdown>
+      <p-dropdown appendTo="body" [options]="purposeOptions" [(ngModel)]="currentFilters.purpose"
+        [optionLabel]="isAr? 'nameAr' : 'nameEn'" optionValue="value" [placeholder]="'dashboard.allPurposes' |
+        translate" [showClear]="true"></p-dropdown>
     </div>
   </div>
   <div class="mt-4 flex">

@@ -10,6 +10,7 @@ import { ReservationService } from '../../../proxy/services';
 import { DashboardDto, WeeklyDto, PurposeDto, NationalityDto, CityOccupancyDto, AdrByCityDto, LookupDto, DashboardFilterDto } from '@proxy/dto';
 import { PropertyRatingEnum } from '../../../proxy/models/enums/property-rating-enum.enum';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslationService } from 'src/app/shared/services/translation.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,8 +20,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  reservationService = inject(ReservationService);
-  translateService = inject(TranslateService);
   statsData: DashboardDto | null = null;
   isLoading = false;
   error: string | null = null;
@@ -60,6 +59,11 @@ export class DashboardComponent implements OnInit {
   revAdrOptions: any;
   nationalityOptions: LookupDto[];
   purposeOptions: LookupDto[];
+  constructor(
+    private translationService: TranslationService,
+    private reservationService: ReservationService,
+    private translateService: TranslateService
+  ) { }
 
   ngOnInit() {
     this.initChart();
@@ -70,6 +74,9 @@ export class DashboardComponent implements OnInit {
       this.buildLists();
     });
     this.buildLists();
+  }
+  get isAr(): boolean {
+    return this.translationService.currentLanguage() === 'ar';
   }
 
   buildLists() {
