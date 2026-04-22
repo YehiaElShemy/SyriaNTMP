@@ -44,12 +44,12 @@
         <div class="flex flex-col gap-2 w-full">
           <label class="text-sm font-semibold text-gray-600">From</label>
           <p-datepicker styleClass="w-full" [iconDisplay]="'input'" [showIcon]="true" inputId="from-date"
-            [(ngModel)]="filterDateFrom" [showIcon]="true"></p-datepicker>
+            [(ngModel)]="filterDateFrom" [showIcon]="true" [showClear]="true"></p-datepicker>
         </div>
         <div class="flex flex-col gap-2 w-full">
           <label class="text-sm font-semibold text-gray-600">To</label>
           <p-datepicker styleClass="w-full" [iconDisplay]="'input'" [showIcon]="true" inputId="to-date"
-            [(ngModel)]="filterDateTo" [showIcon]="true"></p-datepicker>
+            [(ngModel)]="filterDateTo" [showIcon]="true" [showClear]="true"></p-datepicker>
         </div>
       </div>
       <div class="flex items-end justify-end gap-2">
