@@ -66,16 +66,19 @@ export interface ReservationsDto extends EntityDto<number> {
   companyName?: string;
   propertyId?: string;
   propertyName?: string;
+  city?: string;
   propertyRating?: PropertyRatingEnum;
   reservationNumber?: string;
   reservationStatus?: ReservationStatus;
   numberOfGuests: number;
   numberOfNights: number;
+  numberOfRooms: number;
   reservationPurpose?: ReservationPurpose;
   fromDate?: string;
   toDate?: string;
   guestNationality?: string;
   totalPrice: number;
+  totalNumberOfPropertyUnits?: number;
 }
 
 export interface ReservationsSearchCriteria extends PagedAndSortedResultRequestDto {

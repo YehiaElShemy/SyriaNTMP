@@ -3927,6 +3927,18 @@
           "regex": null
         },
         {
+          "name": "City",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
           "name": "PropertyRating",
           "jsonName": null,
           "type": "SyriaNTMP.Models.Enums.PropertyRatingEnum?",
@@ -3976,6 +3988,18 @@
         },
         {
           "name": "NumberOfNights",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "NumberOfRooms",
           "jsonName": null,
           "type": "System.Int32",
           "typeSimple": "number",
@@ -4039,6 +4063,18 @@
           "jsonName": null,
           "type": "System.Decimal",
           "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "TotalNumberOfPropertyUnits",
+          "jsonName": null,
+          "type": "System.Int32?",
+          "typeSimple": "number?",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -4364,8 +4400,8 @@
         "Sports",
         "Entertainment",
         "Other",
-        "Work_RoyalCourt",
-        "Quarantined_guests",
+        "WorkRoyalCourt",
+        "QuarantinedGuests",
         "MinistryOfHealthStaff"
       ],
       "enumValues": [

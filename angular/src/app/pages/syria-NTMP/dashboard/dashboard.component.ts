@@ -11,6 +11,7 @@ import { DashboardDto, WeeklyDto, PurposeDto, NationalityDto, CityOccupancyDto, 
 import { PropertyRatingEnum } from '../../../proxy/models/enums/property-rating-enum.enum';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslationService } from 'src/app/shared/services/translation.service';
+import { ReservationPurpose } from '@proxy/models/enums';
 
 @Component({
   selector: 'app-dashboard',
@@ -58,7 +59,7 @@ export class DashboardComponent implements OnInit {
   revAdrData: any;
   revAdrOptions: any;
   nationalityOptions: LookupDto[];
-  purposeOptions: LookupDto[];
+  purposeOptions: any[] = [];
   constructor(
     private translationService: TranslationService,
     private reservationService: ReservationService,
@@ -116,17 +117,14 @@ export class DashboardComponent implements OnInit {
     })
   }
   getPurposes() {
-    this.reservationService.getPurposes({
-
-    }).subscribe({
-      next: (res: LookupDto[]) => {
-        this.purposeOptions = res;
-        // console.log(res, "getPurposes");
-      },
-      error: (err) => {
-        console.log(err, "err");
-      }
-    })
+    this.translateService.get('enums').subscribe(enumsTranslations => {
+      this.purposeOptions = Object.keys(ReservationPurpose)
+        .filter(key => isNaN(Number(key)))
+        .map(key => ({
+          label: enumsTranslations?.ReservationPurpose?.[key] || key.replace(/([A-Z])/g, ' $1').trim(),
+          value: ReservationPurpose[key as keyof typeof ReservationPurpose]
+        }));
+    });
   }
 
   getFiltersCities() {

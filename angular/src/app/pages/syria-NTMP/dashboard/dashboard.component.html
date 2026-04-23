@@ -480,9 +480,8 @@
     <div class="flex flex-col gap-2">
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.purpose' | translate
         }}</label>
-      <p-dropdown appendTo="body" [options]="purposeOptions" [(ngModel)]="currentFilters.purpose"
-        [optionLabel]="isAr? 'nameAr' : 'nameEn'" optionValue="value" [placeholder]="'dashboard.allPurposes' |
-        translate" [showClear]="true"></p-dropdown>
+      <p-dropdown appendTo="body" [options]="purposeOptions" [(ngModel)]="currentFilters.purpose" optionLabel="label"
+        optionValue="value" [placeholder]="'dashboard.allPurposes' | translate" [showClear]="true"></p-dropdown>
     </div>
   </div>
   <div class="mt-4 flex">

@@ -8,8 +8,8 @@ export enum ReservationPurpose {
   Sports = 5,
   Entertainment = 6,
   Other = 7,
-  Work_RoyalCourt = 8,
-  Quarantined_guests = 9,
+  WorkRoyalCourt = 8,
+  QuarantinedGuests = 9,
   MinistryOfHealthStaff = 10,
 }
 

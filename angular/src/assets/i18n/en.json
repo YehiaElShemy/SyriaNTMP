@@ -81,8 +81,8 @@
       "Sports": "Sports",
       "Entertainment": "Entertainment",
       "Other": "Other",
-      "Work_RoyalCourt": "Work (Royal Court)",
-      "Quarantined_guests": "Quarantined Guests",
+      "WorkRoyalCourt": "Work (Royal Court)",
+      "QuarantinedGuests": "Medical Guests",
       "MinistryOfHealthStaff": "Ministry of Health Staff"
     }
   },

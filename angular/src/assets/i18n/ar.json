@@ -81,8 +81,8 @@
       "Sports": "رياضة",
       "Entertainment": "ترفيه",
       "Other": "أخرى",
-      "Work_RoyalCourt": "عمل (الديوان الملكي)",
-      "Quarantined_guests": "ضيوف في الحجر الصحي",
+      "WorkRoyalCourt": "عمل (الديوان الملكي)",
+      "QuarantinedGuests": "ضيوف في الحجر الصحي",
       "MinistryOfHealthStaff": "طاقم وزارة الصحة"
     }
   },
