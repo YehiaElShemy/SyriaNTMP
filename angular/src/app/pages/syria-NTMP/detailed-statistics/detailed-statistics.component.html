@@ -70,7 +70,7 @@
 
     <ng-template #header>
       <tr>
-        <th class="text-xs text-gray-500 font-medium">{{ 'table.company' | translate }}</th>
+        <th class="text-xs text-gray-500 font-medium">{{ 'dashboard.nationality' | translate }}</th>
         <th class="text-xs text-gray-500 font-medium">{{ 'table.property' | translate }}</th>
         <th class="text-xs text-gray-500 font-medium">{{ 'table.propertyRating' | translate }}</th>
         <th class="text-xs text-gray-500 font-medium">{{ 'table.reservationNo' | translate }}</th>
@@ -85,7 +85,7 @@
 
     <ng-template #body let-res>
       <tr class="border-b border-gray-100 font-semibold text-sm">
-        <td class="py-4">{{ res.companyName }}</td>
+        <td class="py-4">{{ res.guestNationality }}</td>
         <td>{{ res.propertyName }}</td>
         <td>
           <p-rating [(ngModel)]="res.propertyRating" [readonly]="true"></p-rating>
