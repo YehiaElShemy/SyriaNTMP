@@ -49,7 +49,7 @@
     "reservationNumber": "رقم الحجز",
     "reservationNo": "رقم الحجز",
     "reservationStatus": "حالة الحجز",
-    "visitPurpose": "غرض الزيارة",
+    "visitPurpose": "سبب الزيارة",
     "from": "من",
     "to": "إلى",
     "guests": "عدد الضيوف",
@@ -87,11 +87,12 @@
     }
   },
   "dashboard": {
-    "guestMixTitle": "مزيج الضيوف",
+    
+    "guestMixTitle": "تنوع العملاء",
     "guestMixSubtitle": "الجنسية والمدينة",
-    "revenueTitle": "الإيرادات ومتوسط السعر اليومي",
+    "revenueTitle": "متوسط السعر اليومي",
     "revenueSubtitle": "الأسعار حسب السوق",
-    "demandTitle": "الطلب والإشغال",
+    "demandTitle": "نسبة الإشغال",
     "demandSubtitle": "الغرض والطاقة الاستيعابية",
     "operationsTitle": "العمليات",
     "operationsSubtitle": "الأسبوع واليوم",
@@ -100,7 +101,7 @@
     "guestMixDescription": "قم بتصفية بيانات الحجوزات؛ يعرض صف التحليل إحصائيات الجنسيات (الضيوف)، وغرض الزيارة (الإقامات المكدسة)، ومتوسط السعر اليومي حسب المدينة معاً.",
     "breakdown": "التحليل التفصيلي",
     "breakdownDesc": "ثلاثة مخططات — الجنسيات (الضيوف)، وغرض الزيارة (مكدس)، ومتوسط السعر اليومي حسب المدينة — تتبع جميعها نفس الفلاتر.",
-    "visitPurpose": "غرض الزيارة",
+    "visitPurpose": "سبب الزيارة",
     "adr": "متوسط السعر اليومي",
     "adrByCity": "متوسط السعر اليومي حسب المدينة",
     "pricing": "التسعير",
@@ -158,6 +159,10 @@
     "allNationalities": "جميع الجنسيات",
     "purpose": "الغرض",
     "allPurposes": "جميع الأغراض",
-    "apply": "تطبيق"
+    "apply": "تطبيق",
+    "purposeLabel": "سبب",
+    "nightsLabel": "الليالي",
+    "percentLabel": "النسبة",
+    "totalNights": "إجمالي الليالي"
   }
 }

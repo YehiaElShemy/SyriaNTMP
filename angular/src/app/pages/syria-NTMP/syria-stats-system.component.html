@@ -3,8 +3,8 @@
   <div class="navbar py-2 px-3 flex justify-between items-center ">
     <div class="flex items-center gap-6">
       <div class="logo-section flex items-center gap-3">
-        <img src="assets/images/windows.svg" alt="windows logo"  />
-        <div class="flex flex-col gap-1">
+        <img class="icon-img" src="assets/images/windows.svg" alt="windows logo"  />
+        <div class="flex flex-col">
           <h2 class="m-0 text-xl font-bold address" >{{ 'SYRIA_STATS.TITLE' | translate }}</h2>
           <p class="show-text">{{ 'SYRIA_STATS.SUBTITLE' | translate }}</p>
         </div>
@@ -14,13 +14,13 @@
         <button class="nav-tab flex items-center gap-2 py-3 px-1 text-sm font-medium transition-colors"
                 [class.active]="selectedView === 'Dashboard'"
                 (click)="selectedView = 'Dashboard'">
-          <i class="pi pi-home"></i>
+          <!-- <i class="pi pi-home"></i> -->
           {{ 'SYRIA_STATS.DASHBOARD' | translate }}
         </button>
         <button class="nav-tab flex items-center gap-2 py-3 px-1 text-sm font-medium transition-colors"
                 [class.active]="selectedView === 'Detailed Statistics'"
                 (click)="selectedView = 'Detailed Statistics'">
-          <i class="pi pi-file"></i>
+          <!-- <i class="pi pi-file"></i> -->
           {{ 'SYRIA_STATS.DETAILED_STATISTICS' | translate }}
         </button>
       </div>
@@ -33,11 +33,7 @@
         {{ 'SYRIA_STATS.LOGOUT' | translate }}
       </button>
 
-      <p-menu #langMenu [model]="langItems" [popup]="true"></p-menu>
-      <button (click)="langMenu.toggle($event)" class="icon-btn w-10 h-10 flex justify-center items-center rounded-xl border transition-colors">
-        <i class="pi pi-globe text-lg"></i>
-      </button>
-
+      
       <div class="profile-badge flex items-center gap-3 rounded-full border">
         <div class="avatar rounded-full flex justify-center items-center font-bold" style="width: 36px; height: 36px;">
           A
@@ -47,13 +43,19 @@
           <span class="profile-role font-semibold tracking-wider uppercase mt-1">{{ 'SYRIA_STATS.PREMIUM' | translate }}</span>
         </div>
       </div>
+
+      <p-menu #langMenu [model]="langItems" [popup]="true"></p-menu>
+      <button (click)="langMenu.toggle($event)" class="icon-btn w-10 h-10 flex justify-center items-center rounded-xl border transition-colors">
+        <img  src="assets/images/lang.svg" alt="">
+      </button>
+
     </div>
   </div>
 
-  <div class="content-wrapper p-6 bg-[#F1F1F9] min-h-screen">
+  <div class="content-wrapper p-6 bg-[#EEF1F9] min-h-screen">
 
     <!-- Conditional Sub-views -->
-    <div class="view-container bg-[#F1F1F9] rounded-lg p-3">
+    <div class="view-container bg-[#EEF1F9] rounded-lg p-3">
       <app-detailed-statistics *ngIf="selectedView === 'Detailed Statistics'"></app-detailed-statistics>
       <app-dashboard *ngIf="selectedView === 'Dashboard'"></app-dashboard>
     </div>

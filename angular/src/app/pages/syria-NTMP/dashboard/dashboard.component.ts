@@ -12,6 +12,10 @@ import { PropertyRatingEnum } from '../../../proxy/models/enums/property-rating-
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslationService } from 'src/app/shared/services/translation.service';
 import { ReservationPurpose } from '@proxy/models/enums';
+import { Chart } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+Chart.register(ChartDataLabels);
 
 @Component({
   selector: 'app-dashboard',
@@ -54,6 +58,28 @@ export class DashboardComponent implements OnInit {
   demandPurposeOptions: any;
   demandOccupancyData: any;
   demandOccupancyOptions: any;
+
+  // Visit Purpose donut chart
+  purposeDonutData: any;
+  purposeDonutOptions: any;
+  readonly purposeColors = ['#A78BFA', '#3B82F6', '#4ADE80', '#FBBF24', '#F97316', '#FB7185', '#6D28D9'];
+
+  get purposeTotalNights(): number {
+    if (!this.statsData?.purposeStats) return 0;
+    return this.statsData.purposeStats.reduce((sum, item) => sum + (item.count || 0), 0);
+  }
+
+  formatNights(n: number): string {
+    if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
+    if (n >= 1_000) return (n / 1_000).toFixed(1) + 'K';
+    return n.toString();
+  }
+
+  getPurposePercent(count: number): number {
+    const total = this.purposeTotalNights;
+    if (!total) return 0;
+    return Math.round((count / total) * 100);
+  }
 
   // Revenue tab charts
   revAdrData: any;
@@ -240,6 +266,18 @@ export class DashboardComponent implements OnInit {
 
       this.mixPurposeData = { labels: ['PURPOSE'], datasets: purposeDatasets };
       this.demandPurposeData = { labels: ['PURPOSE'], datasets: purposeDatasets };
+
+      // Donut chart for Visit Purpose tab
+      this.purposeDonutData = {
+        labels: res.purposeStats.map((item: PurposeDto) => item.purpose || 'Other'),
+        datasets: [{
+          data: res.purposeStats.map((item: PurposeDto) => item.count),
+          backgroundColor: res.purposeStats.map((_: PurposeDto, i: number) => this.purposeColors[i % this.purposeColors.length]),
+          borderWidth: 0,
+          borderColor: '#ffffff',
+          hoverBorderColor: '#ffffff'
+        }]
+      };
     }
 
     // Guest Mix & Revenue - ADR By City
@@ -332,14 +370,25 @@ export class DashboardComponent implements OnInit {
       }
     };
 
-    // ========================================
-    // Demand Tab Charts
-    // ========================================
 
-    // Visit Purpose - Horizontal Stacked Bar
     this.demandPurposeData = {
       labels: ['PURPOSE'],
       datasets: []
+    };
+
+    this.purposeDonutData = { labels: [], datasets: [] };
+    this.purposeDonutOptions = {
+      cutout: '45%',
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          enabled: true
+        },
+        datalabels: {
+          display: false
+        }
+      }
     };
 
     this.demandPurposeOptions = {

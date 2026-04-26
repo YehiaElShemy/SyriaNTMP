@@ -158,6 +158,10 @@
     "allNationalities": "All nationalities",
     "purpose": "Purpose",
     "allPurposes": "All purposes",
-    "apply": "Apply"
+    "apply": "Apply",
+    "purposeLabel": "Purpose",
+    "nightsLabel": "Nights",
+    "percentLabel": "Percent",
+    "totalNights": "TOTAL NIGHTS"
   }
 }

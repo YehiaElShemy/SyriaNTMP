@@ -5,6 +5,14 @@
     max-height: 250px !important;
 }
 
+.dashboard-tabs{
+  width:fit-content !important;
+  margin:auto;
+  background-color: #ffffff;
+  justify-content: space-around;
+  // padding: 0px 10px !important;
+}
+
 .bg-slate-800{
     background-color: #1e293b !important;
 }
@@ -30,7 +38,7 @@
   outline: none;
 
   .tab-title {
-    color: #6b7280;
+    color: #0027B7;
     font-size: 15px;
     font-weight: 600;
   }
@@ -43,25 +51,21 @@
     text-transform: uppercase;
   }
 
-  &:hover {
-    .tab-title {
-      color: #374151;
-    }
-  }
+
 
   &.active {
-    border-bottom: 3px solid #644B96;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    background-color: #0027B7 !important;
+
+  .svg{
+    filter: brightness(0) invert(1) !important;
+  }
 
     .tab-title {
-      color: #1f2937;
+    color: #fff;
       font-weight: 700;
     }
 
-    .tab-subtitle {
-      color: #644B96;
-    }
+
   }
 }
 
@@ -439,3 +443,110 @@
   font-size: 10px;
 }
 
+// ========================================
+// Visit Purpose — Donut + Table (Exact Match)
+// ========================================
+
+.purpose-card-title {
+  color: #1f2937;
+}
+
+.purpose-layout {
+  gap: 48px;
+}
+
+.purpose-table-card {
+  flex: 1;
+  max-width: 380px;
+  background: #ffffff;
+}
+
+.purpose-table {
+  border-collapse: separate;
+  border-spacing: 0 4px;
+}
+
+.purpose-th {
+  color: #1f2937;
+  font-size: 13px;
+  padding-bottom: 12px;
+}
+
+.purpose-td {
+  padding: 8px 0;
+  vertical-align: middle;
+}
+
+.purpose-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.purpose-name {
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.purpose-count {
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.purpose-percent {
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.purpose-donut-container {
+  flex: 1.5;
+  display: flex;
+  justify-content: center;
+}
+
+.purpose-donut-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 320px;
+  height: 320px;
+
+  ::ng-deep p-chart,
+  ::ng-deep p-chart > div,
+  ::ng-deep p-chart canvas {
+    width: 320px !important;
+    height: 320px !important;
+    max-height: 320px !important;
+  }
+}
+
+.purpose-donut-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.purpose-total-value {
+  color: #111827;
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.purpose-total-label {
+  color: #9ca3af;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 8px;
+}

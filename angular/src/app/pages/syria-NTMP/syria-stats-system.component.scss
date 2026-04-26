@@ -4,6 +4,11 @@
   font-family: 'Montserrat', sans-serif;
 }
 
+.icon-img{
+  width: 56px !important;
+  height: 56px !important;
+}
+
 ::ng-deep .p-togglebutton-checked ,
 ::ng-deep .p-togglebutton-checked .p-togglebutton-content{
 
@@ -19,10 +24,10 @@
 .navbar{
   background-color: white !important;
   .address{
-    color: #64748b
+    color:#111827 !important;
   }
   .show-text{
-    color: #9BADD2;
+    color: #079DD8;
     margin: 0;
   }
 
@@ -36,14 +41,14 @@
     color: #9ca3af;
     cursor: pointer;
     outline: none;
+    font-weight: 800;
+    font-size: 16px;
 
-    &:hover {
-      color: black;
-    }
+
 
     &.active {
-      color: black;
-      border-bottom: 3px solid #9DB2DC;
+      color: #0891B2;
+      border-bottom: 3px solid #06B6D4;
     }
   }
 
@@ -67,24 +72,27 @@
   }
 
   .profile-badge {
-    background-color: #f4f3fb;
-    border-color: #e8e6f5;
-    padding: 10px;
+    // background-color: #f4f3fb;
+    border-color: #E5E7EB;
+    padding: 8px 12px;
   }
 
   .avatar {
     width: 36px;
     height: 36px;
-    background-color: #e5e1fc;
-    color: #6345ed;
+    background-color: #0027B7;
+    color: white;
   }
 
   .profile-name {
     color: #2a2a3e;
+    font-weight: 600;
+
   }
 
   .profile-role {
-    color: #9ca3af;
+    color: #0891B2;
     font-size: 10px;
+    font-weight: 600;
   }
 }
