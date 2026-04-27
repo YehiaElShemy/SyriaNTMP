@@ -87,7 +87,7 @@
     }
   },
   "dashboard": {
-    "visitors": "Visitors",    
+    "visitors": "Visitors",
     "guestMixTitle": "Guest mix",
     "guestMixSubtitle": "NATIONALITY & CITY",
     "revenueTitle": "Revenue & ADR",
@@ -97,6 +97,8 @@
     "operationsTitle": "Operations",
     "operationsSubtitle": "WEEK & TODAY",
     "marketComposition": "MARKET COMPOSITION",
+    "totalSolidNights": "Total Solid Nights",
+    "totalSolidNightsSub": "Total Nights Reserved in All Properties",
     "nationalityStatistics": "Nationality statistics",
     "guestMixDescription": "Comprehensive breakdown of tourist Nationalities entering the Syrian Arab Republic.",
     "breakdown": "Breakdown",

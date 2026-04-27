@@ -59,6 +59,7 @@ export interface OperationDto {
   occupancyRate: number;
   cancellationRate: number;
   activeProperties: number;
+  totalSoldNights: number;
 }
 
 export interface PeakCityDto {

@@ -87,7 +87,7 @@
     }
   },
   "dashboard": {
-    "visitors": "الزوار",    
+    "visitors": "الزوار",
     "guestMixTitle": "تنوع العملاء",
     "guestMixSubtitle": "الجنسية والمدينة",
     "revenueTitle": "متوسط السعر اليومي",
@@ -130,6 +130,8 @@
     "operationsDescription": "اتجاه أسبوعي خفيف ولقطة يومية. استبدل العناصر النائبة بقوائم تشغيل مباشرة عند توفر بيانات الخلفية.",
     "reservations": "الحجوزات",
     "reservationsSub": "مجموع الليالي في مجموعة البيانات",
+    "totalSolidNights": "إجمالي الليالي المباعة",
+    "totalSolidNightsSub": "إجمالي الليالي المحجوزة في جميع النشآت",
     "activeProperties": "العقارات النشطة",
     "activePropertiesSub": "الفنادق المميزة في البيانات",
     "cancellationRate": "معدل الإلغاء",

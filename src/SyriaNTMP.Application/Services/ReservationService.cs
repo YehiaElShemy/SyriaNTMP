@@ -185,7 +185,7 @@ namespace SyriaNTMP.Services
             // sum of available nights
             var totalAvailableNights = activeData.Sum(r => (r.TotalNumberOfPropertyUnits ?? 0) * r.NumberOfNights);
 
-            var avgOccupancyRate = totalAvailableNights > 0 ? (totalOccupiedNights / (double)totalAvailableNights) * 100 : 0;
+            var avgOccupancyRate =Math.Round( totalAvailableNights > 0 ? (totalOccupiedNights / (double)totalAvailableNights) * 100 : 0,3);
             var totalNightsNotSolds = totalAvailableNights - totalOccupiedNights;
             return new DashboardDto
             {
@@ -195,7 +195,8 @@ namespace SyriaNTMP.Services
                     CancellationRate = periodData.Count == 0 ? 0 : (periodData.Count(x => x.ReservationStatus == ReservationStatus.Canceled) * 100 /
                            periodData.Count),
                     OccupancyRate = CalculateOccupancyPercentage(totalSoldNights, activeData, startPeriod, endPeriod),
-                    ActiveProperties = activeProperties
+                    ActiveProperties = activeProperties,
+                    TotalSoldNights= totalSoldNights
                 },
                 PurposeStats = new PurposeDto()
                 {
@@ -235,12 +236,12 @@ namespace SyriaNTMP.Services
                     }).ToList(),
                     PeakCity = new PeakCityDto
                     {
-                        Adr = activeData.GroupBy(x => x.City)
+                        Adr =Math.Round( activeData.GroupBy(x => x.City)
                             .Select(g => new AdrByCityDto
                             {
                                 City = g.Key,
                                 Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod)
-                            }).Max(a => a.Adr),
+                            }).Max(a => a.Adr),3),
                         City = activeData.GroupBy(x => x.City)
                             .Select(g => new AdrByCityDto
                             {
