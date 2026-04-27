@@ -78,19 +78,19 @@
               <!-- Visitors Line -->
               <div class="flex items-center justify-between text-xs font-bold text-gray-700">
                 <span>{{ item.nationality || 'Unknown' }} / {{ 'dashboard.visitors' | translate }}</span>
-                <span [style.color]="getNationalityColor(i)">{{ item.count }}</span>
+                <span [style.color]="getNationalityColor(i)">{{ item.visitorCount }}</span>
               </div>
               <div class="w-full bg-gray-100 rounded-full h-2">
-                <div class="h-2 rounded-full" [style.width.%]="getNationalityPercent(item.count)" [style.background-color]="getNationalityColor(i)"></div>
+                <div class="h-2 rounded-full" [style.width.%]="getNationalityPercent(item.visitorCount, nationalityMaxVisitorCount)" [style.background-color]="getNationalityColor(i)"></div>
               </div>
 
               <!-- Nights Line -->
               <div class="flex items-center justify-between text-xs font-bold text-gray-700 mt-1">
                 <span>{{ 'dashboard.nightsLabel' | translate }}</span>
-                <span [style.color]="getNationalityColor(i)">{{ item.count }}</span>
+                <span [style.color]="getNationalityColor(i)">{{ item.nightCount }}</span>
               </div>
               <div class="w-full bg-gray-100 rounded-full h-2">
-                <div class="h-2 rounded-full" [style.width.%]="getNationalityPercent(item.count)" [style.background-color]="getNationalityColor(i)"></div>
+                <div class="h-2 rounded-full" [style.width.%]="getNationalityPercent(item.nightCount, nationalityMaxNightCount)" [style.background-color]="getNationalityColor(i)"></div>
               </div>
 
             </div>
@@ -98,41 +98,6 @@
         </div>
       </div>
 
-      <!-- Visit Purpose -->
-      <!-- <div class="flex flex-col">
-        <div class="flex items-center justify-between mb-3">
-          <div class="flex items-center gap-2">
-            <div class="mix-chart-icon mix-chart-icon--green rounded-md flex justify-center items-center">
-              <i class="pi pi-compass"></i>
-            </div>
-            <span class="mix-chart-title font-bold">{{ 'dashboard.visitPurpose' | translate }}</span>
-          </div>
-
-        </div>
-        <div class="w-full" style="min-height: 220px;">
-          <p-chart type="bar" [data]="mixPurposeData" [options]="mixPurposeOptions"></p-chart>
-        </div>
-      </div> -->
-
-      <!-- ADR by City -->
-      <!-- <div class="flex flex-col">
-        <div class="flex items-center justify-between mb-3">
-          <div class="flex items-center gap-2">
-            <div class="mix-chart-icon mix-chart-icon--yellow rounded-md flex justify-center items-center">
-              <i class="pi pi-dollar"></i>
-            </div>
-            <div class="flex flex-col">
-              <span class="mix-chart-title font-bold">{{ 'dashboard.adr' | translate }}</span>
-              <span class="mix-chart-sub uppercase tracking-wider font-semibold">{{ 'dashboard.adrByCity' | translate
-                }}</span>
-            </div>
-          </div>
-
-        </div>
-        <div class="w-full" style="min-height: 220px;">
-          <p-chart type="bar" [data]="mixAdrData" [options]="mixAdrOptions"></p-chart>
-        </div>
-      </div> -->
 
     </div>
   </div>
@@ -157,29 +122,34 @@
         <i class="pi pi-dollar"></i>
       </div>
       <div class="flex flex-col">
-        <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.portfolioAdr' | translate
+        <span style="font-size: 20px;" class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.portfolioAdr' | translate
           }}</span>
         <p class="stat-card__value font-bold m-0 mt-1">
           <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-          <span class="purple" *ngIf="!isLoading">${{ statsData?.revenue?.portfolioAdr || 0 }}</span>
+          <span class="purple" *ngIf="!isLoading">${{ statsData?.revenue?.adrAvgPriceDay|| 0 }}</span>
         </p>
         <span class="stat-card__sub mt-1">{{ 'dashboard.portfolioAdrSub' | translate }}</span>
       </div>
     </div>
+
     <div class="stat-card stat-card--blue bg-white rounded-lg p-3 border flex items-start gap-3">
+      
       <div class="rev-stat-icon rev-stat-icon--blue rounded-lg flex justify-center items-center">
         <i class="pi pi-users"></i>
       </div>
+
       <div class="flex flex-col">
-        <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.staysInView' | translate
+        <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.toalNight' | translate
           }}</span>
         <p class="stat-card__value font-bold m-0 mt-1">
           <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-          <span class="blue" *ngIf="!isLoading">{{ statsData?.summary?.totalReservations || 0 }}</span>
+          <span class="blue" *ngIf="!isLoading">{{ statsData?.revenue?.totalNight || 0 }}</span>
         </p>
-        <span class="stat-card__sub mt-1">{{ 'dashboard.staysInViewSub' | translate }}</span>
+        <span class="stat-card__sub mt-1">{{ 'dashboard.toalNightSub' | translate }}</span>
       </div>
     </div>
+
+
     <div class="stat-card stat-card--yellow bg-white rounded-lg p-3 border flex items-start gap-3">
       <div class="rev-stat-icon rev-stat-icon--yellow rounded-lg flex justify-center items-center">
         <i class="pi pi-bullseye"></i>
@@ -243,29 +213,27 @@
   <!-- Stat Cards Row -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     <div class="stat-card stat-card--purple bg-white rounded-lg p-3 border">
-      <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.reservationsSample' |
+      <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.availableNights' |
         translate }}</span>
       <p class="stat-card__value font-bold m-0 mt-2">
         <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-        <span class="purple" *ngIf="!isLoading">{{ statsData?.summary?.totalReservations || 0 }}</span>
+        <span class="purple" *ngIf="!isLoading">{{ statsData?.occupancyDto?.totalNightsNotSolds || 0 }}</span>
       </p>
-      <span class="stat-card__sub mt-1">{{ 'dashboard.reservationsSampleSub' | translate }}</span>
     </div>
     <div class="stat-card stat-card--blue bg-white rounded-lg p-3 border">
-      <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.purposeCount' | translate
+      <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.soldNights' | translate
         }}</span>
       <p class="stat-card__value font-bold m-0 mt-2">
         <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-        <span class="blue" *ngIf="!isLoading">{{ statsData?.purposeStats?.length || 0 }}</span>
+        <span class="blue" *ngIf="!isLoading">{{ statsData?.occupancyDto?.totalSoldNights || 0 }}</span>
       </p>
-      <span class="stat-card__sub mt-1">{{ 'dashboard.purposeCountSub' | translate }}</span>
     </div>
     <div class="stat-card stat-card--yellow bg-white rounded-lg p-3 border">
       <span class="stat-card__label uppercase font-semibold tracking-wider">{{ 'dashboard.avgOccupancyIndex' | translate
         }}</span>
       <p class="stat-card__value font-bold m-0 mt-2">
         <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-        <span class="yellow" *ngIf="!isLoading">{{ statsData?.summary?.occupancyRate || 0 }}%</span>
+        <span class="yellow" *ngIf="!isLoading">{{ statsData?.occupancyDto?.avgOccupancyRate || 0 }}%</span>
       </p>
       <span class="stat-card__sub mt-1">{{ 'dashboard.avgOccupancyIndexSub' | translate }}</span>
     </div>
@@ -455,7 +423,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of statsData?.purposeStats; let i = index" class="purpose-row">
+              <tr *ngFor="let item of statsData?.purposeStats?.purposeDetailsDtos; let i = index" class="purpose-row">
                 <td class="purpose-td">
                   <div class="flex items-center gap-3 justify-start">
                     <span class="purpose-dot" [style.background-color]="purposeColors[i % purposeColors.length]"></span>

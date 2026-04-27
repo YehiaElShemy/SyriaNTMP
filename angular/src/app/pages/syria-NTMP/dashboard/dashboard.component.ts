@@ -46,8 +46,7 @@ export class DashboardComponent implements OnInit {
   opsLineOptions: any;
 
   // Guest Mix tab charts
-  mixNationalityData: any;
-  mixNationalityOptions: any;
+  // Guest Mix tab charts
   mixPurposeData: any;
   mixPurposeOptions: any;
   mixAdrData: any;
@@ -65,8 +64,8 @@ export class DashboardComponent implements OnInit {
   readonly purposeColors = ['#A78BFA', '#3B82F6', '#4ADE80', '#FBBF24', '#F97316', '#FB7185', '#6D28D9'];
 
   get purposeTotalNights(): number {
-    if (!this.statsData?.purposeStats) return 0;
-    return this.statsData.purposeStats.reduce((sum, item) => sum + (item.count || 0), 0);
+    if (!this.statsData?.purposeStats?.purposeDetailsDtos) return 0;
+    return this.statsData.purposeStats.purposeDetailsDtos.reduce((sum, item) => sum + (item.count || 0), 0);
   }
 
   formatNights(n: number): string {
@@ -81,13 +80,17 @@ export class DashboardComponent implements OnInit {
     return Math.round((count / total) * 100);
   }
 
-  get nationalityMaxCount(): number {
+  get nationalityMaxVisitorCount(): number {
     if (!this.statsData?.nationalityStats?.length) return 1;
-    return Math.max(...this.statsData.nationalityStats.map(item => item.count));
+    return Math.max(...this.statsData.nationalityStats.map(item => item.visitorCount));
   }
 
-  getNationalityPercent(count: number): number {
-    const max = this.nationalityMaxCount;
+  get nationalityMaxNightCount(): number {
+    if (!this.statsData?.nationalityStats?.length) return 1;
+    return Math.max(...this.statsData.nationalityStats.map(item => item.nightCount));
+  }
+
+  getNationalityPercent(count: number, max: number): number {
     if (!max) return 0;
     return Math.round((count / max) * 100);
   }
@@ -257,24 +260,13 @@ export class DashboardComponent implements OnInit {
       }
     }
 
-    // Guest Mix - Nationality
-    if (res.nationalityStats && Array.isArray(res.nationalityStats)) {
-      const labels = res.nationalityStats.map((item: NationalityDto) => item.nationality || 'Unknown');
-      const chartData = res.nationalityStats.map((item: NationalityDto) => item.nightCount);
-      this.mixNationalityData = {
-        labels: labels,
-        datasets: [{
-          label: 'Nationality',
-          backgroundColor: '#3b82f6',
-          data: chartData
-        }]
-      };
-    }
+    // Guest Mix - Nationality (Progress bars in HTML)
+    // Legacy mixNationalityData logic removed as it's handled via manual progress bars in template
 
     // Guest Mix & Demand - Purpose
-    if (res.purposeStats && Array.isArray(res.purposeStats)) {
+    if (res.purposeStats?.purposeDetailsDtos && Array.isArray(res.purposeStats.purposeDetailsDtos)) {
       const colors = ['#9f6af0', '#7bb7d5', '#e2ba71', '#c87f82', '#644B96'];
-      const purposeDatasets = res.purposeStats.map((item: PurposeDto, index: number) => ({
+      const purposeDatasets = res.purposeStats.purposeDetailsDtos.map((item, index: number) => ({
         label: item.purpose || 'Other',
         backgroundColor: colors[index % colors.length],
         data: [item.count]
@@ -285,10 +277,10 @@ export class DashboardComponent implements OnInit {
 
       // Donut chart for Visit Purpose tab
       this.purposeDonutData = {
-        labels: res.purposeStats.map((item: PurposeDto) => item.purpose || 'Other'),
+        labels: res.purposeStats.purposeDetailsDtos.map((item) => item.purpose || 'Other'),
         datasets: [{
-          data: res.purposeStats.map((item: PurposeDto) => item.count),
-          backgroundColor: res.purposeStats.map((_: PurposeDto, i: number) => this.purposeColors[i % this.purposeColors.length]),
+          data: res.purposeStats.purposeDetailsDtos.map((item) => item.count),
+          backgroundColor: res.purposeStats.purposeDetailsDtos.map((_, i: number) => this.purposeColors[i % this.purposeColors.length]),
           borderWidth: 0,
           borderColor: '#ffffff',
           hoverBorderColor: '#ffffff'
@@ -323,9 +315,9 @@ export class DashboardComponent implements OnInit {
     }
 
     // Demand - Occupancy By City
-    if (res.occupancyByCity && Array.isArray(res.occupancyByCity)) {
-      const labels = res.occupancyByCity.map((item: CityOccupancyDto) => item.city || 'Unknown');
-      const chartData = res.occupancyByCity.map((item: CityOccupancyDto) => item.occupancyRate);
+    if (res.occupancyDto?.cityOccupancyDto && Array.isArray(res.occupancyDto.cityOccupancyDto)) {
+      const labels = res.occupancyDto.cityOccupancyDto.map((item: CityOccupancyDto) => item.city || 'Unknown');
+      const chartData = res.occupancyDto.cityOccupancyDto.map((item: CityOccupancyDto) => item.occupancyRate);
       const colors = ['#644B96', '#644B96', '#7bb7d5', '#7bb7d5', '#d4a843', '#d4a843', '#22c55e', '#22c55e', '#4412c1', '#638fd6'];
       const bgColors = labels.map((_, i) => colors[i % colors.length]);
 
@@ -490,22 +482,7 @@ export class DashboardComponent implements OnInit {
 
 
 
-    this.mixNationalityOptions = {
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: {
-          ticks: { color: textColorSecondary, font: { size: 10 }, maxRotation: 45, minRotation: 45 },
-          grid: { display: false, drawBorder: false }
-        },
-        y: {
-          min: 0,
-          max: 70,
-          ticks: { color: textColorSecondary, stepSize: 3 },
-          grid: { color: surfaceBorder, drawBorder: false }
-        }
-      }
-    };
+
 
 
     this.mixPurposeOptions = {

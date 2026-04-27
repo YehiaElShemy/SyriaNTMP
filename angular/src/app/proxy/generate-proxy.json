@@ -3518,8 +3518,8 @@
         {
           "name": "PurposeStats",
           "jsonName": null,
-          "type": "[SyriaNTMP.Dto.PurposeDto]",
-          "typeSimple": "[SyriaNTMP.Dto.PurposeDto]",
+          "type": "SyriaNTMP.Dto.PurposeDto",
+          "typeSimple": "SyriaNTMP.Dto.PurposeDto",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -3540,10 +3540,10 @@
           "regex": null
         },
         {
-          "name": "OccupancyByCity",
+          "name": "OccupancyDto",
           "jsonName": null,
-          "type": "[SyriaNTMP.Dto.CityOccupancyDto]",
-          "typeSimple": "[SyriaNTMP.Dto.CityOccupancyDto]",
+          "type": "SyriaNTMP.Dto.OccupancyDto",
+          "typeSimple": "SyriaNTMP.Dto.OccupancyDto",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -3772,6 +3772,63 @@
         }
       ]
     },
+    "SyriaNTMP.Dto.OccupancyDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "AvgOccupancyRate",
+          "jsonName": null,
+          "type": "System.Double",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "TotalSoldNights",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "TotalNightsNotSolds",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CityOccupancyDto",
+          "jsonName": null,
+          "type": "[SyriaNTMP.Dto.CityOccupancyDto]",
+          "typeSimple": "[SyriaNTMP.Dto.CityOccupancyDto]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
     "SyriaNTMP.Dto.PeakCityDto": {
       "baseType": null,
       "isEnum": false,
@@ -3805,7 +3862,7 @@
         }
       ]
     },
-    "SyriaNTMP.Dto.PurposeDto": {
+    "SyriaNTMP.Dto.PurposeDetailsDto": {
       "baseType": null,
       "isEnum": false,
       "enumNames": null,
@@ -3829,6 +3886,63 @@
           "jsonName": null,
           "type": "System.Int32",
           "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "SyriaNTMP.Dto.PurposeDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "NumOfGuests",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "TotalNight",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "MostCommonPurpose",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "PurposeDetailsDtos",
+          "jsonName": null,
+          "type": "[SyriaNTMP.Dto.PurposeDetailsDto]",
+          "typeSimple": "[SyriaNTMP.Dto.PurposeDetailsDto]",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -4245,30 +4359,6 @@
           "regex": null
         },
         {
-          "name": "PeakCity",
-          "jsonName": null,
-          "type": "SyriaNTMP.Dto.PeakCityDto",
-          "typeSimple": "SyriaNTMP.Dto.PeakCityDto",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "MeanAdrByCity",
-          "jsonName": null,
-          "type": "[SyriaNTMP.Dto.AdrByCityDto]",
-          "typeSimple": "[SyriaNTMP.Dto.AdrByCityDto]",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
           "name": "TotalNight",
           "jsonName": null,
           "type": "System.Int32",
@@ -4285,6 +4375,30 @@
           "jsonName": null,
           "type": "System.Decimal",
           "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "PeakCity",
+          "jsonName": null,
+          "type": "SyriaNTMP.Dto.PeakCityDto",
+          "typeSimple": "SyriaNTMP.Dto.PeakCityDto",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "MeanAdrByCity",
+          "jsonName": null,
+          "type": "[SyriaNTMP.Dto.AdrByCityDto]",
+          "typeSimple": "[SyriaNTMP.Dto.AdrByCityDto]",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
