@@ -9,9 +9,9 @@ namespace SyriaNTMP.Dto
   public class DashboardDto
   {
     public SummaryDto Summary { get; set; }
-    public List<PurposeDto> PurposeStats { get; set; }
+    public PurposeDto PurposeStats { get; set; }
     public List<NationalityDto> NationalityStats { get; set; }
-    public List<CityOccupancyDto> OccupancyByCity { get; set; }
+    public OccupancyDto OccupancyDto { get; set; }
     public List<WeeklyDto> WeeklyReservations { get; set; }
     public TodayStatsDto TodayStats { get; set; }
 

@@ -3448,6 +3448,18 @@
           "minimum": null,
           "maximum": null,
           "regex": null
+        },
+        {
+          "name": "TotalNight",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
         }
       ]
     },
@@ -3735,7 +3747,19 @@
           "regex": null
         },
         {
-          "name": "Count",
+          "name": "NightCount",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "VisitorCount",
           "jsonName": null,
           "type": "System.Int32",
           "typeSimple": "number",
@@ -4071,6 +4095,18 @@
           "regex": null
         },
         {
+          "name": "CreatedDate",
+          "jsonName": null,
+          "type": "System.DateTime",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
           "name": "TotalNumberOfPropertyUnits",
           "jsonName": null,
           "type": "System.Int32?",
@@ -4225,6 +4261,30 @@
           "jsonName": null,
           "type": "[SyriaNTMP.Dto.AdrByCityDto]",
           "typeSimple": "[SyriaNTMP.Dto.AdrByCityDto]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "TotalNight",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "AdrAvgPriceDay",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
