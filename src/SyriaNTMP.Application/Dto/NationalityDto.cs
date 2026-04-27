@@ -9,6 +9,7 @@ namespace SyriaNTMP.Dto
   public class NationalityDto
   {
     public string Nationality { get; set; }
-    public int Count { get; set; }
-  }
+    public int NightCount { get; set; }
+    public int VisitorCount { get; set; }
+    }
 }

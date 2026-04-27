@@ -260,7 +260,7 @@ export class DashboardComponent implements OnInit {
     // Guest Mix - Nationality
     if (res.nationalityStats && Array.isArray(res.nationalityStats)) {
       const labels = res.nationalityStats.map((item: NationalityDto) => item.nationality || 'Unknown');
-      const chartData = res.nationalityStats.map((item: NationalityDto) => item.count);
+      const chartData = res.nationalityStats.map((item: NationalityDto) => item.nightCount);
       this.mixNationalityData = {
         labels: labels,
         datasets: [{

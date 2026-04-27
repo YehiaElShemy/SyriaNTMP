@@ -6,6 +6,7 @@ import type { ReservationStatus } from '../models/enums/reservation-status.enum'
 export interface AdrByCityDto {
   city?: string;
   adr: number;
+  totalNight: number;
 }
 
 export interface CityOccupancyDto {
@@ -41,7 +42,8 @@ export interface LookupDto {
 
 export interface NationalityDto {
   nationality?: string;
-  count: number;
+  nightCount: number;
+  visitorCount: number;
 }
 
 export interface PeakCityDto {
@@ -78,6 +80,7 @@ export interface ReservationsDto extends EntityDto<number> {
   toDate?: string;
   guestNationality?: string;
   totalPrice: number;
+  createdDate?: string;
   totalNumberOfPropertyUnits?: number;
 }
 
@@ -96,6 +99,8 @@ export interface RevenueDto {
   portfolioAdr: number;
   peakCity: PeakCityDto;
   meanAdrByCity: AdrByCityDto[];
+  totalNight: number;
+  adrAvgPriceDay: number;
 }
 
 export interface SummaryDto {

@@ -59,7 +59,7 @@ namespace SyriaNTMP.Services
                 .Take(searchCriteria.MaxResultCount).ToList();
 
 
-            var count = await AsyncExecuter.CountAsync(queryable); // Count before paging
+            var count = await AsyncExecuter.CountAsync(queryable); // NightCount before paging
 
             var result = new PagedResultDto<ReservationsDto>
             {
@@ -142,9 +142,11 @@ namespace SyriaNTMP.Services
                 .Select(g => new NationalityDto
                 {
                     Nationality = g.Key,
-                    Count = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod)
+                    NightCount = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod),
+                    VisitorCount = g.Sum(x => x.NumberOfGuests)
+
                 })
-                .OrderByDescending(x => x.Count)
+                .OrderByDescending(x => x.NightCount)
                 .ToList();
 
             var today = DateTime.Today;
@@ -174,6 +176,18 @@ namespace SyriaNTMP.Services
             var portfolioAdr = totalSoldNights == 0 ? 0 : (totalRevenue / totalSoldNights);
             var periodData = rawData.Where(x => x.FromDate >= startPeriod && x.ToDate <= endPeriod).ToList();
 
+            var distinctDays = activeData.Select(s => s.CreatedDate.Date).Distinct().Count();
+            var AdrAvgPriceDay = distinctDays > 0 ? totalRevenue / distinctDays : 0;
+
+
+            // sum of solid nights
+            var totalOccupiedNights = activeData.Sum(r => r.NumberOfRooms * r.NumberOfNights);
+            // sum of available nights
+            var totalAvailableNights = activeData.Sum(r => (r.TotalNumberOfPropertyUnits ?? 0) * r.NumberOfNights);
+
+            var avgOccupancyRate = totalAvailableNights > 0 ? (totalOccupiedNights / (double)totalAvailableNights) * 100 : 0;
+            var totalNightsNotSolds = totalAvailableNights - totalOccupiedNights;
+
             return new DashboardDto
             {
                 Summary = new SummaryDto
@@ -186,29 +200,74 @@ namespace SyriaNTMP.Services
                     OccupancyRate = CalculateOccupancyPercentage(totalSoldNights, activeData, startPeriod, endPeriod),
                     ActiveProperties = activeProperties
                 },
-                PurposeStats = activeData.GroupBy(x => x.ReservationPurpose)
-                    .Select(g => new PurposeDto { Purpose = g.Key.ToString(), Count = g.Count() }).ToList(),
+                PurposeStats = new PurposeDto()
+                {
+                    TotalNight = totalSoldNights,
+                    NumOfGuests = activeData.Sum(a => a.NumberOfGuests),
+                    MostCommonPurpose = activeData.GroupBy(x => x.ReservationPurpose)
+                    .Select(g => new PurposeDetailsDto
+                    {
+                        Purpose = g.Key.ToString(),
+                        Count = g.Count()
+                    }).MaxBy(a => a.Count).Purpose,
+                    PurposeDetailsDtos = activeData.GroupBy(x => x.ReservationPurpose)
+                    .Select(g => new PurposeDetailsDto
+                    {
+                        Purpose = g.Key.ToString(),
+                        Count = g.Count()
+                    }).ToList(),
+                },
+
                 NationalityStats = nationality,
                 WeeklyReservations = weekly,
                 TodayStats = todayStats,
                 Revenue = new RevenueDto
                 {
                     PortfolioAdr = portfolioAdr,
+                    TotalNight = totalSoldNights,
+                    AdrAvgPriceDay = AdrAvgPriceDay,
                     MeanAdrByCity = activeData.GroupBy(x => x.City).Select(g => new AdrByCityDto
                     {
                         City = g.Key,
-                        Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod)
+                        Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod),
+                        TotalNight = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod),
+
                     }).ToList(),
+                    PeakCity = new PeakCityDto
+                    {
+                        Adr = activeData.GroupBy(x => x.City)
+                            .Select(g => new AdrByCityDto
+                            {
+                                City = g.Key,
+                                Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod)
+                            }).Max(a => a.Adr),
+                        City = activeData.GroupBy(x => x.City)
+                            .Select(g => new AdrByCityDto
+                            {
+                                City = g.Key,
+                                Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod),
+                                TotalNight = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod)
+
+                            }).MaxBy(a => a.Adr).City,
+                    }
+
                 },
-                OccupancyByCity = activeData.GroupBy(x => x.City).Select(g => new CityOccupancyDto
+                OccupancyDto = new OccupancyDto()
                 {
-                    City = g.Key,
-                    OccupancyRate = CalculateOccupancyPercentage(
-                        CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod), g.ToList(), startPeriod,
-                        endPeriod)
-                }).ToList(),
-                
-                
+                    AvgOccupancyRate = avgOccupancyRate,
+                    TotalSoldNights = totalSoldNights,
+                    TotalNightsNotSolds= totalNightsNotSolds,
+
+
+                    CityOccupancyDto = activeData.GroupBy(x => x.City).Select(g => new CityOccupancyDto
+                    {
+                        City = g.Key,
+                        OccupancyRate = CalculateOccupancyPercentage(
+                         CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod), g.ToList(), startPeriod,
+                         endPeriod)
+                    }).ToList(),
+
+                }
             };
         }
 
@@ -249,7 +308,7 @@ namespace SyriaNTMP.Services
                 entity.CreatedDate = DateTime.Now;
                 await _reservationsRepository.InsertAsync(entity);
             }
-            
+
             await CurrentUnitOfWork.SaveChangesAsync();
             return new ReservationResponseDto()
             {
@@ -384,15 +443,15 @@ namespace SyriaNTMP.Services
 
             return totalAvailableUnits == 0 ? 0 : ((decimal)soldNights / totalAvailableUnits) * 100;
         }
-        
+
         private decimal CalculateAdrPercentage(List<Reservations> data, DateTime start,
             DateTime end)
         {
             int totalDays = (end - start).Days;
             if (totalDays <= 0) totalDays = 1;
             var totalPrice = data.Sum(g => g.TotalPrice);
-            var totalUnits = data.GroupBy(x => x.PropertyName).Sum(g => g.First()?.TotalNumberOfPropertyUnits??0);
-            
+            var totalUnits = data.GroupBy(x => x.PropertyName).Sum(g => g.First()?.TotalNumberOfPropertyUnits ?? 0);
+
             return totalPrice == 0 || totalUnits == 0 ? 0 : totalPrice / totalDays * totalUnits;
         }
     }
