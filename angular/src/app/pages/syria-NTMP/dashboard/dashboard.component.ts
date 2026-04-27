@@ -83,7 +83,7 @@ export class DashboardComponent implements OnInit {
 
   get nationalityMaxCount(): number {
     if (!this.statsData?.nationalityStats?.length) return 1;
-    return Math.max(...this.statsData.nationalityStats.map(item => item.count));
+    return 10//Math.max(...this.statsData.nationalityStats.map(item => item.count));
   }
 
   getNationalityPercent(count: number): number {
