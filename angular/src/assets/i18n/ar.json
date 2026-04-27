@@ -161,6 +161,10 @@
     "purposeLabel": "سبب",
     "nightsLabel": "الليالي",
     "percentLabel": "النسبة",
-    "totalNights": "إجمالي الليالي"
+    "totalNights": "إجمالي الليالي",
+    "numOfGuests": "عدد النزلاء",
+    "mostCommonPurpose": "الغرض الأكثر شيوعاً",
+    "mostCommonPurposeSub": "السبب الرئيسي لدخول الزوار",
+    "visitPurposeDesc": "عرض أسباب الزيارة حسب المدينة وتصنيف الفندق خلال فترة زمنية محددة"
   }
 }

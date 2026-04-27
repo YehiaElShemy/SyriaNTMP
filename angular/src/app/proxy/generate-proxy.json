@@ -3504,10 +3504,10 @@
       "genericArguments": null,
       "properties": [
         {
-          "name": "Summary",
+          "name": "Opertation",
           "jsonName": null,
-          "type": "SyriaNTMP.Dto.SummaryDto",
-          "typeSimple": "SyriaNTMP.Dto.SummaryDto",
+          "type": "SyriaNTMP.Dto.OperationDto",
+          "typeSimple": "SyriaNTMP.Dto.OperationDto",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -3556,6 +3556,18 @@
           "jsonName": null,
           "type": "[SyriaNTMP.Dto.WeeklyDto]",
           "typeSimple": "[SyriaNTMP.Dto.WeeklyDto]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "TotalWeeklyReservations",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -3829,6 +3841,63 @@
         }
       ]
     },
+    "SyriaNTMP.Dto.OperationDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "TotalReservations",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "OccupancyRate",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CancellationRate",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "ActiveProperties",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
     "SyriaNTMP.Dto.PeakCityDto": {
       "baseType": null,
       "isEnum": false,
@@ -3883,6 +3952,18 @@
         },
         {
           "name": "Count",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "PurposeRate",
           "jsonName": null,
           "type": "System.Int32",
           "typeSimple": "number",
@@ -4399,63 +4480,6 @@
           "jsonName": null,
           "type": "[SyriaNTMP.Dto.AdrByCityDto]",
           "typeSimple": "[SyriaNTMP.Dto.AdrByCityDto]",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        }
-      ]
-    },
-    "SyriaNTMP.Dto.SummaryDto": {
-      "baseType": null,
-      "isEnum": false,
-      "enumNames": null,
-      "enumValues": null,
-      "genericArguments": null,
-      "properties": [
-        {
-          "name": "TotalReservations",
-          "jsonName": null,
-          "type": "System.Int32",
-          "typeSimple": "number",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "OccupancyRate",
-          "jsonName": null,
-          "type": "System.Decimal",
-          "typeSimple": "number",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "CancellationRate",
-          "jsonName": null,
-          "type": "System.Decimal",
-          "typeSimple": "number",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "ActiveProperties",
-          "jsonName": null,
-          "type": "System.Int32",
-          "typeSimple": "number",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,

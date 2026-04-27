@@ -161,6 +161,10 @@
     "purposeLabel": "Purpose",
     "nightsLabel": "Nights",
     "percentLabel": "Percent",
-    "totalNights": "TOTAL NIGHTS"
+    "totalNights": "TOTAL NIGHTS",
+    "numOfGuests": "Number of Guests",
+    "mostCommonPurpose": "Most Common Purpose",
+    "mostCommonPurposeSub": "Primary reason for guest entries",
+    "visitPurposeDesc": "View reasons for visiting by city and hotel rating during a specific time period."
   }
 }

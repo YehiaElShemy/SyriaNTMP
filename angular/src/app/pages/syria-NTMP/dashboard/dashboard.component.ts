@@ -74,11 +74,7 @@ export class DashboardComponent implements OnInit {
     return n.toString();
   }
 
-  getPurposePercent(count: number): number {
-    const total = this.purposeTotalNights;
-    if (!total) return 0;
-    return Math.round((count / total) * 100);
-  }
+
 
   get nationalityMaxVisitorCount(): number {
     if (!this.statsData?.nationalityStats?.length) return 1;

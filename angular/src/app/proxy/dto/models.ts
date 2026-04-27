@@ -15,11 +15,12 @@ export interface CityOccupancyDto {
 }
 
 export interface DashboardDto {
-  summary: SummaryDto;
+  opertation: OperationDto;
   purposeStats: PurposeDto;
   nationalityStats: NationalityDto[];
   occupancyDto: OccupancyDto;
   weeklyReservations: WeeklyDto[];
+  totalWeeklyReservations: number;
   todayStats: TodayStatsDto;
   revenue: RevenueDto;
 }
@@ -53,6 +54,13 @@ export interface OccupancyDto {
   cityOccupancyDto: CityOccupancyDto[];
 }
 
+export interface OperationDto {
+  totalReservations: number;
+  occupancyRate: number;
+  cancellationRate: number;
+  activeProperties: number;
+}
+
 export interface PeakCityDto {
   city?: string;
   adr: number;
@@ -61,6 +69,7 @@ export interface PeakCityDto {
 export interface PurposeDetailsDto {
   purpose?: string;
   count: number;
+  purposeRate: number;
 }
 
 export interface PurposeDto {
@@ -115,13 +124,6 @@ export interface RevenueDto {
   adrAvgPriceDay: number;
   peakCity: PeakCityDto;
   meanAdrByCity: AdrByCityDto[];
-}
-
-export interface SummaryDto {
-  totalReservations: number;
-  occupancyRate: number;
-  cancellationRate: number;
-  activeProperties: number;
 }
 
 export interface TodayStatsDto {
