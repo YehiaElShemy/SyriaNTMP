@@ -81,6 +81,22 @@ export class DashboardComponent implements OnInit {
     return Math.round((count / total) * 100);
   }
 
+  get nationalityMaxCount(): number {
+    if (!this.statsData?.nationalityStats?.length) return 1;
+    return Math.max(...this.statsData.nationalityStats.map(item => item.count));
+  }
+
+  getNationalityPercent(count: number): number {
+    const max = this.nationalityMaxCount;
+    if (!max) return 0;
+    return Math.round((count / max) * 100);
+  }
+
+  getNationalityColor(index: number): string {
+    const colors = ['#1d4ed8', '#0ea5e9', '#14b8a6', '#f59e0b', '#facc15', '#ec4899', '#8b5cf6'];
+    return colors[index % colors.length];
+  }
+
   // Revenue tab charts
   revAdrData: any;
   revAdrOptions: any;
