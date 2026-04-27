@@ -87,6 +87,7 @@
     }
   },
   "dashboard": {
+    "visitors": "Visitors",    
     "guestMixTitle": "Guest mix",
     "guestMixSubtitle": "NATIONALITY & CITY",
     "revenueTitle": "Revenue & ADR",

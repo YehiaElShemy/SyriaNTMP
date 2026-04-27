@@ -52,15 +52,10 @@
   <!-- Breakdown Card -->
   <div class="mix-card bg-white rounded-lg p-6 border border-gray-200">
     <div class="flex items-center justify-between mb-6">
-      <div class="flex items-center gap-3">
-        <div class="mix-card__icon rounded-lg flex justify-center items-center">
-          <i class="pi pi-th-large"></i>
-        </div>
-        <div class="flex flex-col">
-          <span class="mix-card__title font-bold">{{ 'dashboard.breakdown' | translate }}</span>
-          <span class="mix-card__sub">{{ 'dashboard.breakdownDesc' | translate }}</span>
-        </div>
-      </div>
+      <div class="flex items-center gap-2">
+            
+            <span class="mix-chart-title font-bold">{{ 'dashboard.nationalityStatistics' | translate }}</span>
+          </div>
       <button class="mix-filter-btn flex justify-center items-center rounded-lg border transition-colors"
         (click)="showFilterDialog()">
         <i class="pi pi-filter"></i>
@@ -73,16 +68,33 @@
       <!-- Nationality Statistics -->
       <div class="flex flex-col">
         <div class="flex items-center justify-between mb-3">
-          <div class="flex items-center gap-2">
-            <div class="mix-chart-icon mix-chart-icon--purple rounded-md flex justify-center items-center">
-              <i class="pi pi-globe"></i>
-            </div>
-            <span class="mix-chart-title font-bold">{{ 'dashboard.nationalityStatistics' | translate }}</span>
-          </div>
+          
 
         </div>
-        <div class="w-full" style="min-height: 220px;">
-          <p-chart type="bar" [data]="mixNationalityData" [options]="mixNationalityOptions"></p-chart>
+        <div class="w-full nationality-progress-list flex flex-col gap-5 overflow-y-auto pr-2" style="max-height: 400px;">
+          <ng-container *ngFor="let item of statsData?.nationalityStats; let i = index">
+            <div class="nationality-item flex flex-col gap-2">
+              
+              <!-- Visitors Line -->
+              <div class="flex items-center justify-between text-xs font-bold text-gray-700">
+                <span>{{ item.nationality || 'Unknown' }} / {{ 'dashboard.visitors' | translate }}</span>
+                <span [style.color]="getNationalityColor(i)">{{ item.count }}</span>
+              </div>
+              <div class="w-full bg-gray-100 rounded-full h-2">
+                <div class="h-2 rounded-full" [style.width.%]="getNationalityPercent(item.count)" [style.background-color]="getNationalityColor(i)"></div>
+              </div>
+
+              <!-- Nights Line -->
+              <div class="flex items-center justify-between text-xs font-bold text-gray-700 mt-1">
+                <span>{{ 'dashboard.nightsLabel' | translate }}</span>
+                <span [style.color]="getNationalityColor(i)">{{ item.count }}</span>
+              </div>
+              <div class="w-full bg-gray-100 rounded-full h-2">
+                <div class="h-2 rounded-full" [style.width.%]="getNationalityPercent(item.count)" [style.background-color]="getNationalityColor(i)"></div>
+              </div>
+
+            </div>
+          </ng-container>
         </div>
       </div>
 
