@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SyriaNTMP.Dto
 {
-  public class SummaryDto
+  public class OperationDto
   {
     public int TotalReservations { get; set; }
     public decimal OccupancyRate { get; set; }
