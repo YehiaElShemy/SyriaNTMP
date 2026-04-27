@@ -15,11 +15,12 @@ export interface CityOccupancyDto {
 }
 
 export interface DashboardDto {
-  summary: SummaryDto;
-  purposeStats: PurposeDto[];
+  opertation: OperationDto;
+  purposeStats: PurposeDto;
   nationalityStats: NationalityDto[];
-  occupancyByCity: CityOccupancyDto[];
+  occupancyDto: OccupancyDto;
   weeklyReservations: WeeklyDto[];
+  totalWeeklyReservations: number;
   todayStats: TodayStatsDto;
   revenue: RevenueDto;
 }
@@ -46,14 +47,36 @@ export interface NationalityDto {
   visitorCount: number;
 }
 
+export interface OccupancyDto {
+  avgOccupancyRate: number;
+  totalSoldNights: number;
+  totalNightsNotSolds: number;
+  cityOccupancyDto: CityOccupancyDto[];
+}
+
+export interface OperationDto {
+  totalReservations: number;
+  occupancyRate: number;
+  cancellationRate: number;
+  activeProperties: number;
+}
+
 export interface PeakCityDto {
   city?: string;
   adr: number;
 }
 
-export interface PurposeDto {
+export interface PurposeDetailsDto {
   purpose?: string;
   count: number;
+  purposeRate: number;
+}
+
+export interface PurposeDto {
+  numOfGuests: number;
+  totalNight: number;
+  mostCommonPurpose?: string;
+  purposeDetailsDtos: PurposeDetailsDto[];
 }
 
 export interface ReservationResponseDto {
@@ -97,17 +120,10 @@ export interface ReservationsSearchCriteria extends PagedAndSortedResultRequestD
 
 export interface RevenueDto {
   portfolioAdr: number;
-  peakCity: PeakCityDto;
-  meanAdrByCity: AdrByCityDto[];
   totalNight: number;
   adrAvgPriceDay: number;
-}
-
-export interface SummaryDto {
-  totalReservations: number;
-  occupancyRate: number;
-  cancellationRate: number;
-  activeProperties: number;
+  peakCity: PeakCityDto;
+  meanAdrByCity: AdrByCityDto[];
 }
 
 export interface TodayStatsDto {
