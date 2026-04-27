@@ -19,5 +19,6 @@ namespace SyriaNTMP.Dto
     {
         public string Purpose { get; set; }
         public int Count { get; set; }
+        public int PurposeRate { get; set; }
     }
 }

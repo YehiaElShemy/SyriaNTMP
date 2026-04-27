@@ -27,4 +27,6 @@ namespace SyriaNTMP.Dto
         public decimal Adr { get; set; }
         public int TotalNight { get; set; }
     }
+
+  
 }

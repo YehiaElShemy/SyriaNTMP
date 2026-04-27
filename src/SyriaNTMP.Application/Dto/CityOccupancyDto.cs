@@ -14,8 +14,9 @@ namespace SyriaNTMP.Dto
         public List<CityOccupancyDto> CityOccupancyDto { get; set; }
     }
     public class CityOccupancyDto
-  {
-    public string City { get; set; }
-    public decimal OccupancyRate { get; set; }
-  }
+    {
+        public string City { get; set; }
+        public decimal OccupancyRate { get; set; }
+    }
+
 }

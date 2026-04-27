@@ -187,15 +187,12 @@ namespace SyriaNTMP.Services
 
             var avgOccupancyRate = totalAvailableNights > 0 ? (totalOccupiedNights / (double)totalAvailableNights) * 100 : 0;
             var totalNightsNotSolds = totalAvailableNights - totalOccupiedNights;
-
             return new DashboardDto
             {
-                Summary = new SummaryDto
+                Opertation = new OperationDto
                 {
                     TotalReservations = rawData.Count,
-                    CancellationRate = periodData.Count == 0
-                        ? 0
-                        : (periodData.Count(x => x.ReservationStatus == ReservationStatus.Canceled) * 100 /
+                    CancellationRate = periodData.Count == 0 ? 0 : (periodData.Count(x => x.ReservationStatus == ReservationStatus.Canceled) * 100 /
                            periodData.Count),
                     OccupancyRate = CalculateOccupancyPercentage(totalSoldNights, activeData, startPeriod, endPeriod),
                     ActiveProperties = activeProperties
@@ -203,23 +200,26 @@ namespace SyriaNTMP.Services
                 PurposeStats = new PurposeDto()
                 {
                     TotalNight = totalSoldNights,
-                    NumOfGuests = activeData.Sum(a => a.NumberOfGuests),
-                    MostCommonPurpose = activeData.GroupBy(x => x.ReservationPurpose)
+                    NumOfGuests = rawData.Sum(a => a.NumberOfGuests),
+                    MostCommonPurpose = rawData.GroupBy(x => x.ReservationPurpose)
                     .Select(g => new PurposeDetailsDto
                     {
                         Purpose = g.Key.ToString(),
                         Count = g.Count()
                     }).MaxBy(a => a.Count).Purpose,
-                    PurposeDetailsDtos = activeData.GroupBy(x => x.ReservationPurpose)
+
+                    PurposeDetailsDtos = rawData.GroupBy(x => x.ReservationPurpose)
                     .Select(g => new PurposeDetailsDto
                     {
                         Purpose = g.Key.ToString(),
-                        Count = g.Count()
+                        Count = g.Count(),
+                        PurposeRate = rawData.Count()==0?0:(g.Count() *100)/ rawData.Count()
                     }).ToList(),
                 },
 
                 NationalityStats = nationality,
                 WeeklyReservations = weekly,
+                TotalWeeklyReservations = weekly.Count(),
                 TodayStats = todayStats,
                 Revenue = new RevenueDto
                 {
@@ -256,7 +256,7 @@ namespace SyriaNTMP.Services
                 {
                     AvgOccupancyRate = avgOccupancyRate,
                     TotalSoldNights = totalSoldNights,
-                    TotalNightsNotSolds= totalNightsNotSolds,
+                    TotalNightsNotSolds = totalNightsNotSolds,
 
 
                     CityOccupancyDto = activeData.GroupBy(x => x.City).Select(g => new CityOccupancyDto
@@ -268,6 +268,7 @@ namespace SyriaNTMP.Services
                     }).ToList(),
 
                 }
+
             };
         }
 
