@@ -2,11 +2,18 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Volo.Abp.Account.Web.Pages.Account
 @using Volo.Abp.Account.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Theming
+@using SyriaNTMP.Localization
 @model Volo.Abp.Account.Web.Pages.Account.LoginModel
-@inject IHtmlLocalizer<AccountResource> L
+
+@inject IHtmlLocalizer<SyriaNTMPResource> L
+@inject IThemeManager ThemeManager
+@inject Volo.Abp.Settings.ISettingProvider SettingProvider
+
 @{
-    Layout = null;  // Remove default layout for full control
+    Layout = null;
 }
+
 
 <!DOCTYPE html>
 <html dir="@(System.Threading.Thread.CurrentThread.CurrentUICulture.Name)">
@@ -20,7 +27,7 @@
 
 
 </head>
-<body>
+<body dir="@(System.Threading.Thread.CurrentThread.CurrentUICulture.Name=="en"?"ltr":"rtl")">
     <div class="ntmp-login-container">
 
         <!-- Left Side (Login Form) -->
@@ -40,7 +47,7 @@
                 <div class="header">
                     <img src="/assets/images/windows.svg" alt="logo">
                     <h2 class="title">
-                        TOURISM Platform
+                        @L["TourismPlatform"]
                     </h2>
                 </div>
 
@@ -139,17 +146,16 @@
             <div class="label">
                 <img src="/assets/images/windows.svg" alt="logo">
                 <h2 class="app-name">
-                    TOURISM Platform
+                    @L["TOURISMPlatform"]
                 </h2>
             </div>
 
             <div class="mid-section">
                 <h3>
-                    Tourism Monitoring & Analytics Platform
+                    @L["TourismMonitoringAnalyticsPlatform"]
                 </h3>
                 <p>
-                    Monitor tourism performance, track nationalities, and
-                    analyze hotel data in real-time with our unified dashboard.
+                    @L["MonitorTourismPerformance"]
                 </p>
 
                 <div class="imgages">
@@ -188,13 +194,11 @@
         });
        
         document.addEventListener("DOMContentLoaded", function () {
-            debugger
             const langSelect = document.getElementById("language-selector");
 
             if (!langSelect) return;
 
             langSelect.addEventListener("click", function () {
-                debugger
                 const currentLang = "@(System.Threading.Thread.CurrentThread.CurrentUICulture.Name)"
                 const newLang = currentLang === "ar" ? "en" : "ar";
 
@@ -207,6 +211,5 @@
         });
     
     </script>
-
 </body>
 </html>

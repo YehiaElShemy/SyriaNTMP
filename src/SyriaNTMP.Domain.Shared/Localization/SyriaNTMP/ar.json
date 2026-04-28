@@ -1,28 +1,30 @@
 {
   "culture": "ar",
-  "WelcomeBack": "أهلاً بك مجدداً",
-  "SignInToYourDashboard": "تسجيل الدخول إلى لوحة التحكم",
-  "UserName": "البريد الإلكتروني",
-  "Password": "كلمة المرور",
-  "RememberMe": "تذكرني",
-  "Login": "تسجيل الدخول",
-  "ForgotPassword": "نسيت كلمة المرور؟",
-  "DontHaveAnAccount": "ليس لديك حساب؟",
-  "ContactAdministrator": "تواصل مع المسؤول",
-  "SYRIASTATS": "SYRIA STATS",
-  "PrivacyPolicy": "سياسة الخصوصية",
-  "TermsOfService": "شروط الخدمة",
-  "HelpCenter": "مركز المساعدة",
-  "TourismPlatform": "منصة السياحة",
-  "TourismMonitoringAnalyticsPlatform": "منصة مراقبة وتحليل السياحة",
-  "MonitorTourismPerformance": "تابع أداء السياحة، تتبع الجنسيات، وحلل بيانات الفنادق في الوقت الحقيقي باستخدام لوحة التحكم الموحّدة.",
+
   "texts": {
     "AppName": "SyriaNTMP",
     "Menu:Home": "منزل، بيت",
     "Menu:ContactUs": "اتصل بنا",
     "Menu:ArticleSample": "عينة المادة",
     "Home": "منزل، بيت",
-    "Welcome": "مرحبا"
+    "Welcome": "مرحبا",
+    "WelcomeBack": "أهلاً بك مجدداً",
+    "SignInToYourDashboard": "تسجيل الدخول إلى لوحة التحكم",
+    "UserName": "البريد الإلكتروني",
+    "Password": "كلمة المرور",
+    "RememberMe": "تذكرني",
+    "Login": "تسجيل الدخول",
+    "ForgotPassword": "نسيت كلمة المرور؟",
+    "DontHaveAnAccount": "ليس لديك حساب؟",
+    "ContactAdministrator": "تواصل مع المسؤول",
+    "SYRIASTATS": "SYRIA STATS",
+    "PrivacyPolicy": "سياسة الخصوصية",
+    "TermsOfService": "شروط الخدمة",
+    "HelpCenter": "مركز المساعدة",
+    "TourismPlatform": "منصة السياحة",
+    "TourismMonitoringAnalyticsPlatform": "منصة مراقبة وتحليل السياحة",
+    "MonitorTourismPerformance": "تابع أداء السياحة، تتبع الجنسيات، وحلل بيانات الفنادق في الوقت الحقيقي باستخدام لوحة التحكم الموحّدة.",
+    "TOURISMPlatform": "منصة سياحية"
 
   }
 }
