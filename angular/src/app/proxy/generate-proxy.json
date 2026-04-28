@@ -4583,6 +4583,7 @@
       "baseType": "System.Enum",
       "isEnum": true,
       "enumNames": [
+        "None",
         "OneStar",
         "TwoStar",
         "ThreeStar",
@@ -4590,6 +4591,7 @@
         "FiveStar"
       ],
       "enumValues": [
+        0,
         1,
         2,
         3,

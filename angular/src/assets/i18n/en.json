@@ -57,6 +57,7 @@
   },
   "enums": {
     "PropertyRatingEnum": {
+      "None": "None",
       "OneStar": "One Star",
       "TwoStar": "Two Star",
       "ThreeStar": "Three Star",
