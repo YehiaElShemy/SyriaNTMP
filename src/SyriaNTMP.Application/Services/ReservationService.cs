@@ -33,7 +33,12 @@ namespace SyriaNTMP.Services
                 queryable = queryable.Where(r => r.PropertyName.Contains(searchCriteria.PropertyName));
 
             if (searchCriteria.PropertyRating.HasValue)
-                queryable = queryable.Where(r => r.PropertyRating == searchCriteria.PropertyRating);
+            {
+                queryable = searchCriteria.PropertyRating == PropertyRatingEnum.None
+                         ? queryable.Where(r => r.PropertyRating == null || r.PropertyRating==PropertyRatingEnum.None)
+                         : queryable.Where(r => r.PropertyRating == searchCriteria.PropertyRating);
+
+            }
 
             if (!string.IsNullOrEmpty(searchCriteria.ReservationNumber))
                 queryable = queryable.Where(r => r.ReservationNumber == searchCriteria.ReservationNumber);
@@ -185,7 +190,7 @@ namespace SyriaNTMP.Services
             // sum of available nights
             var totalAvailableNights = activeData.Sum(r => (r.TotalNumberOfPropertyUnits ?? 0) * r.NumberOfNights);
 
-            var avgOccupancyRate =Math.Round( totalAvailableNights > 0 ? (totalOccupiedNights / (double)totalAvailableNights) * 100 : 0,3);
+            var avgOccupancyRate = Math.Round(totalAvailableNights > 0 ? (totalOccupiedNights / (double)totalAvailableNights) * 100 : 0, 3);
             var totalNightsNotSolds = totalAvailableNights - totalOccupiedNights;
             return new DashboardDto
             {
@@ -196,7 +201,7 @@ namespace SyriaNTMP.Services
                            periodData.Count),
                     OccupancyRate = CalculateOccupancyPercentage(totalSoldNights, activeData, startPeriod, endPeriod),
                     ActiveProperties = activeProperties,
-                    TotalSoldNights= totalSoldNights
+                    TotalSoldNights = totalSoldNights
                 },
                 PurposeStats = new PurposeDto()
                 {
@@ -214,7 +219,7 @@ namespace SyriaNTMP.Services
                     {
                         Purpose = g.Key.ToString(),
                         Count = g.Count(),
-                        PurposeRate = rawData.Count()==0?0:(g.Count() *100)/ rawData.Count()
+                        PurposeRate = rawData.Count() == 0 ? 0 : (g.Count() * 100) / rawData.Count()
                     }).ToList(),
                 },
 
@@ -236,12 +241,12 @@ namespace SyriaNTMP.Services
                     }).ToList(),
                     PeakCity = new PeakCityDto
                     {
-                        Adr =Math.Round( activeData.GroupBy(x => x.City)
+                        Adr = Math.Round(activeData.GroupBy(x => x.City)
                             .Select(g => new AdrByCityDto
                             {
                                 City = g.Key,
                                 Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod)
-                            }).Max(a => a.Adr),3),
+                            }).Max(a => a.Adr), 3),
                         City = activeData.GroupBy(x => x.City)
                             .Select(g => new AdrByCityDto
                             {
