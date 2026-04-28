@@ -71,8 +71,7 @@
 
 
         </div>
-        <div class="w-full nationality-progress-list flex flex-col gap-5 overflow-y-auto pr-2"
-          style="max-height: 400px;">
+        <div class="w-full nationality-progress-list flex flex-col gap-5 overflow-y-auto pr-2">
           <ng-container *ngFor="let item of statsData?.nationalityStats; let i = index">
             <div class="nationality-item flex flex-col gap-2">
 
@@ -132,7 +131,7 @@
           }}</span>
         <p class="stat-card__value font-bold m-0 mt-1">
           <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-          <span class="purple" *ngIf="!isLoading">${{ statsData?.revenue?.adrAvgPriceDay|| 0 }}</span>
+          <span class="purple" *ngIf="!isLoading">${{ (statsData?.revenue?.adrAvgPriceDay)?.toFixed(0)|| 0 }}</span>
         </p>
         <span class="stat-card__sub mt-1">{{ 'dashboard.portfolioAdrSub' | translate }}</span>
       </div>
@@ -166,7 +165,7 @@
         <p class="stat-card__value font-bold m-0 mt-1">
           <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
           <span class="yellow" *ngIf="!isLoading">{{ statsData?.revenue?.peakCity?.city || '-' }} (${{
-            statsData?.revenue?.peakCity?.adr || 0 }})</span>
+            (statsData?.revenue?.peakCity?.adr).toFixed(0) || 0 }})</span>
         </p>
         <span class="stat-card__sub mt-1">{{ 'dashboard.peakCitySub' | translate }}</span>
       </div>
@@ -239,7 +238,7 @@
         }}</span>
       <p class="stat-card__value font-bold m-0 mt-2">
         <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-        <span class="yellow" *ngIf="!isLoading">{{ statsData?.occupancyDto?.avgOccupancyRate || 0 }}%</span>
+        <span class="yellow" *ngIf="!isLoading">{{ (statsData?.occupancyDto?.avgOccupancyRate)?.toFixed(0) || 0 }}%</span>
       </p>
       <span class="stat-card__sub mt-1">{{ 'dashboard.avgOccupancyIndexSub' | translate }}</span>
     </div>
@@ -464,8 +463,12 @@
 
   <!-- Visit Purpose Chart & Table -->
   <div class="demand-card bg-white rounded-xl p-8 mt-4 border border-gray-100 shadow-sm">
-    <div class="flex items-center justify-start mb-8">
+    <div class="flex items-center justify-between mb-8">
       <h3 class="purpose-card-title font-bold text-xl">{{ 'dashboard.visitPurpose' | translate }}</h3>
+        <button class="mix-filter-btn flex justify-center items-center rounded-lg border transition-colors"
+        (click)="showFilterDialog()">
+        <i class="pi pi-filter"></i>
+      </button>
     </div>
 
     <div class="purpose-layout flex flex-row-reverse items-center justify-between">
@@ -536,8 +539,9 @@
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.city' | translate
         }}</label>
       <p-dropdown appendTo="body" [options]="citiesOptions" [(ngModel)]="currentFilters.city"
-        [optionLabel]="isAr? 'nameAr' : 'nameEn'" optionValue="value" [placeholder]="'dashboard.allCities' | translate"
-        [showClear]="true"></p-dropdown>
+        [optionLabel]="isAr? 'nameAr' : 'nameEn'"
+         optionValue="value" [placeholder]="'dashboard.allCities' | translate"
+        [showClear]="true" filter="true"></p-dropdown>
     </div>
     <div class="flex flex-col gap-2">
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.hotelStars' | translate
@@ -550,14 +554,14 @@
         }}</label>
       <p-dropdown appendTo="body" [options]="propertiesOptions" [(ngModel)]="currentFilters.hotelName"
         [optionLabel]="isAr? 'nameAr' : 'nameEn'" optionValue="value" [placeholder]="'dashboard.allHotels' | translate"
-        [showClear]="true"></p-dropdown>
+        [showClear]="true" filter="true"></p-dropdown>
     </div>
     <div class="flex flex-col gap-2">
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.nationality' | translate
         }}</label>
       <p-dropdown appendTo="body" [options]="nationalityOptions" [(ngModel)]="currentFilters.nationality"
         [optionLabel]="isAr? 'nameAr' : 'nameEn'" optionValue="value"
-        [placeholder]="'dashboard.allNationalities' | translate" [showClear]="true"></p-dropdown>
+        [placeholder]="'dashboard.allNationalities' | translate" [showClear]="true" filter="true"></p-dropdown>
     </div>
     <div class="flex flex-col gap-2">
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.purpose' | translate

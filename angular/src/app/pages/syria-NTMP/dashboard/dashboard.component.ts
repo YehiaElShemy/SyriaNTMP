@@ -69,8 +69,8 @@ export class DashboardComponent implements OnInit {
   }
 
   formatNights(n: number): string {
-    if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
-    if (n >= 1_000) return (n / 1_000).toFixed(1) + 'K';
+    if (n >= 1_000_000) return (n / 1_000_000).toFixed(0) + 'M';
+    if (n >= 1_000) return (n / 1_000).toFixed(0) + 'K';
     return n.toString();
   }
 
@@ -433,7 +433,16 @@ export class DashboardComponent implements OnInit {
     this.demandOccupancyOptions = {
       maintainAspectRatio: false,
       plugins: {
-        legend: { display: false }
+        legend: { display: false },
+        datalabels: {
+          color: '#ffffff',
+          formatter: (value: any) => {
+            if (value !== null && value !== undefined && !isNaN(value)) {
+              return Number(value).toFixed(0);
+            }
+            return value;
+          }
+        }
       },
       scales: {
         x: {
@@ -456,7 +465,16 @@ export class DashboardComponent implements OnInit {
     this.revAdrOptions = {
       maintainAspectRatio: false,
       plugins: {
-        legend: { display: false }
+        legend: { display: false },
+        datalabels: {
+          color: '#ffffff',
+          formatter: (value: any) => {
+            if (value !== null && value !== undefined && !isNaN(value)) {
+              return Number(value).toFixed(0);
+            }
+            return value;
+          }
+        }
       },
       scales: {
         x: {
@@ -513,7 +531,18 @@ export class DashboardComponent implements OnInit {
 
     this.mixAdrOptions = {
       maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
+      plugins: { 
+        legend: { display: false },
+        datalabels: {
+          color: '#ffffff',
+          formatter: (value: any) => {
+            if (value !== null && value !== undefined && !isNaN(value)) {
+              return Number(value).toFixed(0);
+            }
+            return value;
+          }
+        }
+      },
       scales: {
         x: {
           ticks: { color: textColorSecondary, font: { size: 10 }, maxRotation: 45, minRotation: 45 },
