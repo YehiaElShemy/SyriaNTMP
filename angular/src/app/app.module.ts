@@ -57,7 +57,10 @@ import { SErrorHandlerService } from './shared/services/s-error-handler';
     // ✅ ADD THIS (PrimeNG)
     providePrimeNG({
       theme: {
-        preset: Lara
+        preset: Lara,
+        options: {
+          darkModeSelector: '.app-dark'
+        }
       }
     }),
     {

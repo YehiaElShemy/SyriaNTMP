@@ -69,8 +69,8 @@ export class DashboardComponent implements OnInit {
   }
 
   formatNights(n: number): string {
-    if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
-    if (n >= 1_000) return (n / 1_000).toFixed(1) + 'K';
+    if (n >= 1_000_000) return (n / 1_000_000).toFixed(0) + 'M';
+    if (n >= 1_000) return (n / 1_000).toFixed(0) + 'K';
     return n.toString();
   }
 
@@ -438,7 +438,7 @@ export class DashboardComponent implements OnInit {
           color: '#ffffff',
           formatter: (value: any) => {
             if (value !== null && value !== undefined && !isNaN(value)) {
-              return Number(value).toFixed(2);
+              return Number(value).toFixed(0);
             }
             return value;
           }
@@ -470,7 +470,7 @@ export class DashboardComponent implements OnInit {
           color: '#ffffff',
           formatter: (value: any) => {
             if (value !== null && value !== undefined && !isNaN(value)) {
-              return Number(value).toFixed(2);
+              return Number(value).toFixed(0);
             }
             return value;
           }
@@ -537,7 +537,7 @@ export class DashboardComponent implements OnInit {
           color: '#ffffff',
           formatter: (value: any) => {
             if (value !== null && value !== undefined && !isNaN(value)) {
-              return Number(value).toFixed(2);
+              return Number(value).toFixed(0);
             }
             return value;
           }
