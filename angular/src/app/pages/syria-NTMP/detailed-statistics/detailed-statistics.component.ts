@@ -96,7 +96,7 @@ export class DetailedStatisticsComponent implements OnInit {
       maxResultCount: this.pageSize,
       companyName: this.filterCompanyName || null,
       propertyName: this.filterPropertyName || null,
-      propertyRating: this.filterPropertyRating || null,
+      propertyRating: this.filterPropertyRating == 0 ? 0 : this.filterPropertyRating ,
       reservationNumber: this.filterReservationNumber || null,
       reservationStatus: this.filterReservationStatus || null,
       reservationPurpose: this.filterReservationPurpose || null,

@@ -57,6 +57,7 @@
   },
   "enums": {
     "PropertyRatingEnum": {
+      "None": "لا يوجد",
       "OneStar": "نجمة واحدة",
       "TwoStar": "نجمتان",
       "ThreeStar": "ثلاث نجوم",
