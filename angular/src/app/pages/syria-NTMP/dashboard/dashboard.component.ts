@@ -433,7 +433,16 @@ export class DashboardComponent implements OnInit {
     this.demandOccupancyOptions = {
       maintainAspectRatio: false,
       plugins: {
-        legend: { display: false }
+        legend: { display: false },
+        datalabels: {
+          color: '#ffffff',
+          formatter: (value: any) => {
+            if (value !== null && value !== undefined && !isNaN(value)) {
+              return Number(value).toFixed(2);
+            }
+            return value;
+          }
+        }
       },
       scales: {
         x: {
@@ -456,7 +465,16 @@ export class DashboardComponent implements OnInit {
     this.revAdrOptions = {
       maintainAspectRatio: false,
       plugins: {
-        legend: { display: false }
+        legend: { display: false },
+        datalabels: {
+          color: '#ffffff',
+          formatter: (value: any) => {
+            if (value !== null && value !== undefined && !isNaN(value)) {
+              return Number(value).toFixed(2);
+            }
+            return value;
+          }
+        }
       },
       scales: {
         x: {
@@ -513,7 +531,18 @@ export class DashboardComponent implements OnInit {
 
     this.mixAdrOptions = {
       maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
+      plugins: { 
+        legend: { display: false },
+        datalabels: {
+          color: '#ffffff',
+          formatter: (value: any) => {
+            if (value !== null && value !== undefined && !isNaN(value)) {
+              return Number(value).toFixed(2);
+            }
+            return value;
+          }
+        }
+      },
       scales: {
         x: {
           ticks: { color: textColorSecondary, font: { size: 10 }, maxRotation: 45, minRotation: 45 },

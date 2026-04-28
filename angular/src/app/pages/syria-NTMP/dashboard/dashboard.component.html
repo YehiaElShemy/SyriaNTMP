@@ -132,7 +132,7 @@
           }}</span>
         <p class="stat-card__value font-bold m-0 mt-1">
           <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-          <span class="purple" *ngIf="!isLoading">${{ statsData?.revenue?.adrAvgPriceDay|| 0 }}</span>
+          <span class="purple" *ngIf="!isLoading">${{ (statsData?.revenue?.adrAvgPriceDay)?.toFixed(1)|| 0 }}</span>
         </p>
         <span class="stat-card__sub mt-1">{{ 'dashboard.portfolioAdrSub' | translate }}</span>
       </div>
@@ -166,7 +166,7 @@
         <p class="stat-card__value font-bold m-0 mt-1">
           <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
           <span class="yellow" *ngIf="!isLoading">{{ statsData?.revenue?.peakCity?.city || '-' }} (${{
-            statsData?.revenue?.peakCity?.adr || 0 }})</span>
+            (statsData?.revenue?.peakCity?.adr).toFixed(1) || 0 }})</span>
         </p>
         <span class="stat-card__sub mt-1">{{ 'dashboard.peakCitySub' | translate }}</span>
       </div>
@@ -239,7 +239,7 @@
         }}</span>
       <p class="stat-card__value font-bold m-0 mt-2">
         <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-        <span class="yellow" *ngIf="!isLoading">{{ statsData?.occupancyDto?.avgOccupancyRate || 0 }}%</span>
+        <span class="yellow" *ngIf="!isLoading">{{ (statsData?.occupancyDto?.avgOccupancyRate)?.toFixed(2) || 0 }}%</span>
       </p>
       <span class="stat-card__sub mt-1">{{ 'dashboard.avgOccupancyIndexSub' | translate }}</span>
     </div>
