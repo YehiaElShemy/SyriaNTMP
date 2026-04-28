@@ -8,6 +8,7 @@ namespace SyriaNTMP.Models.Enums
 {
     public enum PropertyRatingEnum
     {
+        None=0,
         OneStar = 1,
         TwoStar = 2,
         ThreeStar = 3,
