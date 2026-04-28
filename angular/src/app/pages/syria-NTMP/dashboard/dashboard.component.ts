@@ -122,12 +122,11 @@ export class DashboardComponent implements OnInit {
   }
 
   buildLists() {
-    this.translateService.get(['dashboard.all', 'enums.PropertyRatingEnum']).subscribe(translations => {
-      const allLabel = translations['dashboard.all'];
+    this.translateService.get(['enums.PropertyRatingEnum']).subscribe(translations => {
       const starTranslations = translations['enums.PropertyRatingEnum'];
 
       this.starOptions = [
-        { label: allLabel, value: null },
+        { label: starTranslations?.None || 'None', value: PropertyRatingEnum.None },
         { label: starTranslations?.OneStar || '1 Star', value: PropertyRatingEnum.OneStar },
         { label: starTranslations?.TwoStar || '2 Stars', value: PropertyRatingEnum.TwoStar },
         { label: starTranslations?.ThreeStar || '3 Stars', value: PropertyRatingEnum.ThreeStar },
