@@ -35,7 +35,7 @@ namespace SyriaNTMP.Services
             if (searchCriteria.PropertyRating.HasValue)
             {
                 queryable = searchCriteria.PropertyRating == PropertyRatingEnum.None
-                         ? queryable.Where(r => r.PropertyRating == null || r.PropertyRating==PropertyRatingEnum.None)
+                         ? queryable.Where(r => r.PropertyRating == null || r.PropertyRating == PropertyRatingEnum.None)
                          : queryable.Where(r => r.PropertyRating == searchCriteria.PropertyRating);
 
             }
@@ -192,91 +192,91 @@ namespace SyriaNTMP.Services
 
             var avgOccupancyRate = Math.Round(totalAvailableNights > 0 ? (totalOccupiedNights / (double)totalAvailableNights) * 100 : 0, 3);
             var totalNightsNotSolds = totalAvailableNights - totalOccupiedNights;
-            return new DashboardDto
+
+            var dashborddto = new DashboardDto();
+            dashborddto.Opertation = new OperationDto
             {
-                Opertation = new OperationDto
+                TotalReservations = rawData.Count,
+                CancellationRate = periodData.Count == 0 ? 0 : (periodData.Count(x => x.ReservationStatus == ReservationStatus.Canceled) * 100 /
+                       periodData.Count),
+                OccupancyRate = CalculateOccupancyPercentage(totalSoldNights, activeData, startPeriod, endPeriod),
+                ActiveProperties = activeProperties,
+                TotalSoldNights = totalSoldNights
+            };
+            dashborddto.PurposeStats = new PurposeDto()
+            {
+                TotalNight = totalSoldNights,
+                NumOfGuests = rawData.Sum(a => a.NumberOfGuests),
+                MostCommonPurpose = rawData.Count() > 0 ? rawData.GroupBy(x => x.ReservationPurpose)
+                .Select(g => new PurposeDetailsDto
                 {
-                    TotalReservations = rawData.Count,
-                    CancellationRate = periodData.Count == 0 ? 0 : (periodData.Count(x => x.ReservationStatus == ReservationStatus.Canceled) * 100 /
-                           periodData.Count),
-                    OccupancyRate = CalculateOccupancyPercentage(totalSoldNights, activeData, startPeriod, endPeriod),
-                    ActiveProperties = activeProperties,
-                    TotalSoldNights = totalSoldNights
-                },
-                PurposeStats = new PurposeDto()
+                    Purpose = g.Key.ToString(),
+                    Count = g.Count()
+                }).MaxBy(a => a.Count).Purpose : "",
+
+                PurposeDetailsDtos = rawData.GroupBy(x => x.ReservationPurpose)
+                .Select(g => new PurposeDetailsDto
                 {
-                    TotalNight = totalSoldNights,
-                    NumOfGuests = rawData.Sum(a => a.NumberOfGuests),
-                    MostCommonPurpose = rawData.GroupBy(x => x.ReservationPurpose)
-                    .Select(g => new PurposeDetailsDto
-                    {
-                        Purpose = g.Key.ToString(),
-                        Count = g.Count()
-                    }).MaxBy(a => a.Count).Purpose,
+                    Purpose = g.Key.ToString(),
+                    Count = g.Count(),
+                    PurposeRate = rawData.Count() == 0 ? 0 : (g.Count() * 100) / rawData.Count()
+                }).ToList(),
+            };
 
-                    PurposeDetailsDtos = rawData.GroupBy(x => x.ReservationPurpose)
-                    .Select(g => new PurposeDetailsDto
-                    {
-                        Purpose = g.Key.ToString(),
-                        Count = g.Count(),
-                        PurposeRate = rawData.Count() == 0 ? 0 : (g.Count() * 100) / rawData.Count()
-                    }).ToList(),
-                },
-
-                NationalityStats = nationality,
-                WeeklyReservations = weekly,
-                TotalWeeklyReservations = weekly.Count(),
-                TodayStats = todayStats,
-                Revenue = new RevenueDto
+            dashborddto.NationalityStats = nationality;
+            dashborddto.WeeklyReservations = weekly;
+            dashborddto.TotalWeeklyReservations = weekly.Count();
+            dashborddto.TodayStats = todayStats;
+            dashborddto.Revenue = new RevenueDto
+            {
+                PortfolioAdr = portfolioAdr,
+                TotalNight = totalSoldNights,
+                AdrAvgPriceDay = AdrAvgPriceDay,
+                MeanAdrByCity = activeData.GroupBy(x => x.City).Select(g => new AdrByCityDto
                 {
-                    PortfolioAdr = portfolioAdr,
-                    TotalNight = totalSoldNights,
-                    AdrAvgPriceDay = AdrAvgPriceDay,
-                    MeanAdrByCity = activeData.GroupBy(x => x.City).Select(g => new AdrByCityDto
-                    {
-                        City = g.Key,
-                        Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod),
-                        TotalNight = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod),
+                    City = g.Key,
+                    Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod),
+                    TotalNight = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod),
 
-                    }).ToList(),
-                    PeakCity = new PeakCityDto
-                    {
-                        Adr = Math.Round(activeData.GroupBy(x => x.City)
-                            .Select(g => new AdrByCityDto
-                            {
-                                City = g.Key,
-                                Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod)
-                            }).Max(a => a.Adr), 3),
-                        City = activeData.GroupBy(x => x.City)
-                            .Select(g => new AdrByCityDto
-                            {
-                                City = g.Key,
-                                Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod),
-                                TotalNight = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod)
-
-                            }).MaxBy(a => a.Adr).City,
-                    }
-
-                },
-                OccupancyDto = new OccupancyDto()
+                }).ToList(),
+                PeakCity = new PeakCityDto
                 {
-                    AvgOccupancyRate = avgOccupancyRate,
-                    TotalSoldNights = totalSoldNights,
-                    TotalNightsNotSolds = totalNightsNotSolds,
+                    Adr = activeData.Any() ? Math.Round(activeData.GroupBy(x => x.City)
+                        .Select(g => new AdrByCityDto
+                        {
+                            City = g.Key,
+                            Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod)
+                        }).Max(a => a.Adr), 3) : 0,
+                    City = activeData.Any() ? activeData.GroupBy(x => x.City)
+                        .Select(g => new AdrByCityDto
+                        {
+                            City = g.Key,
+                            Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod),
+                            TotalNight = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod)
 
-
-                    CityOccupancyDto = activeData.GroupBy(x => x.City).Select(g => new CityOccupancyDto
-                    {
-                        City = g.Key,
-                        OccupancyRate = CalculateOccupancyPercentage(
-                         CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod), g.ToList(), startPeriod,
-                         endPeriod)
-                    }).ToList(),
-
+                        }).MaxBy(a => a.Adr).City : "",
                 }
 
             };
+            dashborddto.OccupancyDto = new OccupancyDto()
+            {
+                AvgOccupancyRate = avgOccupancyRate,
+                TotalSoldNights = totalSoldNights,
+                TotalNightsNotSolds = totalNightsNotSolds,
+
+
+                CityOccupancyDto = activeData.GroupBy(x => x.City).Select(g => new CityOccupancyDto
+                {
+                    City = g.Key,
+                    OccupancyRate = CalculateOccupancyPercentage(
+                     CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod), g.ToList(), startPeriod,
+                     endPeriod)
+                }).ToList(),
+
+            };
+            return dashborddto;
         }
+
 
 
         public async Task<ReservationsDto> GetById(int id)

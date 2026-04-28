@@ -27,7 +27,7 @@
 
 
 </head>
-<body dir="@(System.Threading.Thread.CurrentThread.CurrentUICulture.Name=="en"?"ltr":"rtl")">
+<body dir="@(System.Threading.Thread.CurrentThread.CurrentUICulture.Name=="en"?"ltr":"rtl")" style="overflow: hidden; height:100vh;">
     <div class="ntmp-login-container">
 
         <!-- Left Side (Login Form) -->
@@ -85,7 +85,7 @@
                         <div class="form-group">
                             <div class="password-header">
                                 <label for="Password">@L["Password"]</label>
-                                <a href="#" class="forgot-password">@L["ForgotPassword"]</a>
+                                @* <a href="#" class="forgot-password">@L["ForgotPassword"]</a> *@
                             </div>
                             <div class="password-input-container">
                                 <input asp-for="LoginInput.Password"
