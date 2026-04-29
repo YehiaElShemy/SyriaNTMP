@@ -40,12 +40,22 @@
 <div *ngIf="activeTab === 'guest-mix'" class="tab-content">
 
   <!-- Header -->
-  <div class="mix-header mb-6">
-    <span class="mix-label font-semibold uppercase tracking-wider">{{ 'dashboard.marketComposition' | translate
-      }}</span>
-    <h2 class="mix-title font-bold m-0 mt-1">{{ 'dashboard.nationalityStatistics' | translate }}</h2>
-    <div class="mix-desc-box mt-2 py-2">
-      <p class="m-0">{{ 'dashboard.guestMixDescription' | translate }}</p>
+  <div class="mix-header mb-6 flex justify-between align-items-end">
+
+    <div class="flex flex-col">
+      <span class="mix-label font-semibold uppercase tracking-wider">{{ 'dashboard.marketComposition' | translate
+        }}</span>
+      <h2 class="mix-title font-bold m-0 mt-1">{{ 'dashboard.nationalityStatistics' | translate }}</h2>
+      <div class="mix-desc-box mt-2">
+        <p class="m-0">{{ 'dashboard.guestMixDescription' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="">
+      <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8"
+        (click)="showFilterDialog()">
+        <img src="assets/images/filter.svg" alt="">    
+      </button>
     </div>
   </div>
 
@@ -56,10 +66,10 @@
 
         <span class="mix-chart-title font-bold">{{ 'dashboard.nationalityStatistics' | translate }}</span>
       </div>
-      <button class="mix-filter-btn flex justify-center items-center rounded-lg border transition-colors"
+      <!-- <button class="mix-filter-btn flex justify-center items-center rounded-lg border transition-colors"
         (click)="showFilterDialog()">
         <i class="pi pi-filter"></i>
-      </button>
+      </button> -->
     </div>
 
     <!-- Three Charts Row -->
@@ -111,11 +121,19 @@
 <div *ngIf="activeTab === 'revenue'" class="tab-content">
 
   <!-- Header -->
-  <div class="rev-header mb-6">
-    <span class="rev-label font-semibold uppercase tracking-wider">{{ 'dashboard.pricing' | translate }}</span>
-    <h2 class="rev-title font-bold m-0 mt-1">{{ 'dashboard.adrTitle' | translate }}</h2>
-    <div class="rev-desc-box mt-2 px-3 py-2">
-      <p class="m-0">{{ 'dashboard.revenueDescription' | translate }}</p>
+  <div class="rev-header mb-6 flex justify-between align-items-end">
+    <div class="flex flex-col">
+      <span class="rev-label font-semibold uppercase tracking-wider">{{ 'dashboard.pricing' | translate }}</span>
+      <h2 class="rev-title font-bold m-0 mt-1">{{ 'dashboard.adrTitle' | translate }}</h2>
+      <div class="rev-desc-box mt-2 ">
+        <p class="m-0">{{ 'dashboard.revenueDescription' | translate }}</p>
+      </div>
+    </div>
+    <div class="">
+      <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8"
+        (click)="showFilterDialog()">
+        <img src="assets/images/filter.svg" alt="">    
+      </button>
     </div>
   </div>
 
@@ -184,10 +202,10 @@
           <span class="rev-card__sub">{{ 'dashboard.scopeChartSub' | translate }}</span>
         </div>
       </div>
-      <button class="rev-filter-btn flex justify-center items-center rounded-lg border transition-colors"
+      <!-- <button class="rev-filter-btn flex justify-center items-center rounded-lg border transition-colors"
         (click)="showFilterDialog()">
         <i class="pi pi-filter"></i>
-      </button>
+      </button> -->
     </div>
     <div class="w-full">
       <p-chart type="bar" [data]="revAdrData" [options]="revAdrOptions"></p-chart>
@@ -207,11 +225,19 @@
 <div *ngIf="activeTab === 'demand'" class="tab-content">
 
   <!-- Header -->
-  <div class="demand-header mb-6">
-    <span class="demand-label font-semibold uppercase tracking-wider">{{ 'dashboard.tripIntent' | translate }}</span>
-    <h2 class="demand-title font-bold m-0 mt-1">{{ 'dashboard.demandTitle' | translate }}</h2>
-    <div class="demand-desc-box mt-1">
-      <p class="m-0 p-0">{{ 'dashboard.demandDescription' | translate }}</p>
+  <div class="demand-header mb-6 flex justify-between align-items-end">
+    <div class="flex flex-col">
+      <span class="demand-label font-semibold uppercase tracking-wider">{{ 'dashboard.tripIntent' | translate }}</span>
+      <h2 class="demand-title font-bold m-0 mt-1">{{ 'dashboard.demandTitle' | translate }}</h2>
+      <div class="demand-desc-box mt-1">
+        <p class="m-0 p-0">{{ 'dashboard.demandDescription' | translate }}</p>
+      </div>
+    </div>
+    <div class="">
+      <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8"
+        (click)="showFilterDialog()">
+        <img src="assets/images/filter.svg" alt="">    
+      </button>
     </div>
   </div>
 
@@ -258,11 +284,11 @@
             <span class="demand-card__sub">{{ 'dashboard.occupancyRateSub' | translate }}</span>
           </div>
         </div>
-        <button
+        <!-- <button
           class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8"
           (click)="showFilterDialog()">
           <i class="pi pi-filter"></i>
-        </button>
+        </button> -->
       </div>
       <div class="w-full" style="min-height: 250px;">
         <p-chart type="bar" [data]="demandOccupancyData" [options]="demandOccupancyOptions"></p-chart>
@@ -276,10 +302,21 @@
 <div *ngIf="activeTab === 'operations'" class="tab-content">
 
   <!-- Header -->
-  <div class="ops-header mb-6">
-    <span class="ops-label font-semibold uppercase tracking-wider">{{ 'dashboard.rhythmOfProperty' | translate }}</span>
-    <h2 class="ops-title font-bold m-0 mt-1">{{ 'dashboard.operationsPulse' | translate }}</h2>
-    <p class="ops-desc mt-1 m-0">{{ 'dashboard.operationsDescription' | translate }}</p>
+  <div class="ops-header mb-6 flex justify-between align-items-end">
+    <div class="flex flex-col">
+      <span class="ops-label font-semibold uppercase tracking-wider">{{ 'dashboard.rhythmOfProperty' | translate }}</span>
+      <h2 class="ops-title font-bold m-0 mt-1">{{ 'dashboard.operationsPulse' | translate }}</h2>
+      <p class="ops-desc mt-1 m-0">{{ 'dashboard.operationsDescription' | translate }}</p>
+    </div>
+
+    <div class="">
+      <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8"
+        (click)="showFilterDialog()">
+        <img src="assets/images/filter.svg" alt="">    
+      </button>
+    </div>
+
+
   </div>
 
   <!-- Stat Cards Row -->
@@ -328,11 +365,11 @@
             <span class="ops-card__sub">{{ 'dashboard.weeklyTotal' | translate }}</span>
           </div>
         </div>
-        <button
+        <!-- <button
           class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8"
           (click)="showFilterDialog()">
           <i class="pi pi-filter"></i>
-        </button>
+        </button> -->
       </div>
       <div class="flex items-end justify-between">
         <span class="ops-week-label font-bold uppercase tracking-wider mb-3 block">{{ 'dashboard.currentWeek' |
@@ -361,11 +398,11 @@
               }}</span>
           </div>
         </div>
-        <button
+        <!-- <button
           class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8"
           (click)="showFilterDialog()">
           <i class="pi pi-filter"></i>
-        </button>
+        </button> -->
       </div>
 
       <div class="ops-message-box p-3 mb-5">
@@ -409,11 +446,20 @@
 
 <div *ngIf="activeTab === 'visitPurpose'" class="tab-content">
   <!-- Header -->
-  <div class="demand-header mb-6">
-    <span class="demand-label font-semibold uppercase tracking-wider">{{ 'dashboard.tripIntent' | translate }}</span>
-    <h2 class="demand-title font-bold m-0 mt-1">{{ 'dashboard.visitPurpose' | translate }}</h2>
-    <div class="demand-desc-box mt-2 p-0">
-      <p class="m-0">{{ 'dashboard.visitPurposeDesc' | translate }}</p>
+  <div class="demand-header mb-6 flex justify-between align-items-end">
+    <div class="flex flex-col">
+      <span class="demand-label font-semibold uppercase tracking-wider">{{ 'dashboard.tripIntent' | translate }}</span>
+      <h2 class="demand-title font-bold m-0 mt-1">{{ 'dashboard.visitPurpose' | translate }}</h2>
+      <div class="demand-desc-box mt-2 p-0">
+        <p class="m-0">{{ 'dashboard.visitPurposeDesc' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="">
+      <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 hover:bg-gray-50 w-8 h-8"
+        (click)="showFilterDialog()">
+        <img src="assets/images/filter.svg" alt="">    
+      </button>
     </div>
   </div>
 
@@ -465,10 +511,10 @@
   <div class="demand-card bg-white rounded-xl p-8 mt-4 border border-gray-100 shadow-sm">
     <div class="flex items-center justify-between mb-8">
       <h3 class="purpose-card-title font-bold text-xl">{{ 'dashboard.visitPurpose' | translate }}</h3>
-        <button class="mix-filter-btn flex justify-center items-center rounded-lg border transition-colors"
+        <!-- <button class="mix-filter-btn flex justify-center items-center rounded-lg border transition-colors"
         (click)="showFilterDialog()">
         <i class="pi pi-filter"></i>
-      </button>
+      </button> -->
     </div>
 
     <div class="purpose-layout flex flex-row-reverse items-center justify-between">
