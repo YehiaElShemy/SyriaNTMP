@@ -10,7 +10,7 @@ import { TagModule } from 'primeng/tag';
 import { FormsModule } from '@angular/forms';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ReservationService } from '../../../proxy/services';
-import { ReservationsSearchCriteria } from '@proxy/dto';
+import { LookupDto, ReservationsSearchCriteria } from '@proxy/dto';
 import { ReservationStatus } from '@proxy/models/enums';
 import { PropertyRatingEnum } from '@proxy/models/enums';
 import { ReservationPurpose } from '@proxy/models/enums';
@@ -36,7 +36,7 @@ export class DetailedStatisticsComponent implements OnInit {
   isLoading = false;
 
   // Filter model
-  filterCompanyName: string | null = null;
+  filterNationality: string | null = null;
   filterPropertyName: string | null = null;
   filterPropertyRating: number | null = null;
   filterReservationNumber: string | null = null;
@@ -49,14 +49,16 @@ export class DetailedStatisticsComponent implements OnInit {
   ReservationStatus = ReservationStatus;
   PropertyRatingEnum = PropertyRatingEnum;
   ReservationPurpose = ReservationPurpose;
-
+  nationalityOptions: any[] = [];
   ngOnInit() {
     this.translateService.onLangChange.subscribe(() => {
       this.buildLists();
     });
     this.buildLists();
   }
-
+  get isAr(): boolean {
+    return this.translateService.getCurrentLang() === 'ar';
+  }
   buildLists() {
     this.translateService.get('enums').subscribe(enumsTranslations => {
       this.ratingsList = Object.keys(PropertyRatingEnum)
@@ -79,8 +81,25 @@ export class DetailedStatisticsComponent implements OnInit {
           label: enumsTranslations?.ReservationPurpose?.[key] || key.replace(/([A-Z])/g, ' $1').trim(),
           value: ReservationPurpose[key as keyof typeof ReservationPurpose]
         }));
+
+
     });
+    this.getNationalities();
     this.fetchReservations();
+  }
+  getNationalities() {
+    this.reservationService.getNationalities({}).subscribe({
+      next: (res: LookupDto[]) => {
+        this.nationalityOptions = res.map(x => ({
+          label: this.isAr ? x.nameAr : x.nameEn,
+          value: x.nameEn
+        }));
+        console.log(this.nationalityOptions, "nationalityOptions");
+      },
+      error: (err) => {
+        console.log(err, "err");
+      }
+    })
   }
 
   // Pagination state
@@ -94,9 +113,9 @@ export class DetailedStatisticsComponent implements OnInit {
     const payload: ReservationsSearchCriteria = {
       skipCount: this.pageIndex * this.pageSize,
       maxResultCount: this.pageSize,
-      companyName: this.filterCompanyName || null,
+      guestNationality: this.filterNationality || null,
       propertyName: this.filterPropertyName || null,
-      propertyRating: this.filterPropertyRating == 0 ? 0 : this.filterPropertyRating ,
+      propertyRating: this.filterPropertyRating == 0 ? 0 : this.filterPropertyRating,
       reservationNumber: this.filterReservationNumber || null,
       reservationStatus: this.filterReservationStatus || null,
       reservationPurpose: this.filterReservationPurpose || null,
@@ -132,7 +151,7 @@ export class DetailedStatisticsComponent implements OnInit {
   }
 
   clearFilters() {
-    this.filterCompanyName = null;
+    this.filterNationality = null;
     this.filterPropertyName = null;
     this.filterPropertyRating = null;
     this.filterReservationNumber = null;
