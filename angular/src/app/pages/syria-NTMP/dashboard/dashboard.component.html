@@ -181,8 +181,12 @@
           }}</span>
         <p class="stat-card__value font-bold m-0 mt-1">
           <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-          <span class="yellow" *ngIf="!isLoading">{{ statsData?.revenue?.peakCity?.city || '-' }} (${{
-            (statsData?.revenue?.peakCity?.adr).toFixed(0) || 0 }})</span>
+          <span class="yellow" *ngIf="!isLoading">
+            <div class="flex">
+              {{ statsData?.revenue?.peakCity?.city || '-' }}
+              ${{ (statsData?.revenue?.peakCity?.adr).toFixed(0) || 0 }}
+            </div>
+          </span>
         </p>
         <span class="stat-card__sub mt-1">{{ 'dashboard.peakCitySub' | translate }}</span>
       </div>

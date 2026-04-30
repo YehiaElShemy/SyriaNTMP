@@ -322,9 +322,16 @@ export class DashboardComponent implements OnInit {
         datasets: [{
           label: 'ADR',
           backgroundColor: bgColors,
-          data: chartData
+          data: chartData,
+          maxBarThickness: 50
         }]
       };
+
+      const maxAdr = chartData.length > 0 ? Math.max(...chartData) : 0;
+      if (this.revAdrOptions?.scales?.y) {
+        this.revAdrOptions.scales.y.max = maxAdr + 2;
+        this.revAdrOptions = { ...this.revAdrOptions };
+      }
     }
 
     // Demand - Occupancy By City
@@ -517,7 +524,6 @@ export class DashboardComponent implements OnInit {
         },
         y: {
           min: 0,
-          max: 250,
           ticks: {
             color: textColorSecondary,
             stepSize: 25
