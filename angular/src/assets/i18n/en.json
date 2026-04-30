@@ -53,7 +53,8 @@
     "from": "From",
     "to": "To",
     "guests": "No. of guests",
-    "nights": "No. of nights"
+    "nights": "No. of nights",
+    "totalRecords": "Total Records"
   },
   "enums": {
     "PropertyRatingEnum": {

@@ -109,5 +109,9 @@
         <td class="text-xs font-bold">{{ res.toDate | date:'dd MMM yyyy' }}</td>
       </tr>
     </ng-template>
+
+    <ng-template pTemplate="paginatorleft">
+      <span class="text-sm text-gray-500 font-semibold">{{ 'table.totalRecords' | translate }}: {{totalRecords}}</span>
+    </ng-template>
   </p-table>
 </div>

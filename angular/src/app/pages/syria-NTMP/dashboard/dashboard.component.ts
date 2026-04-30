@@ -150,10 +150,10 @@ export class DashboardComponent implements OnInit {
     }).subscribe({
       next: (res: LookupDto[]) => {
         this.nationalityOptions = res;
-        // console.log(res, "getNationalities");
+        // //console.log('res, "getNationalities");
       },
       error: (err) => {
-        console.log(err, "err");
+        //console.log('err, "err");
       }
     })
   }
@@ -174,10 +174,10 @@ export class DashboardComponent implements OnInit {
     }).subscribe({
       next: (res: LookupDto[]) => {
         this.citiesOptions = res;
-        // console.log(res, "getCities");
+        // //console.log('res, "getCities");
       },
       error: (err) => {
-        console.log(err, "err");
+        //console.log('err, "err");
       }
     })
   }
@@ -188,10 +188,10 @@ export class DashboardComponent implements OnInit {
     }).subscribe({
       next: (res: LookupDto[]) => {
         this.propertiesOptions = res;
-        // console.log(res, "getProperties");
+        // //console.log('res, "getProperties");
       },
       error: (err) => {
-        console.log(err, "err");
+        //console.log('err, "err");
       }
     })
   }
