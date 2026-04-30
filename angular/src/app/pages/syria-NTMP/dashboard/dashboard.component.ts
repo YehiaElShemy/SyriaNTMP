@@ -373,8 +373,25 @@ export class DashboardComponent implements OnInit {
 
     // Ops small line chart (sparkline style)
     this.opsLineOptions = {
+      layout: {
+        padding: {
+          left: 25,
+          right: 25,
+          top: 25,
+          bottom: 25
+        }
+      },
       plugins: {
-        legend: { display: false }
+        legend: { display: false },
+        datalabels: {
+          display: true,
+          align: 'top',
+          color: '#334155', // Hardcoded dark grey to avoid invisible text
+          font: {
+            size: 14,
+            weight: 'bold'
+          }
+        }
       },
       scales: {
         x: {
