@@ -109,6 +109,7 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.initializeDateRange();
     this.initChart();
     this.fetchStats();
     this.getFilters();
@@ -136,7 +137,15 @@ export class DashboardComponent implements OnInit {
       ];
     });
   }
+  private initializeDateRange(): void {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const day = now.getDate();
 
+    this.fromDate = new Date(year, 0, 1);           // beginning of year
+    this.toDate = new Date(year, month, day, 23, 59, 59); // end of today
+  }
   getFilters() {
     this.getFiltersCities()
     this.getFiltersProperties()

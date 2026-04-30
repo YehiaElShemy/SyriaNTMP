@@ -51,10 +51,20 @@ export class DetailedStatisticsComponent implements OnInit {
   ReservationPurpose = ReservationPurpose;
   nationalityOptions: any[] = [];
   ngOnInit() {
+    this.initializeDateRange();
     this.translateService.onLangChange.subscribe(() => {
       this.buildLists();
     });
     this.buildLists();
+  }
+  private initializeDateRange(): void {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const day = now.getDate();
+
+    this.filterDateFrom = new Date(year, 0, 1);           // beginning of year
+    this.filterDateTo = new Date(year, month, day, 23, 59, 59); // end of today
   }
   get isAr(): boolean {
     return this.translateService.getCurrentLang() === 'ar';
