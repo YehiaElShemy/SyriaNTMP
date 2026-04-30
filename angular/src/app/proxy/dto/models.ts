@@ -109,7 +109,7 @@ export interface ReservationsDto extends EntityDto<number> {
 }
 
 export interface ReservationsSearchCriteria extends PagedAndSortedResultRequestDto {
-  companyName?: string;
+  guestNationality?: string;
   propertyName?: string;
   propertyRating?: PropertyRatingEnum;
   reservationNumber?: string;

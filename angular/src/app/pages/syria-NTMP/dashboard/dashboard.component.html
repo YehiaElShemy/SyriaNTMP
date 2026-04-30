@@ -238,7 +238,8 @@
         }}</span>
       <p class="stat-card__value font-bold m-0 mt-2">
         <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-        <span class="yellow" *ngIf="!isLoading">{{ (statsData?.occupancyDto?.avgOccupancyRate)?.toFixed(0) || 0 }}%</span>
+        <span class="yellow" *ngIf="!isLoading">{{ (statsData?.occupancyDto?.avgOccupancyRate)?.toFixed(0) || 0
+          }}%</span>
       </p>
       <span class="stat-card__sub mt-1">{{ 'dashboard.avgOccupancyIndexSub' | translate }}</span>
     </div>
@@ -465,7 +466,7 @@
   <div class="demand-card bg-white rounded-xl p-8 mt-4 border border-gray-100 shadow-sm">
     <div class="flex items-center justify-between mb-8">
       <h3 class="purpose-card-title font-bold text-xl">{{ 'dashboard.visitPurpose' | translate }}</h3>
-        <button class="mix-filter-btn flex justify-center items-center rounded-lg border transition-colors"
+      <button class="mix-filter-btn flex justify-center items-center rounded-lg border transition-colors"
         (click)="showFilterDialog()">
         <i class="pi pi-filter"></i>
       </button>
@@ -524,23 +525,20 @@
     <div class="flex flex-col gap-2">
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.from' | translate
         }}</label>
-      <p-datepicker appendTo="body" showClear="true" [(ngModel)]="currentFilters.fromDate" dateFormat="mm/dd/yy"
-        [showIcon]="true" [iconDisplay]="'input'" styleClass="w-full"
-        [placeholder]="'dashboard.selectDate' | translate"></p-datepicker>
+      <p-datepicker appendTo="body" showClear="true" [(ngModel)]="fromDate" [showIcon]="true" [iconDisplay]="'input'"
+        styleClass="w-full" [placeholder]="'dashboard.selectDate' | translate"></p-datepicker>
     </div>
     <div class="flex flex-col gap-2">
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.to' | translate
         }}</label>
-      <p-datepicker appendTo="body" showClear="true" [(ngModel)]="currentFilters.toDate" dateFormat="mm/dd/yy"
-        [showIcon]="true" [iconDisplay]="'input'" styleClass="w-full"
-        [placeholder]="'dashboard.selectDate' | translate"></p-datepicker>
+      <p-datepicker appendTo="body" showClear="true" [(ngModel)]="toDate" [showIcon]="true" [iconDisplay]="'input'"
+        styleClass="w-full" [placeholder]="'dashboard.selectDate' | translate"></p-datepicker>
     </div>
     <div class="flex flex-col gap-2">
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.city' | translate
         }}</label>
       <p-dropdown appendTo="body" [options]="citiesOptions" [(ngModel)]="currentFilters.city"
-        [optionLabel]="isAr? 'nameAr' : 'nameEn'"
-         optionValue="value" [placeholder]="'dashboard.allCities' | translate"
+        [optionLabel]="isAr? 'nameAr' : 'nameEn'" optionValue="value" [placeholder]="'dashboard.allCities' | translate"
         [showClear]="true" filter="true"></p-dropdown>
     </div>
     <div class="flex flex-col gap-2">

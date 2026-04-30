@@ -32,7 +32,8 @@ export class DashboardComponent implements OnInit {
   activeTab: string = 'guest-mix';
 
   percentages = { checkedIn: 0, checkedOut: 0, cancelled: 0 };
-  todayDate: Date = new Date();
+  fromDate: Date | null = null;
+  toDate: Date | null = null;
 
   // Filter states
   displayFilterDialog: boolean = false;
@@ -203,10 +204,21 @@ export class DashboardComponent implements OnInit {
     this.displayFilterDialog = false;
     this.fetchStats();
   }
+  formatDate(date: Date): string {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
 
   fetchStats() {
     this.isLoading = true;
     this.error = null;
+
+    this.currentFilters.fromDate = this.fromDate ? this.formatDate(this.fromDate) : null;
+
+    this.currentFilters.toDate = this.toDate ? this.formatDate(this.toDate) : null;
 
     this.reservationService.getDashboard(this.currentFilters).subscribe({
       next: (res: DashboardDto) => {
@@ -530,7 +542,7 @@ export class DashboardComponent implements OnInit {
 
     this.mixAdrOptions = {
       maintainAspectRatio: false,
-      plugins: { 
+      plugins: {
         legend: { display: false },
         datalabels: {
           color: '#ffffff',

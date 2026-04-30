@@ -80,7 +80,7 @@ export class ReservationService {
     this.restService.request<any, PagedResultDto<ReservationsDto>>({
       method: 'GET',
       url: '/api/app/reservation/reservations',
-      params: { companyName: searchCriteria.companyName, propertyName: searchCriteria.propertyName, propertyRating: searchCriteria.propertyRating, reservationNumber: searchCriteria.reservationNumber, reservationStatus: searchCriteria.reservationStatus, reservationPurpose: searchCriteria.reservationPurpose, dateFrom: searchCriteria.dateFrom, dateTo: searchCriteria.dateTo, sorting: searchCriteria.sorting, skipCount: searchCriteria.skipCount, maxResultCount: searchCriteria.maxResultCount },
+      params: { guestNationality: searchCriteria.guestNationality, propertyName: searchCriteria.propertyName, propertyRating: searchCriteria.propertyRating, reservationNumber: searchCriteria.reservationNumber, reservationStatus: searchCriteria.reservationStatus, reservationPurpose: searchCriteria.reservationPurpose, dateFrom: searchCriteria.dateFrom, dateTo: searchCriteria.dateTo, sorting: searchCriteria.sorting, skipCount: searchCriteria.skipCount, maxResultCount: searchCriteria.maxResultCount },
     },
     { apiName: this.apiName,...config });
 

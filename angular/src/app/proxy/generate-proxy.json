@@ -901,7 +901,7 @@
               "parameters": [
                 {
                   "nameOnMethod": "searchCriteria",
-                  "name": "CompanyName",
+                  "name": "guestNationality",
                   "jsonName": null,
                   "type": "System.String",
                   "typeSimple": "string",
@@ -4335,7 +4335,7 @@
       "genericArguments": null,
       "properties": [
         {
-          "name": "CompanyName",
+          "name": "guestNationality",
           "jsonName": null,
           "type": "System.String",
           "typeSimple": "string",
