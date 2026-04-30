@@ -22,75 +22,64 @@
 display: none !important;
 }
 
+*{
+    font-family: 'IBM_Plex_Sans_Arabic';
+}
+
 // to use font custom 
 /* Thin */
 @font-face {
-  font-family: 'Montserrat';
-  src: url('assets/fonts/montserrat/Montserrat-Thin.ttf') format('truetype');
+  font-family: 'IBM_Plex_Sans_Arabic';
+  src: url('assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-ExtraLight.ttf') format('truetype');
   font-weight: 100;
   font-style: normal;
 }
 
 /* Extra Light */
 @font-face {
-  font-family: 'Montserrat';
-  src: url('assets/fonts/montserrat/Montserrat-ExtraLight.ttf') format('truetype');
+  font-family: 'IBM_Plex_Sans_Arabic';
+  src: url('assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Light.ttf') format('truetype');
   font-weight: 200;
   font-style: normal;
 }
 
 /* Light */
 @font-face {
-  font-family: 'Montserrat';
-  src: url('assets/fonts/montserrat/Montserrat-Light.ttf') format('truetype');
+  font-family: 'IBM_Plex_Sans_Arabic';
+  src: url('assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Medium.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
 }
 
 /* Regular */
 @font-face {
-  font-family: 'Montserrat';
-  src: url('assets/fonts/montserrat/Montserrat-Regular.ttf') format('truetype');
+  font-family: 'IBM_Plex_Sans_Arabic';
+  src: url('assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 
 /* Medium */
 @font-face {
-  font-family: 'Montserrat';
-  src: url('assets/fonts/montserrat/Montserrat-Medium.ttf') format('truetype');
+  font-family: 'IBM_Plex_Sans_Arabic';
+  src: url('assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
 }
 
 /* SemiBold */
 @font-face {
-  font-family: 'Montserrat';
-  src: url('assets/fonts/montserrat/Montserrat-SemiBold.ttf') format('truetype');
+  font-family: 'IBM_Plex_Sans_Arabic';
+  src: url('assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-SemiBold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
 }
 
 /* Bold */
 @font-face {
-  font-family: 'Montserrat';
-  src: url('assets/fonts/montserrat/Montserrat-Bold.ttf') format('truetype');
+  font-family: 'IBM_Plex_Sans_Arabic';
+  src: url('assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
 }
 
-/* Extra Bold */
-@font-face {
-  font-family: 'Montserrat';
-  src: url('assets/fonts/montserrat/Montserrat-ExtraBold.ttf') format('truetype');
-  font-weight: 800;
-  font-style: normal;
-}
-
-/* Black */
-@font-face {
-  font-family: 'Montserrat';
-  src: url('assets/fonts/montserrat/Montserrat-Black.ttf') format('truetype');
-  font-weight: 900;
-  font-style: normal;
-}
