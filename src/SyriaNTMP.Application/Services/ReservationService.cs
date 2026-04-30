@@ -128,8 +128,8 @@ namespace SyriaNTMP.Services
             var rawData = await AsyncExecuter.ToListAsync(query);
 
             var now = DateTime.Now;
-            var startPeriod = filter.FromDate ?? new DateTime(now.Year, 1, 1);
-            var endPeriod = filter.ToDate ?? new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
+            var startPeriod = filter.FromDate ?? rawData.Min(a => a.FromDate);
+            var endPeriod = filter.ToDate ?? rawData.Max(a => a.ToDate);
             // Assign to your DTO/ViewModel
             filter.FromDate = startPeriod;
 
@@ -208,39 +208,40 @@ namespace SyriaNTMP.Services
 
             dashborddto.NationalityStats = nationality;
             dashborddto.WeeklyReservations = weekly;
-            dashborddto.TotalWeeklyReservations = weekly.Sum(a=>a.Count);
+            dashborddto.TotalWeeklyReservations = weekly.Sum(a => a.Count);
             dashborddto.TodayStats = todayStats;
-            dashborddto.Revenue = new RevenueDto
+            dashborddto.Revenue = new RevenueDto();
+
+            dashborddto.Revenue.PortfolioAdr = portfolioAdr;
+            dashborddto.Revenue.TotalNight = totalSoldNights;
+            dashborddto.Revenue.AdrAvgPriceDay = AdrAvgPriceDay;
+            dashborddto.Revenue.MeanAdrByCity = activeData.GroupBy(x => x.City).Select(g => new AdrByCityDto
             {
-                PortfolioAdr = portfolioAdr,
-                TotalNight = totalSoldNights,
-                AdrAvgPriceDay = AdrAvgPriceDay,
-                MeanAdrByCity = activeData.GroupBy(x => x.City).Select(g => new AdrByCityDto
+                City = g.Key,
+                Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod),
+                TotalNight = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod),
+
+            }).ToList();
+
+            dashborddto.Revenue.PeakCity = new PeakCityDto();
+
+            dashborddto.Revenue.PeakCity.Adr = activeData.Any() ? Math.Round(activeData.GroupBy(x => x.City)
+                    .Select(g => new AdrByCityDto
+                    {
+                        City = g.Key,
+                        Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod)
+                    }).Max(a => a.Adr), 3) : 0;
+            dashborddto.Revenue.PeakCity.City = activeData.Any() ? activeData.GroupBy(x => x.City)
+                .Select(g => new AdrByCityDto
                 {
                     City = g.Key,
                     Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod),
-                    TotalNight = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod),
+                    TotalNight = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod)
 
-                }).ToList(),
-                PeakCity = new PeakCityDto
-                {
-                    Adr = activeData.Any() ? Math.Round(activeData.GroupBy(x => x.City)
-                        .Select(g => new AdrByCityDto
-                        {
-                            City = g.Key,
-                            Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod)
-                        }).Max(a => a.Adr), 3) : 0,
-                    City = activeData.Any() ? activeData.GroupBy(x => x.City)
-                        .Select(g => new AdrByCityDto
-                        {
-                            City = g.Key,
-                            Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod),
-                            TotalNight = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod)
+                }).MaxBy(a => a.Adr).City : "";
 
-                        }).MaxBy(a => a.Adr).City : "",
-                }
 
-            };
+
             dashborddto.OccupancyDto = new OccupancyDto()
             {
                 AvgOccupancyRate = avgOccupancyRate,
@@ -479,15 +480,26 @@ namespace SyriaNTMP.Services
             return totalAvailableUnits == 0 ? 0 : ((decimal)soldNights / totalAvailableUnits) * 100;
         }
 
-        private decimal CalculateAdrPercentage(List<Reservations> data, DateTime start,
-            DateTime end)
+        private decimal CalculateAdrPercentage(List<Reservations> data, DateTime start, DateTime end)
         {
-            int totalDays = (end - start).Days;
-            if (totalDays <= 0) totalDays = 1;
             var totalPrice = data.Sum(g => g.TotalPrice);
-            var totalUnits = data.GroupBy(x => x.PropertyName).Sum(g => g.First()?.TotalNumberOfPropertyUnits ?? 0);
-
-            return totalPrice == 0 || totalUnits == 0 ? 0 : totalPrice / totalDays * totalUnits;
+            if (totalPrice == 0) return 0;
+            int totalRoomNights = 0;
+            foreach (var r in data)
+            {
+                var arrival = r.FromDate;
+                var departure = r.ToDate;
+                var nightsInPeriod = 0;
+                var current = arrival.Date;
+                while (current < departure.Date && current >= start.Date && current < end.Date)
+                {
+                    nightsInPeriod++;
+                    current = current.AddDays(1);
+                }
+                totalRoomNights += nightsInPeriod;
+            }
+            if (totalRoomNights == 0) return 0;
+            return totalPrice / totalRoomNights;
         }
     }
 }
