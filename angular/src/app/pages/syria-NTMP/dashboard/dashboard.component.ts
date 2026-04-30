@@ -476,13 +476,7 @@ export class DashboardComponent implements OnInit {
       plugins: {
         legend: { display: false },
         datalabels: {
-          color: '#ffffff',
-          formatter: (value: any) => {
-            if (value !== null && value !== undefined && !isNaN(value)) {
-              return Number(value).toFixed(0);
-            }
-            return value;
-          }
+          display: false
         }
       },
       scales: {
@@ -508,14 +502,9 @@ export class DashboardComponent implements OnInit {
       plugins: {
         legend: { display: false },
         datalabels: {
-          color: '#ffffff',
-          formatter: (value: any) => {
-            if (value !== null && value !== undefined && !isNaN(value)) {
-              return Number(value).toFixed(0);
-            }
-            return value;
-          }
+          display: false
         }
+
       },
       scales: {
         x: {
@@ -574,13 +563,7 @@ export class DashboardComponent implements OnInit {
       plugins: {
         legend: { display: false },
         datalabels: {
-          color: '#ffffff',
-          formatter: (value: any) => {
-            if (value !== null && value !== undefined && !isNaN(value)) {
-              return Number(value).toFixed(0);
-            }
-            return value;
-          }
+          display: false
         }
       },
       scales: {
