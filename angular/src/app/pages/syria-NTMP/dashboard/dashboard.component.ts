@@ -77,14 +77,11 @@ export class DashboardComponent implements OnInit {
 
 
 
-  get nationalityMaxVisitorCount(): number {
+  get nationalityMaxCount(): number {
     if (!this.statsData?.nationalityStats?.length) return 1;
-    return Math.max(...this.statsData.nationalityStats.map(item => item.visitorCount));
-  }
-
-  get nationalityMaxNightCount(): number {
-    if (!this.statsData?.nationalityStats?.length) return 1;
-    return Math.max(...this.statsData.nationalityStats.map(item => item.nightCount));
+    const maxVisitor = Math.max(...this.statsData.nationalityStats.map(item => item.visitorCount || 0));
+    const maxNight = Math.max(...this.statsData.nationalityStats.map(item => item.nightCount || 0));
+    return Math.max(maxVisitor, maxNight) + 2;
   }
 
   getNationalityPercent(count: number, max: number): number {
