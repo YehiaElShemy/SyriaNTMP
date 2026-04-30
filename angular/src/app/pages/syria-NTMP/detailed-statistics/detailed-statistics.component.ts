@@ -104,10 +104,10 @@ export class DetailedStatisticsComponent implements OnInit {
           label: this.isAr ? x.nameAr : x.nameEn,
           value: x.nameEn
         }));
-        console.log(this.nationalityOptions, "nationalityOptions");
+        //console.log('this.nationalityOptions, "nationalityOptions");
       },
       error: (err) => {
-        console.log(err, "err");
+        //console.log('err, "err");
       }
     })
   }
@@ -135,7 +135,7 @@ export class DetailedStatisticsComponent implements OnInit {
 
     this.reservationService.getReservationsBySearchCriteria(payload).subscribe({
       next: (res: any) => {
-        console.log('Real API Data:', res);
+        //console.log(''Real API Data:', res);
         this.reservations = res?.items || [];
         // Read totalCount from res.data.paging (the actual API shape)
         this.totalRecords = res?.totalCount ?? this.reservations.length;

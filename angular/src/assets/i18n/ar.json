@@ -53,7 +53,8 @@
     "from": "من",
     "to": "إلى",
     "guests": "عدد الضيوف",
-    "nights": "عدد الليالي"
+    "nights": "عدد الليالي",
+    "totalRecords": "إجمالي السجلات"
   },
   "enums": {
     "PropertyRatingEnum": {
