@@ -354,7 +354,7 @@ namespace SyriaNTMP.Services
 
         public async Task<ReservationResponseDto> DeleteAsync(int id)
         {
-            var entity = await _reservationsRepository.FirstOrDefaultAsync(x => x.Id == id);
+            var entity = await _reservationsRepository.FirstOrDefaultAsync(x => x.ReservationId == id);
             if (entity != null)
             {
                 entity.ReservationStatus = ReservationStatus.Canceled;
