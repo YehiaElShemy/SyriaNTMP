@@ -85,14 +85,16 @@ namespace SyriaNTMP.Services
         {
             var query = await _reservationsRepository.GetQueryableAsync();
 
-
-
-            if (filter.FromDate.HasValue)
+            
+            if (filter.FromDate.HasValue && filter.ToDate.HasValue)
+            {
+                query = query.Where(x => x.FromDate <= filter.ToDate.Value && x.ToDate >= filter.FromDate.Value);
+            }
+            else if (filter.FromDate.HasValue)
             {
                 query = query.Where(x => x.FromDate >= filter.FromDate.Value);
             }
-
-            if (filter.ToDate.HasValue)
+            else if (filter.ToDate.HasValue)
             {
                 filter.ToDate = new DateTime(filter.ToDate.Value.Year, filter.ToDate.Value.Month, filter.ToDate.Value.Day, 23, 59, 59);
                 query = query.Where(x => x.ToDate <= filter.ToDate.Value);
@@ -126,8 +128,7 @@ namespace SyriaNTMP.Services
             }
 
             var rawData = await AsyncExecuter.ToListAsync(query);
-
-            var now = DateTime.Now;
+            
             var startPeriod = filter.FromDate ?? rawData.Min(a => a.FromDate);
             var endPeriod = filter.ToDate ?? rawData.Max(a => a.ToDate);
             // Assign to your DTO/ViewModel
@@ -485,8 +486,10 @@ namespace SyriaNTMP.Services
             var totalPrice = data.Sum(g => g.TotalPrice);
             if (totalPrice == 0) return 0;
             int totalRoomNights = 0;
+            decimal totalNightsPrice = 0;
             foreach (var r in data)
             {
+                var nightPrice = (r.TotalPrice / r.NumberOfNights);
                 var arrival = r.FromDate;
                 var departure = r.ToDate;
                 var nightsInPeriod = 0;
@@ -497,9 +500,10 @@ namespace SyriaNTMP.Services
                     current = current.AddDays(1);
                 }
                 totalRoomNights += nightsInPeriod;
+                totalNightsPrice += nightPrice * nightsInPeriod;
             }
             if (totalRoomNights == 0) return 0;
-            return totalPrice / totalRoomNights;
+            return totalNightsPrice / totalRoomNights;
         }
     }
 }
