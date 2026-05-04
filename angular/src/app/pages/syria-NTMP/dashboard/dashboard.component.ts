@@ -245,7 +245,16 @@ export class DashboardComponent implements OnInit {
 
     // Operations Line Chart (Weekly)
     if (res.weeklyReservations && Array.isArray(res.weeklyReservations)) {
-      const labels = res.weeklyReservations.map((item: WeeklyDto) => item.date || '');
+      const locale = this.isAr ? 'ar-EG' : 'en-US';
+      const labels = res.weeklyReservations.map((item: WeeklyDto) => {
+        if (!item.date) return '';
+        try {
+          const date = new Date(item.date);
+          return date.toLocaleDateString(locale, { weekday: 'short' });
+        } catch(e) {
+          return item.date;
+        }
+      });
       const chartData = res.weeklyReservations.map((item: WeeklyDto) => item.count);
 
       this.lineData = {
@@ -354,6 +363,7 @@ export class DashboardComponent implements OnInit {
   }
 
   initChart() {
+    Chart.defaults.font.size = 16; // Increase default chart font size by 2px (from 12 to 14)
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
@@ -395,19 +405,25 @@ export class DashboardComponent implements OnInit {
           align: 'top',
           color: '#334155', // Hardcoded dark grey to avoid invisible text
           font: {
-            size: 14,
+            size: 16,
             weight: 'bold'
           }
         }
       },
       scales: {
         x: {
-          display: false,
-          grid: { display: false }
+          display: true,
+          grid: { display: false, drawBorder: false },
+          ticks: { color: textColorSecondary, font: { weight: 'bold' } }
         },
         y: {
           display: false,
-          grid: { display: false }
+          grid: { display: false },
+          min: 0,
+          suggestedMax: function(context: any) {
+            const max = Math.max(...(context.chart.data.datasets[0]?.data || [0]));
+            return max * 1.5; // Gives padding at top so data labels are not cut off
+          }
         }
       },
       elements: {
@@ -481,7 +497,7 @@ export class DashboardComponent implements OnInit {
       },
       scales: {
         x: {
-          ticks: { color: textColorSecondary, font: { size: 10 } },
+          ticks: { color: textColorSecondary, font: { size: 16 } },
           grid: { display: false, drawBorder: false }
         },
         y: {
@@ -508,7 +524,7 @@ export class DashboardComponent implements OnInit {
       },
       scales: {
         x: {
-          ticks: { color: textColorSecondary, font: { size: 10 } },
+          ticks: { color: textColorSecondary, font: { size: 16 } },
           grid: { display: false, drawBorder: false }
         },
         y: {
@@ -568,7 +584,7 @@ export class DashboardComponent implements OnInit {
       },
       scales: {
         x: {
-          ticks: { color: textColorSecondary, font: { size: 10 }, maxRotation: 45, minRotation: 45 },
+          ticks: { color: textColorSecondary, font: { size: 16 }, maxRotation: 45, minRotation: 45 },
           grid: { display: false, drawBorder: false }
         },
         y: {

@@ -77,21 +77,21 @@
 
     <ng-template #header>
       <tr>
-        <th class="text-xs text-gray-500 font-medium">{{ 'dashboard.nationality' | translate }}</th>
-        <th class="text-xs text-gray-500 font-medium">{{ 'table.property' | translate }}</th>
-        <th class="text-xs text-gray-500 font-medium">{{ 'table.propertyRating' | translate }}</th>
-        <th class="text-xs text-gray-500 font-medium">{{ 'table.reservationNo' | translate }}</th>
-        <th class="text-xs text-gray-500 font-medium">{{ 'table.reservationStatus' | translate }}</th>
-        <th class="text-xs text-gray-500 font-medium">{{ 'table.guests' | translate }}</th>
-        <th class="text-xs text-gray-500 font-medium">{{ 'table.nights' | translate }}</th>
-        <th class="text-xs text-gray-500 font-medium">{{ 'table.visitPurpose' | translate }}</th>
-        <th class="text-xs text-gray-500 font-medium">{{ 'table.from' | translate }}</th>
-        <th class="text-xs text-gray-500 font-medium">{{ 'table.to' | translate }}</th>
+        <th class="text-xs">{{ 'dashboard.nationality' | translate }}</th>
+        <th class="text-xs">{{ 'table.property' | translate }}</th>
+        <th class="text-xs">{{ 'table.propertyRating' | translate }}</th>
+        <th class="text-xs">{{ 'table.reservationNo' | translate }}</th>
+        <th class="text-xs">{{ 'table.reservationStatus' | translate }}</th>
+        <th class="text-xs">{{ 'table.guests' | translate }}</th>
+        <th class="text-xs">{{ 'table.nights' | translate }}</th>
+        <th class="text-xs">{{ 'table.visitPurpose' | translate }}</th>
+        <th class="text-xs">{{ 'table.from' | translate }}</th>
+        <th class="text-xs">{{ 'table.to' | translate }}</th>
       </tr>
     </ng-template>
 
     <ng-template #body let-res>
-      <tr class="border-b border-gray-100 font-semibold text-sm">
+      <tr class="font-semibold text-sm">
         <td class="py-4">{{ res.guestNationality }}</td>
         <td>{{ res.propertyName }}</td>
         <td>

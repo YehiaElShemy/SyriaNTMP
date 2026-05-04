@@ -9,3 +9,26 @@
     color: #1E3949 !important;
     border-color: #1E3949 !important;
 }
+
+::ng-deep .custom-table {
+    .p-datatable-thead > tr > th {
+        background-color: #CDEBF7 !important;
+        color: #0027B7 !important;
+        text-transform: uppercase;
+        font-weight: 700;
+        border-bottom: 1px solid #0027B7 !important;
+        padding: 18px !important;
+    }
+
+    .p-datatable-tbody > tr {
+        border-bottom: 1px solid #0027B7 !important;
+        color: #1F2937 !important;
+    }
+
+    .p-datatable-tbody > tr > td {
+        border-bottom: 1px solid #0027B7 !important;
+        padding: 15px !important;
+    }
+
+ 
+}
