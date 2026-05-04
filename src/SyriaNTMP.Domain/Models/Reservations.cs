@@ -29,5 +29,8 @@ namespace SyriaNTMP.Models
         public decimal TotalPrice { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? TotalNumberOfPropertyUnits { get; set; }
+        public int? CurrencyId { get; set; }
+        public string? CurrencySymbolEn { get; set; }
+        public string? CurrencySymbolAr { get; set; }
     }
 }

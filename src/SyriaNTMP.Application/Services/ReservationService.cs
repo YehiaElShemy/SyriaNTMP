@@ -61,6 +61,9 @@ namespace SyriaNTMP.Services
                 dateTo = new DateTime(dateTo.Year, dateTo.Month, dateTo.Day, 23, 59, 59);
                 queryable = queryable.Where(x => dateTo >= x.ToDate.Date);
             }
+            if (searchCriteria.CurrencyId.HasValue)
+                queryable = queryable.Where(r => r.CurrencyId == searchCriteria.CurrencyId);
+
 
             // Apply sorting and paging
             var sortedQueryable = queryable.OrderByDescending(x => x.Id); // or searchCriteria.Sorting
@@ -85,7 +88,7 @@ namespace SyriaNTMP.Services
         {
             var query = await _reservationsRepository.GetQueryableAsync();
 
-            
+            #region filter
             if (filter.FromDate.HasValue && filter.ToDate.HasValue)
             {
                 query = query.Where(x => x.FromDate <= filter.ToDate.Value && x.ToDate >= filter.FromDate.Value);
@@ -126,9 +129,13 @@ namespace SyriaNTMP.Services
             {
                 query = query.Where(x => x.ReservationPurpose == filter.Purpose.Value);
             }
-
+            if (filter.CurrencyId.HasValue)
+            {
+                query = query.Where(x => x.CurrencyId == filter.CurrencyId.Value);
+            }
+            #endregion
             var rawData = await AsyncExecuter.ToListAsync(query);
-            
+
             var startPeriod = filter.FromDate ?? rawData.Min(a => a.FromDate);
             var endPeriod = filter.ToDate ?? rawData.Max(a => a.ToDate);
             // Assign to your DTO/ViewModel
@@ -158,6 +165,7 @@ namespace SyriaNTMP.Services
                 .ToList();
 
             var totalSoldNights = CalculateTotalSoldNights(activeData, startPeriod, endPeriod);
+
             var totalRevenue = activeData.Sum(x => x.TotalPrice);
             var portfolioAdr = totalSoldNights == 0 ? 0 : (totalRevenue / totalSoldNights);
             var periodData = rawData.Where(x => x.FromDate >= startPeriod && x.ToDate <= endPeriod).ToList();
@@ -437,6 +445,24 @@ namespace SyriaNTMP.Services
                 NameEn = nationality,
                 NameAr = nationality
             }).ToList();
+        }
+        public async Task<List<LookupDto>> GetCurrencyAsync()
+        {
+            var query = await _reservationsRepository.GetQueryableAsync();
+
+            var list = await AsyncExecuter.ToListAsync(
+                query
+                    .Where(x => x.CurrencyId != null)
+                    .Select(x => new LookupDto()
+                    {
+                        NameAr = x.CurrencySymbolAr,
+                        NameEn = x.CurrencySymbolEn,
+                        Value = x.CurrencyId.ToString(),
+
+                    }).Distinct()
+            );
+
+            return list ?? new List<LookupDto>();
         }
 
         public async Task<List<LookupDto>> GetPurposesAsync()
