@@ -873,6 +873,32 @@
       "rootPath": "app",
       "remoteServiceName": "Default",
       "controllers": {
+        "SyriaNTMP.Services.CurrencyService": {
+          "controllerName": "Currency",
+          "controllerGroupName": "Currency",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "SyriaNTMP.Services.CurrencyService",
+          "interfaces": [],
+          "actions": {
+            "GetAllCurreniesAsync": {
+              "uniqueName": "GetAllCurreniesAsync",
+              "name": "GetAllCurreniesAsync",
+              "httpMethod": "GET",
+              "url": "api/app/currency/currenies",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.IEnumerable<SyriaNTMP.Dto.CurrencyDTO>",
+                "typeSimple": "[SyriaNTMP.Dto.CurrencyDTO]"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "SyriaNTMP.Services.CurrencyService"
+            }
+          }
+        },
         "SyriaNTMP.Services.ReservationService": {
           "controllerName": "Reservation",
           "controllerGroupName": "Reservation",
@@ -3535,6 +3561,87 @@
         }
       ]
     },
+    "SyriaNTMP.Dto.CurrencyDTO": {
+      "baseType": "Volo.Abp.Application.Dtos.EntityDto<System.Int32>",
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "CurrencyCustomizationId",
+          "jsonName": null,
+          "type": "System.Int32?",
+          "typeSimple": "number?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "NameAr",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "NameEn",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Symbol",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "IsActive",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Color",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
     "SyriaNTMP.Dto.DashboardDto": {
       "baseType": null,
       "isEnum": false,
@@ -4575,6 +4682,30 @@
           "regex": null
         },
         {
+          "name": "CurrencySymbolEn",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CurrencySymbolAr",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
           "name": "TotalNight",
           "jsonName": null,
           "type": "System.Int32",
@@ -4615,30 +4746,6 @@
           "jsonName": null,
           "type": "[SyriaNTMP.Dto.AdrByCityDto]",
           "typeSimple": "[SyriaNTMP.Dto.AdrByCityDto]",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "CurrencySymbolEn",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "CurrencySymbolAr",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,

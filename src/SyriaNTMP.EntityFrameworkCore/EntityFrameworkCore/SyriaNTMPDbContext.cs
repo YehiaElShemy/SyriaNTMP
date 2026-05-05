@@ -50,6 +50,7 @@ public class SyriaNTMPDbContext :
 
     #endregion
     public DbSet<Models.Reservations> Reservations { get; set; }
+    public DbSet<Models.Currency> Currencies { get; set; }
 
     public SyriaNTMPDbContext(DbContextOptions<SyriaNTMPDbContext> options)
         : base(options)
@@ -93,6 +94,10 @@ public class SyriaNTMPDbContext :
             b.HasIndex(x => x.FromDate);
             b.HasIndex(x => x.ToDate);
             b.HasIndex(x => x.CreatedDate);
+        });
+        builder.Entity<Currency>(b =>
+        {
+            b.HasIndex(x => x.CurrencyId).IsUnique();
         });
     }
 }

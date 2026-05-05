@@ -5,6 +5,7 @@ using Volo.Abp.Identity;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Modularity;
+using Volo.Abp.Http;
 
 namespace SyriaNTMP;
 
@@ -15,7 +16,8 @@ namespace SyriaNTMP;
     typeof(AbpFeatureManagementApplicationModule),
     typeof(AbpIdentityApplicationModule),
     typeof(AbpAccountApplicationModule),
-    typeof(AbpSettingManagementApplicationModule)
+    typeof(AbpSettingManagementApplicationModule),
+    typeof(AbpHttpAbstractionsModule)
     )]
 public class SyriaNTMPApplicationModule : AbpModule
 {

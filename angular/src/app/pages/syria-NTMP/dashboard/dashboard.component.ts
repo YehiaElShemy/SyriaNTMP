@@ -6,8 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { DatePickerModule } from 'primeng/datepicker';
-import { ReservationService } from '../../../proxy/services';
-import { DashboardDto, WeeklyDto, PurposeDto, NationalityDto, CityOccupancyDto, AdrByCityDto, LookupDto, DashboardFilterDto } from '@proxy/dto';
+import { CurrencyService, ReservationService } from '../../../proxy/services';
+import { DashboardDto, WeeklyDto, PurposeDto, NationalityDto, CityOccupancyDto, AdrByCityDto, LookupDto, DashboardFilterDto, CurrencyDTO } from '@proxy/dto';
 import { PropertyRatingEnum } from '../../../proxy/models/enums/property-rating-enum.enum';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslationService } from 'src/app/shared/services/translation.service';
@@ -106,6 +106,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     private translationService: TranslationService,
     private reservationService: ReservationService,
+    private currencyService: CurrencyService,
     private translateService: TranslateService,
     private alertService: ToasterService
   ) { }
@@ -220,9 +221,17 @@ export class DashboardComponent implements OnInit {
   }
 
   getCurrencies() {
-    this.reservationService.getCurrencies({}).subscribe(
-      (res: LookupDto[]) => {
-        this.currenciesOptions = res;
+    this.currencyService.getAllCurrenies({}).subscribe(
+      (res: any) => {
+        if (res) {
+          this.currenciesOptions = res.map(x => {
+            return {
+              id: x.id,
+              nameAr: x.nameAr,
+              nameEn: x.nameEn
+            }
+          });
+        }
       }
     )
   }

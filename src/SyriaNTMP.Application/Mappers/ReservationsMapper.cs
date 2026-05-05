@@ -11,6 +11,7 @@ namespace SyriaNTMP.Mappers
         public ReservationsMapper()
         {
             CreateMap<SyriaNTMP.Models.Reservations, SyriaNTMP.Dto.ReservationsDto>().ReverseMap();
+            CreateMap<SyriaNTMP.Models.Currency, SyriaNTMP.Dto.CurrencyDTO>().ReverseMap();
         }
     }
 }

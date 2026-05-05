@@ -1,6 +1,6 @@
+import type { EntityDto, PagedAndSortedResultRequestDto } from '@abp/ng.core';
 import type { PropertyRatingEnum } from '../models/enums/property-rating-enum.enum';
 import type { ReservationPurpose } from '../models/enums/reservation-purpose.enum';
-import type { EntityDto, PagedAndSortedResultRequestDto } from '@abp/ng.core';
 import type { ReservationStatus } from '../models/enums/reservation-status.enum';
 
 export interface AdrByCityDto {
@@ -12,6 +12,15 @@ export interface AdrByCityDto {
 export interface CityOccupancyDto {
   city?: string;
   occupancyRate: number;
+}
+
+export interface CurrencyDTO extends EntityDto<number> {
+  currencyCustomizationId?: number;
+  nameAr?: string;
+  nameEn?: string;
+  symbol?: string;
+  isActive: boolean;
+  color?: string;
 }
 
 export interface DashboardDto {
@@ -128,12 +137,12 @@ export interface ReservationsSearchCriteria extends PagedAndSortedResultRequestD
 export interface RevenueDto {
   portfolioAdr: number;
   totalRevenue: number;
+  currencySymbolEn?: string;
+  currencySymbolAr?: string;
   totalNight: number;
   adrAvgPriceDay: number;
   peakCity: PeakCityDto;
   meanAdrByCity: AdrByCityDto[];
-  currencySymbolEn?: string;
-  currencySymbolAr?: string;
 }
 
 export interface TodayStatsDto {

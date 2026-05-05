@@ -7,6 +7,6 @@ public class SyriaNTMPSettingDefinitionProvider : SettingDefinitionProvider
     public override void Define(ISettingDefinitionContext context)
     {
         //Define your own settings here. Example:
-        //context.Add(new SettingDefinition(SyriaNTMPSettings.MySetting1));
+       context.Add(new SettingDefinition(SyriaNTMPSettings.GetCurrenies));
     }
 }
