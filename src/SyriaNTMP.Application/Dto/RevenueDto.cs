@@ -9,6 +9,9 @@ namespace SyriaNTMP.Dto
     public class RevenueDto
     {
         public decimal PortfolioAdr { get; set; }
+        public decimal TotalRevenue { get; set; }
+        public string CurrencySymbolEn { get; set; }
+        public string CurrencySymbolAr { get; set; }
         public int TotalNight { get; set; }
         public decimal AdrAvgPriceDay { get; set; }
         public PeakCityDto PeakCity { get; set; }

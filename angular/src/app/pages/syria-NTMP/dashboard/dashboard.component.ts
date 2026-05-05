@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
 import { ButtonModule } from 'primeng/button';
@@ -14,6 +14,8 @@ import { TranslationService } from 'src/app/shared/services/translation.service'
 import { ReservationPurpose } from '@proxy/models/enums';
 import { Chart } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { PageAlertService, ToasterService } from '@abp/ng.theme.shared';
+import { DashboardTabs } from 'src/app/shared/models/enums/dashbord-tabs.enum';
 
 Chart.register(ChartDataLabels);
 
@@ -25,11 +27,12 @@ Chart.register(ChartDataLabels);
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  dashboardTabs = DashboardTabs;
   statsData: DashboardDto | null = null;
   isLoading = false;
   error: string | null = null;
   hasTodayData = false;
-  activeTab: string = 'guest-mix';
+  activeTab = DashboardTabs.guestMix;
 
   percentages = { checkedIn: 0, checkedOut: 0, cancelled: 0 };
   fromDate: Date | null = null;
@@ -40,6 +43,7 @@ export class DashboardComponent implements OnInit {
   currentFilters: DashboardFilterDto = {};
 
   citiesOptions: LookupDto[] = [];
+  currenciesOptions: LookupDto[] = [];
   propertiesOptions: LookupDto[] = [];
   starOptions: any[] = [];
 
@@ -102,13 +106,14 @@ export class DashboardComponent implements OnInit {
   constructor(
     private translationService: TranslationService,
     private reservationService: ReservationService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private alertService: ToasterService
   ) { }
 
   ngOnInit() {
     this.initializeDateRange();
     this.initChart();
-    this.fetchStats();
+    this.Search();
     this.getFilters();
 
     this.translateService.onLangChange.subscribe(() => {
@@ -148,6 +153,35 @@ export class DashboardComponent implements OnInit {
     this.getFiltersProperties()
     this.getNationalities()
     this.getPurposes()
+    this.getCurrencies()
+  }
+  applyFilters() {
+    this.displayFilterDialog = false;
+    this.Search();
+  }
+  Search() {
+    this.isLoading = true;
+    this.error = null;
+    this.currentFilters.currencyId = this.currentFilters.currencyId != null ? Number(this.currentFilters.currencyId) || undefined : undefined;
+    this.currentFilters.fromDate = this.fromDate ? this.formatDate(this.fromDate) : null;
+
+    this.currentFilters.toDate = this.toDate ? this.formatDate(this.toDate) : null;
+    if (this.activeTab == DashboardTabs.revenueAndADR && (this.currentFilters.currencyId == null || this.currentFilters.currencyId == 0)) {
+      this.alertService.error('dashboard.pleaseSelectACurrency');
+      return;
+    }
+    this.reservationService.getDashboard(this.currentFilters).subscribe({
+      next: (res: DashboardDto) => {
+        this.isLoading = false;
+        this.statsData = res;
+        this.updateCharts(res);
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.error = 'Failed to load statistics.';
+        console.error('Error fetching statistics:', err);
+      }
+    });
   }
 
   getNationalities() {
@@ -175,18 +209,34 @@ export class DashboardComponent implements OnInit {
   }
 
   getFiltersCities() {
-    this.reservationService.getCities({
-
-    }).subscribe({
+    this.reservationService.getCities({}).subscribe({
       next: (res: LookupDto[]) => {
         this.citiesOptions = res;
-        // //console.log('res, "getCities");
       },
       error: (err) => {
         //console.log('err, "err");
       }
     })
   }
+
+  getCurrencies() {
+    this.reservationService.getCurrencies({}).subscribe(
+      (res: LookupDto[]) => {
+        this.currenciesOptions = res;
+      }
+    )
+  }
+  choseTab(tab: DashboardTabs) {
+    this.activeTab = tab;
+    this.currentFilters.currencyId = null;
+    if (tab == this.dashboardTabs.revenueAndADR && this.currenciesOptions && this.currenciesOptions.length > 0) {
+      this.currentFilters.currencyId = this.currenciesOptions[0].id;
+      this.Search();
+    } else {
+      this.Search();
+    }
+  }
+
 
   getFiltersProperties() {
     this.reservationService.getProperties({
@@ -206,10 +256,7 @@ export class DashboardComponent implements OnInit {
     this.displayFilterDialog = true;
   }
 
-  applyFilters() {
-    this.displayFilterDialog = false;
-    this.fetchStats();
-  }
+
   formatDate(date: Date): string {
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, '0');
@@ -218,27 +265,6 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  fetchStats() {
-    this.isLoading = true;
-    this.error = null;
-
-    this.currentFilters.fromDate = this.fromDate ? this.formatDate(this.fromDate) : null;
-
-    this.currentFilters.toDate = this.toDate ? this.formatDate(this.toDate) : null;
-
-    this.reservationService.getDashboard(this.currentFilters).subscribe({
-      next: (res: DashboardDto) => {
-        this.isLoading = false;
-        this.statsData = res;
-        this.updateCharts(res);
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.error = 'Failed to load statistics.';
-        console.error('Error fetching statistics:', err);
-      }
-    });
-  }
 
   updateCharts(res: DashboardDto) {
     if (!res) return;
@@ -251,7 +277,7 @@ export class DashboardComponent implements OnInit {
         try {
           const date = new Date(item.date);
           return date.toLocaleDateString(locale, { weekday: 'short' });
-        } catch(e) {
+        } catch (e) {
           return item.date;
         }
       });
@@ -420,7 +446,7 @@ export class DashboardComponent implements OnInit {
           display: false,
           grid: { display: false },
           min: 0,
-          suggestedMax: function(context: any) {
+          suggestedMax: function (context: any) {
             const max = Math.max(...(context.chart.data.datasets[0]?.data || [0]));
             return max * 1.5; // Gives padding at top so data labels are not cut off
           }

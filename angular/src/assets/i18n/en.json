@@ -169,6 +169,9 @@
     "numOfGuests": "Number of Guests",
     "mostCommonPurpose": "Most Common Purpose",
     "mostCommonPurposeSub": "Primary reason for guest entries",
-    "visitPurposeDesc": "View reasons for visiting by city and hotel rating during a specific time period."
+    "visitPurposeDesc": "View reasons for visiting by city and hotel rating during a specific time period.",
+    "currency": "Currency",
+    "allCurrencies": "All currencies",
+    "pleaseSelectACurrency": "Please select a currency"
   }
 }

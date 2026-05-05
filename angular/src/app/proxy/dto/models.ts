@@ -33,12 +33,14 @@ export interface DashboardFilterDto {
   hotelStars?: PropertyRatingEnum;
   nationality?: string;
   purpose?: ReservationPurpose;
+  currencyId?: number;
 }
 
 export interface LookupDto {
   nameEn?: string;
   nameAr?: string;
   value?: string;
+  id?: number;
 }
 
 export interface NationalityDto {
@@ -106,6 +108,9 @@ export interface ReservationsDto extends EntityDto<number> {
   totalPrice: number;
   createdDate?: string;
   totalNumberOfPropertyUnits?: number;
+  currencyId?: number;
+  currencySymbolEn?: string;
+  currencySymbolAr?: string;
 }
 
 export interface ReservationsSearchCriteria extends PagedAndSortedResultRequestDto {
@@ -117,14 +122,18 @@ export interface ReservationsSearchCriteria extends PagedAndSortedResultRequestD
   reservationPurpose?: ReservationPurpose;
   dateFrom?: string;
   dateTo?: string;
+  currencyId?: number;
 }
 
 export interface RevenueDto {
   portfolioAdr: number;
+  totalRevenue: number;
   totalNight: number;
   adrAvgPriceDay: number;
   peakCity: PeakCityDto;
   meanAdrByCity: AdrByCityDto[];
+  currencySymbolEn?: string;
+  currencySymbolAr?: string;
 }
 
 export interface TodayStatsDto {

@@ -43,11 +43,19 @@ export class ReservationService {
     { apiName: this.apiName,...config });
   
 
+  getCurrencies = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, LookupDto[]>({
+      method: 'GET',
+      url: '/api/app/reservation/currencies',
+    },
+    { apiName: this.apiName,...config });
+  
+
   getDashboard = (filter: DashboardFilterDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, DashboardDto>({
       method: 'GET',
       url: '/api/app/reservation/dashboard',
-      params: { fromDate: filter.fromDate, toDate: filter.toDate, city: filter.city, hotelName: filter.hotelName, hotelStars: filter.hotelStars, nationality: filter.nationality, purpose: filter.purpose },
+      params: { fromDate: filter.fromDate, toDate: filter.toDate, city: filter.city, hotelName: filter.hotelName, hotelStars: filter.hotelStars, nationality: filter.nationality, purpose: filter.purpose, currencyId: filter.currencyId },
     },
     { apiName: this.apiName,...config });
   
@@ -80,7 +88,7 @@ export class ReservationService {
     this.restService.request<any, PagedResultDto<ReservationsDto>>({
       method: 'GET',
       url: '/api/app/reservation/reservations',
-      params: { guestNationality: searchCriteria.guestNationality, propertyName: searchCriteria.propertyName, propertyRating: searchCriteria.propertyRating, reservationNumber: searchCriteria.reservationNumber, reservationStatus: searchCriteria.reservationStatus, reservationPurpose: searchCriteria.reservationPurpose, dateFrom: searchCriteria.dateFrom, dateTo: searchCriteria.dateTo, sorting: searchCriteria.sorting, skipCount: searchCriteria.skipCount, maxResultCount: searchCriteria.maxResultCount },
+      params: { guestNationality: searchCriteria.guestNationality, propertyName: searchCriteria.propertyName, propertyRating: searchCriteria.propertyRating, reservationNumber: searchCriteria.reservationNumber, reservationStatus: searchCriteria.reservationStatus, reservationPurpose: searchCriteria.reservationPurpose, dateFrom: searchCriteria.dateFrom, dateTo: searchCriteria.dateTo, currencyId: searchCriteria.currencyId, sorting: searchCriteria.sorting, skipCount: searchCriteria.skipCount, maxResultCount: searchCriteria.maxResultCount },
     },
     { apiName: this.apiName,...config });
 

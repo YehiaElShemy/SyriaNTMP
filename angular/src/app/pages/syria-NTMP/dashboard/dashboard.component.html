@@ -2,33 +2,34 @@
 <div class="dashboard-tabs flex items-center gap-4 mb-6 p-2 rounded-xl">
 
   <button class="tab-item flex  items-center gap-2  p-1 rounded-lg font-medium transition-all"
-    [class.active]="activeTab === 'operations'" (click)="activeTab = 'operations'">
+    [class.active]="activeTab === dashboardTabs.operations" (click)="choseTab(dashboardTabs.operations)">
     <span class="tab-title">{{ 'dashboard.operationsTitle' | translate }} </span>
     <!-- <span class="tab-subtitle">{{ 'dashboard.operationsSubtitle' | translate }}</span> -->
     <img class="svg" src="assets/images/operation.svg" alt="">
   </button>
   <button class="tab-item flex  items-center gap-2  p-1 rounded-lg font-medium transition-all"
-    [class.active]="activeTab === 'visitPurpose'" (click)="activeTab = 'visitPurpose'">
+    [class.active]="activeTab === dashboardTabs.visitPurpose" (click)="choseTab(dashboardTabs.visitPurpose)">
     <span class="tab-title">{{ 'dashboard.visitPurpose' | translate }} </span>
     <!-- <span class="tab-subtitle">{{ 'dashboard.operationsSubtitle' | translate }}</span> -->
     <img class="svg" src="assets/images/visitPurpose.svg" alt="">
   </button>
 
   <button class="tab-item flex  items-center gap-2  p-1 rounded-lg font-medium transition-all"
-    [class.active]="activeTab === 'guest-mix'" (click)="activeTab = 'guest-mix'">
+    [class.active]="activeTab === dashboardTabs.guestMix" (click)="choseTab(dashboardTabs.guestMix)">
     <span class="tab-title">{{ 'dashboard.guestMixTitle' | translate }}</span>
     <!-- <span class="tab-subtitle">{{ 'dashboard.guestMixSubtitle' | translate }}</span> -->
     <img class="svg" src="assets/images/guestMix.svg" alt="">
 
   </button>
   <button class="tab-item flex  items-center gap-2  p-1 rounded-lg font-medium transition-all"
-    [class.active]="activeTab === 'revenue'" (click)="activeTab = 'revenue'">
+    [class.active]="activeTab === dashboardTabs.revenueAndADR" (click)="choseTab(dashboardTabs.revenueAndADR)">
     <span class="tab-title">{{ 'dashboard.revenueTitle' | translate }}</span>
     <!-- <span class="tab-subtitle">{{ 'dashboard.revenueSubtitle' | translate }}</span> -->
     <img class="svg" src="assets/images/demand.svg" alt="">
   </button>
   <button class="tab-item flex  items-center gap-2  p-1 rounded-lg font-medium transition-all"
-    [class.active]="activeTab === 'demand'" (click)="activeTab = 'demand'">
+    [class.active]="activeTab === dashboardTabs.demandAndOccupancy"
+    (click)="choseTab(dashboardTabs.demandAndOccupancy)">
     <span class="tab-title">{{ 'dashboard.demandTitle' | translate }}</span>
     <!-- <span class="tab-subtitle">{{ 'dashboard.demandSubtitle' | translate }}</span> -->
     <img class="svg" src="assets/images/demand2.svg" alt="">
@@ -37,7 +38,7 @@
 </div>
 
 <!-- Tab Content -->
-<div *ngIf="activeTab === 'guest-mix'" class="tab-content">
+<div *ngIf="activeTab === dashboardTabs.guestMix" class="tab-content">
 
   <!-- Header -->
   <div class="mix-header mb-6 flex justify-between align-items-end">
@@ -52,9 +53,10 @@
     </div>
 
     <div class="">
-      <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 bg-gray-50 w-10 h-10"
+      <button
+        class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 bg-gray-50 w-10 h-10"
         (click)="showFilterDialog()">
-        <img class="w-9 h-9" src="assets/images/filter.svg" alt="">    
+        <img class="w-9 h-9" src="assets/images/filter.svg" alt="">
       </button>
     </div>
   </div>
@@ -117,7 +119,7 @@
 
 </div>
 
-<div *ngIf="activeTab === 'revenue'" class="tab-content">
+<div *ngIf="activeTab === dashboardTabs.revenueAndADR" class="tab-content">
 
   <!-- Header -->
   <div class="rev-header mb-6 flex justify-between align-items-end">
@@ -129,9 +131,10 @@
       </div>
     </div>
     <div class="">
-      <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 bg-gray-50 w-10 h-10"
+      <button
+        class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 bg-gray-50 w-10 h-10"
         (click)="showFilterDialog()">
-        <img class="w-9 h-9" src="assets/images/filter.svg" alt="">    
+        <img class="w-9 h-9" src="assets/images/filter.svg" alt="">
       </button>
     </div>
   </div>
@@ -143,12 +146,13 @@
         <i class="pi pi-dollar"></i>
       </div>
       <div class="flex flex-col">
-        <span  class="stat-card__label uppercase font-semibold tracking-wider">{{
+        <span class="stat-card__label uppercase font-semibold tracking-wider">{{
           'dashboard.portfolioAdr' | translate
           }}</span>
         <p class="stat-card__value font-bold m-0 mt-1">
           <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-          <span class="purple" *ngIf="!isLoading">${{ (statsData?.revenue?.adrAvgPriceDay)?.toFixed(0)|| 0 }}</span>
+          <span class="purple" *ngIf="!isLoading">{{ (statsData?.revenue?.totalRevenue) }} {{ isAr ?
+            statsData?.revenue?.currencySymbolAr: statsData?.revenue?.currencySymbolEn}}</span>
         </p>
         <span class="stat-card__sub mt-1">{{ 'dashboard.portfolioAdrSub' | translate }}</span>
       </div>
@@ -183,8 +187,8 @@
           <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
           <span class="yellow" *ngIf="!isLoading">
             <div class="flex">
-              {{ statsData?.revenue?.peakCity?.city || '-' }}
-              ${{ (statsData?.revenue?.peakCity?.adr).toFixed(0) || 0 }}
+              {{
+              statsData?.revenue?.portfolioAdr}}
             </div>
           </span>
         </p>
@@ -225,7 +229,7 @@
 
 </div>
 
-<div *ngIf="activeTab === 'demand'" class="tab-content">
+<div *ngIf="activeTab === dashboardTabs.demandAndOccupancy" class="tab-content">
 
   <!-- Header -->
   <div class="demand-header mb-6 flex justify-between align-items-end">
@@ -237,9 +241,10 @@
       </div>
     </div>
     <div class="">
-      <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 bg-gray-50 w-10 h-10"
+      <button
+        class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 bg-gray-50 w-10 h-10"
         (click)="showFilterDialog()">
-        <img class="w-9 h-9" src="assets/images/filter.svg" alt="">    
+        <img class="w-9 h-9" src="assets/images/filter.svg" alt="">
       </button>
     </div>
   </div>
@@ -267,7 +272,7 @@
         }}</span>
       <p class="stat-card__value font-bold m-0 mt-2">
         <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-        <span class="yellow" *ngIf="!isLoading">{{ (statsData?.occupancyDto?.avgOccupancyRate)?.toFixed(0) || 0
+        <span class="yellow" *ngIf="!isLoading">{{ (statsData?.occupancyDto?.avgOccupancyRate)
           }}%</span>
       </p>
       <span class="stat-card__sub mt-1">{{ 'dashboard.avgOccupancyIndexSub' | translate }}</span>
@@ -303,20 +308,22 @@
 
 </div>
 
-<div *ngIf="activeTab === 'operations'" class="tab-content">
+<div *ngIf="activeTab === dashboardTabs.operations" class="tab-content">
 
   <!-- Header -->
   <div class="ops-header mb-6 flex justify-between align-items-end">
     <div class="flex flex-col">
-      <span class="ops-label font-semibold uppercase tracking-wider">{{ 'dashboard.rhythmOfProperty' | translate }}</span>
+      <span class="ops-label font-semibold uppercase tracking-wider">{{ 'dashboard.rhythmOfProperty' | translate
+        }}</span>
       <h2 class="ops-title font-bold m-0 mt-1">{{ 'dashboard.operationsPulse' | translate }}</h2>
       <p class="ops-desc mt-1 m-0">{{ 'dashboard.operationsDescription' | translate }}</p>
     </div>
 
     <div class="">
-      <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 bg-gray-50 w-10 h-10"
+      <button
+        class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 bg-gray-50 w-10 h-10"
         (click)="showFilterDialog()">
-        <img class="w-9 h-9" src="assets/images/filter.svg" alt="">    
+        <img class="w-9 h-9" src="assets/images/filter.svg" alt="">
       </button>
     </div>
 
@@ -448,7 +455,7 @@
 
 </div>
 
-<div *ngIf="activeTab === 'visitPurpose'" class="tab-content">
+<div *ngIf="activeTab === dashboardTabs.visitPurpose" class="tab-content">
   <!-- Header -->
   <div class="demand-header mb-6 flex justify-between align-items-end">
     <div class="flex flex-col">
@@ -460,9 +467,10 @@
     </div>
 
     <div class="">
-      <button class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 bg-gray-50 w-10 h-10"
+      <button
+        class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 bg-gray-50 w-10 h-10"
         (click)="showFilterDialog()">
-        <img class="w-9 h-9" src="assets/images/filter.svg" alt="">    
+        <img class="w-9 h-9" src="assets/images/filter.svg" alt="">
       </button>
     </div>
   </div>
@@ -515,7 +523,7 @@
   <div class="demand-card bg-white rounded-xl p-8 mt-4 border border-gray-100 shadow-sm">
     <div class="flex items-center justify-between mb-8">
       <h3 class="purpose-card-title font-bold text-xl">{{ 'dashboard.visitPurpose' | translate }}</h3>
-        <!-- <button class="mix-filter-btn flex justify-center items-center rounded-lg border transition-colors"
+      <!-- <button class="mix-filter-btn flex justify-center items-center rounded-lg border transition-colors"
         (click)="showFilterDialog()">
         <i class="pi pi-filter"></i>
       </button> -->
@@ -615,6 +623,12 @@
         }}</label>
       <p-dropdown appendTo="body" [options]="purposeOptions" [(ngModel)]="currentFilters.purpose" optionLabel="label"
         optionValue="value" [placeholder]="'dashboard.allPurposes' | translate" [showClear]="true"></p-dropdown>
+    </div>
+    <div class="flex flex-col gap-2" *ngIf="activeTab == dashboardTabs.revenueAndADR">
+      <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.currency' | translate
+        }}</label>
+      <p-dropdown appendTo="body" [options]="currenciesOptions" [(ngModel)]="currentFilters.currencyId"
+        [optionLabel]="isAr? 'nameAr' : 'nameEn'" optionValue="id" filter="true"></p-dropdown>
     </div>
   </div>
   <div class="mt-4 flex">
