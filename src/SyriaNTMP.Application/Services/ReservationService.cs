@@ -166,19 +166,19 @@ namespace SyriaNTMP.Services
                 .ToList();
 
             var totalSoldNights = CalculateTotalSoldNights(activeData, startPeriod, endPeriod);
-            decimal totalRevenue = activeData.Sum(a =>
+            decimal totalRevenue = Math.Round(activeData.Sum(a =>
             {
                 int totalNights = (a.ToDate.Date - a.FromDate.Date).Days;
                 int overlapNights = GetOverlappingNights(a.FromDate, a.ToDate, startPeriod, endPeriod);
                 decimal pricePerNight = totalNights>0? a.TotalPrice / totalNights:0;
                 return pricePerNight * overlapNights;
-            });
+            }),2);
             //var totalRevenue =  activeData.Sum(x => x.TotalPrice);
-            var portfolioAdr = totalSoldNights == 0 ? 0 : (totalRevenue / totalSoldNights);
+            var portfolioAdr = Math.Round(totalSoldNights == 0 ? 0 : (totalRevenue / totalSoldNights));
             var periodData = rawData.Where(x => x.FromDate >= startPeriod && x.ToDate <= endPeriod).ToList();
 
             var distinctDays = activeData.Select(s => s.CreatedDate.Date).Distinct().Count();
-            var AdrAvgPriceDay = distinctDays > 0 ? totalRevenue / distinctDays : 0;
+            var AdrAvgPriceDay = Math.Round(distinctDays > 0 ? totalRevenue / distinctDays : 0,2);
 
 
             // sum of solid nights
