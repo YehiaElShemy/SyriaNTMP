@@ -239,7 +239,7 @@ export class DashboardComponent implements OnInit {
     this.activeTab = tab;
     this.currentFilters.currencyId = null;
     if (tab == this.dashboardTabs.revenueAndADR && this.currenciesOptions && this.currenciesOptions.length > 0) {
-      this.currentFilters.currencyId = this.currenciesOptions[0].id;
+      this.currentFilters.currencyId = this.currenciesOptions[this.currenciesOptions.length - 1].id;
       this.Search();
     } else {
       this.Search();

@@ -166,19 +166,13 @@ namespace SyriaNTMP.Services
                 .ToList();
 
             var totalSoldNights = CalculateTotalSoldNights(activeData, startPeriod, endPeriod);
-            decimal totalRevenue = Math.Round(activeData.Sum(a =>
-            {
-                int totalNights = (a.ToDate.Date - a.FromDate.Date).Days;
-                int overlapNights = GetOverlappingNights(a.FromDate, a.ToDate, startPeriod, endPeriod);
-                decimal pricePerNight = totalNights>0? a.TotalPrice / totalNights:0;
-                return pricePerNight * overlapNights;
-            }),2);
+            decimal totalRevenue = Math.Round(CalacTotalRevenue(startPeriod, endPeriod, activeData), 2);
             //var totalRevenue =  activeData.Sum(x => x.TotalPrice);
             var portfolioAdr = Math.Round(totalSoldNights == 0 ? 0 : (totalRevenue / totalSoldNights));
             var periodData = rawData.Where(x => x.FromDate >= startPeriod && x.ToDate <= endPeriod).ToList();
 
             var distinctDays = activeData.Select(s => s.CreatedDate.Date).Distinct().Count();
-            var AdrAvgPriceDay = Math.Round(distinctDays > 0 ? totalRevenue / distinctDays : 0,2);
+            var AdrAvgPriceDay = Math.Round(distinctDays > 0 ? totalRevenue / distinctDays : 0, 2);
 
 
             // sum of solid nights
@@ -188,8 +182,8 @@ namespace SyriaNTMP.Services
 
             var totalAvailableNights = activeData.GroupBy(x => x.PropertyName).Sum(g => (g.First().TotalNumberOfPropertyUnits ?? 0) * totalDays);
 
-            var avgOccupancyRate = Math.Round(totalAvailableNights > 0 ? (totalOccupiedNights / (double)totalAvailableNights) * 100 : 0, 3);
-            var totalNightsNotSolds = totalAvailableNights - totalOccupiedNights;
+            var avgOccupancyRate = Math.Round(totalAvailableNights > 0 ? (totalSoldNights / (double)totalAvailableNights) * 100 : 0, 3);
+            var totalNightsNotSolds = totalAvailableNights - totalSoldNights;
 
             var dashborddto = new DashboardDto();
             dashborddto.Opertation = new OperationDto
@@ -211,14 +205,14 @@ namespace SyriaNTMP.Services
                 .Select(g => new PurposeDetailsDto
                 {
                     Purpose = g.Key.ToString(),
-                    Count = g.Sum(a => a.NumberOfNights)
+                    Count = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod)
                 }).MaxBy(a => a.Count).Purpose : "",
 
                 PurposeDetailsDtos = rawData.GroupBy(x => x.ReservationPurpose)
                 .Select(g => new PurposeDetailsDto
                 {
                     Purpose = g.Key.ToString(),
-                    Count = g.Sum(a => a.NumberOfNights),
+                    Count = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod),
                     PurposeRate = totalNights == 0 ? 0 : (CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod) * 100) / totalNights
                 }).ToList(),
             };
@@ -240,7 +234,8 @@ namespace SyriaNTMP.Services
             dashborddto.Revenue.MeanAdrByCity = activeData.GroupBy(x => x.City).Select(g => new AdrByCityDto
             {
                 City = g.Key,
-                Adr = CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod),
+                Adr = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod)>0? 
+                CalacTotalRevenue(startPeriod,endPeriod,g.ToList())/ CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod):0, //CalculateAdrPercentage(g.ToList(), startPeriod, endPeriod),
                 TotalNight = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod),
 
             }).ToList();
@@ -279,6 +274,17 @@ namespace SyriaNTMP.Services
 
             };
             return dashborddto;
+        }
+
+        private decimal CalacTotalRevenue(DateTime startPeriod, DateTime endPeriod, List<Reservations> activeData)
+        {
+            return activeData.Sum(a =>
+            {
+                int totalNights = (a.ToDate.Date - a.FromDate.Date).Days;
+                int overlapNights = GetOverlappingNights(a.FromDate, a.ToDate, startPeriod, endPeriod);
+                decimal pricePerNight = totalNights > 0 ? a.TotalPrice / totalNights : 0;
+                return pricePerNight * overlapNights;
+            });
         }
 
         private async Task<(List<WeeklyDto> weekly, TodayStatsDto todayStats)> GetReservationWeeklyAndToday()
