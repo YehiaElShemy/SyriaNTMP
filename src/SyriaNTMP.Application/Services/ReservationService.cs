@@ -6,7 +6,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
@@ -16,11 +18,13 @@ namespace SyriaNTMP.Services
     [Authorize]
     public class ReservationService : ApplicationService
     {
-        private readonly IRepository<Reservations> _reservationsRepository;
+        private readonly IRepository<Reservations> _reservationsWriteRepository;
+        private readonly IReadOnlyRepository<Reservations> _reservationsRepository;
 
-        public ReservationService(IRepository<Reservations> reservationsRepository)
+        public ReservationService(IReadOnlyRepository<Reservations> reservationsRepository, IRepository<Reservations> reservationsWriteRepository)
         {
             _reservationsRepository = reservationsRepository;
+            _reservationsWriteRepository = reservationsWriteRepository;
         }
 
         public async Task<PagedResultDto<ReservationsDto>> GetReservations(ReservationsSearchCriteria searchCriteria)
@@ -169,7 +173,7 @@ namespace SyriaNTMP.Services
             decimal totalRevenue = Math.Round(CalacTotalRevenue(startPeriod, endPeriod, activeData), 2);
             //var totalRevenue =  activeData.Sum(x => x.TotalPrice);
             var portfolioAdr = Math.Round(totalSoldNights == 0 ? 0 : (totalRevenue / totalSoldNights));
-            var periodData = rawData.Where(x => x.FromDate >= startPeriod && x.ToDate <= endPeriod).ToList();
+            var periodData = activeData.Where(x => x.FromDate >= startPeriod && x.ToDate <= endPeriod).ToList();
 
             var distinctDays = activeData.Select(s => s.CreatedDate.Date).Distinct().Count();
             var AdrAvgPriceDay = Math.Round(distinctDays > 0 ? totalRevenue / distinctDays : 0, 2);
@@ -188,27 +192,27 @@ namespace SyriaNTMP.Services
             var dashborddto = new DashboardDto();
             dashborddto.Opertation = new OperationDto
             {
-                TotalReservations = rawData.Count,
-                CancellationRate = rawData.Count == 0 ? 0 : (rawData.Count(x => x.ReservationStatus == ReservationStatus.Canceled) * 100 /
-                       rawData.Count),
+                TotalReservations = activeData.Count,
+                CancellationRate = activeData.Count == 0 ? 0 : (activeData.Count(x => x.ReservationStatus == ReservationStatus.Canceled) * 100 /
+                                                                activeData.Count),
                 OccupancyRate = CalculateOccupancyPercentage(totalSoldNights, activeData, startPeriod, endPeriod),
                 ActiveProperties = activeProperties,
                 TotalSoldNights = totalSoldNights
             };
-            var totalNights = CalculateTotalSoldNights(rawData, startPeriod, endPeriod);
+            var totalNights = CalculateTotalSoldNights(activeData, startPeriod, endPeriod);
 
             dashborddto.PurposeStats = new PurposeDto()
             {
                 TotalNight = totalNights,
-                NumOfGuests = rawData.Sum(a => a.NumberOfGuests),
-                MostCommonPurpose = rawData.Count() > 0 ? rawData.GroupBy(x => x.ReservationPurpose)
+                NumOfGuests = activeData.Sum(a => a.NumberOfGuests),
+                MostCommonPurpose = activeData.Count() > 0 ? activeData.GroupBy(x => x.ReservationPurpose)
                 .Select(g => new PurposeDetailsDto
                 {
                     Purpose = g.Key.ToString(),
                     Count = CalculateTotalSoldNights(g.ToList(), startPeriod, endPeriod)
                 }).MaxBy(a => a.Count).Purpose : "",
 
-                PurposeDetailsDtos = rawData.GroupBy(x => x.ReservationPurpose)
+                PurposeDetailsDtos = activeData.GroupBy(x => x.ReservationPurpose)
                 .Select(g => new PurposeDetailsDto
                 {
                     Purpose = g.Key.ToString(),
@@ -334,16 +338,17 @@ namespace SyriaNTMP.Services
 
         public async Task<ReservationsDto> GetById(int id)
         {
-            var data = await _reservationsRepository.GetAsync(x => x.Id == id);
-            return ObjectMapper.Map<Reservations, ReservationsDto>(data);
+            var data = await _reservationsRepository.FirstOrDefaultAsync(x => x.Id == id);
+            return ObjectMapper.Map<Reservations, ReservationsDto>(data ?? new Reservations());
         }
 
         public async Task<ReservationResponseDto> CreateAsync(ReservationsDto dto)
         {
+            Logger.LogInformation($"Creating reservation with ID: {dto.ReservationId} , Data: {JsonSerializer.Serialize(dto)}");
             var entity = ObjectMapper.Map<ReservationsDto, Reservations>(dto);
             // check if item already exists
             var existingItem =
-                await _reservationsRepository.FirstOrDefaultAsync(x => x.ReservationId == dto.ReservationId);
+                await _reservationsWriteRepository.FirstOrDefaultAsync(x => x.ReservationId == dto.ReservationId);
             if (existingItem != null)
             {
                 existingItem.ReservationStatus = entity.ReservationStatus;
@@ -360,13 +365,16 @@ namespace SyriaNTMP.Services
                 existingItem.ToDate = entity.ToDate;
                 existingItem.TotalNumberOfPropertyUnits = entity.TotalNumberOfPropertyUnits;
                 existingItem.City = entity.City;
+                existingItem.CurrencyId = entity.CurrencyId;
+                existingItem.CurrencySymbolAr = entity.CurrencySymbolAr;
+                existingItem.CurrencySymbolEn = entity.CurrencySymbolEn;
 
-                await _reservationsRepository.UpdateAsync(existingItem);
+                await _reservationsWriteRepository.UpdateAsync(existingItem);
             }
             else
             {
                 entity.CreatedDate = DateTime.Now;
-                await _reservationsRepository.InsertAsync(entity);
+                await _reservationsWriteRepository.InsertAsync(entity);
             }
 
             await CurrentUnitOfWork.SaveChangesAsync();
@@ -380,11 +388,11 @@ namespace SyriaNTMP.Services
 
         public async Task<ReservationResponseDto> DeleteAsync(int id)
         {
-            var entity = await _reservationsRepository.FirstOrDefaultAsync(x => x.ReservationId == id);
+            var entity = await _reservationsWriteRepository.FirstOrDefaultAsync(x => x.ReservationId == id);
             if (entity != null)
             {
                 entity.ReservationStatus = ReservationStatus.Canceled;
-                await _reservationsRepository.UpdateAsync(entity);
+                await _reservationsWriteRepository.UpdateAsync(entity);
                 return new ReservationResponseDto()
                 {
                     BookingNumber = entity.ReservationNumber,

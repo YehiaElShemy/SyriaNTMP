@@ -2,11 +2,9 @@
 using Microsoft.Extensions.Options;
 using SyriaNTMP.Dto;
 using SyriaNTMP.Models;
-using SyriaNTMP.Models.Enums;
 using SyriaNTMP.Options;
 using SyriaNTMP.Settings;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -14,13 +12,9 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SyriaNTMP.Services
 {
@@ -59,7 +53,7 @@ namespace SyriaNTMP.Services
                     var response = await responseMsg.Content.ReadFromJsonAsync<NazeelResponse<List<CurrencyDTO>>>();
                     if (response != null)
                     {
-                        _repository.UpdateManyAsync(response.Data.Select(c => new Currency
+                        await _repository.UpdateManyAsync(response.Data.Select(c => new Currency
                         {
                             CurrencyId = c.Id,
                             NameAr = c.NameAr,
