@@ -134,10 +134,7 @@ namespace SyriaNTMP.Services
             {
                 query = query.Where(x => x.ReservationPurpose == filter.Purpose.Value);
             }
-            if (filter.CurrencyId.HasValue)
-            {
-                query = query.Where(x => x.CurrencyId == filter.CurrencyId.Value);
-            }
+            
             #endregion
             var rawData = await AsyncExecuter.ToListAsync(query);
 
@@ -155,7 +152,7 @@ namespace SyriaNTMP.Services
                 .Select(x => x.PropertyName).Distinct().Count();
             // only for operation reservation for last week start from sunday without look today is be
             #region weekly reservations
-            (List<WeeklyDto> weekly, TodayStatsDto todayStats) = await GetReservationWeeklyAndToday();
+            (List<WeeklyDto> weekly, TodayStatsDto todayStats) = await GetReservationWeeklyAndToday(rawData);
             #endregion
             var nationality = activeData
                 .GroupBy(x => x.GuestNationality)
@@ -193,8 +190,8 @@ namespace SyriaNTMP.Services
             dashborddto.Opertation = new OperationDto
             {
                 TotalReservations = activeData.Count,
-                CancellationRate = activeData.Count == 0 ? 0 : (activeData.Count(x => x.ReservationStatus == ReservationStatus.Canceled) * 100 /
-                                                                activeData.Count),
+                CancellationRate = rawData.Count == 0 ? 0 : (rawData.Count(x => x.ReservationStatus == ReservationStatus.Canceled) * 100 /
+                                                             rawData.Count),
                 OccupancyRate = CalculateOccupancyPercentage(totalSoldNights, activeData, startPeriod, endPeriod),
                 ActiveProperties = activeProperties,
                 TotalSoldNights = totalSoldNights
@@ -291,21 +288,18 @@ namespace SyriaNTMP.Services
             });
         }
 
-        private async Task<(List<WeeklyDto> weekly, TodayStatsDto todayStats)> GetReservationWeeklyAndToday()
+        private async Task<(List<WeeklyDto> weekly, TodayStatsDto todayStats)> GetReservationWeeklyAndToday(List<Reservations> activeData)
         {
             int diff = (7 + (DateTime.Today.DayOfWeek - DayOfWeek.Sunday)) % 7;
             var startPeriodOperation = DateTime.Today.AddDays(-diff).Date;
             var endPeriodOperation = startPeriodOperation.AddDays(6);
             var queryOperation = await _reservationsRepository.GetQueryableAsync();
-            queryOperation = queryOperation.Where(x => x.FromDate >= startPeriodOperation && x.ToDate <= endPeriodOperation &&
-                x.ReservationStatus != ReservationStatus.Canceled &&
-                x.ReservationStatus != ReservationStatus.Expired &&
-                x.ReservationStatus != ReservationStatus.NoShow);
-            var rawDataOperation = await AsyncExecuter.ToListAsync(queryOperation);
+            queryOperation = queryOperation.Where(x => x.FromDate <= endPeriodOperation && x.ToDate >= startPeriodOperation);
+            var weekData = await AsyncExecuter.ToListAsync(queryOperation);
             var weekly = new List<WeeklyDto>();
             for (var date = startPeriodOperation.Date; date <= endPeriodOperation.Date; date = date.AddDays(1))
             {
-                var count = rawDataOperation.Count(x => x.FromDate.Date <= date && x.ToDate.Date >= date);
+                var count = weekData.Count(x => x.FromDate.Date <= date && x.ToDate.Date > date);
 
                 weekly.Add(new WeeklyDto
                 {
@@ -314,23 +308,23 @@ namespace SyriaNTMP.Services
                 });
             }
             var today = DateTime.Today;
-            var totalCreatedToday = rawDataOperation.Count(x => x.CreatedDate.Date == today);
+            var totalCreatedToday = activeData.Count(x => x.CreatedDate.Date == today);
             var todayStats = new TodayStatsDto
             {
                 CheckedIn = totalCreatedToday == 0
                     ? 0
-                    : (rawDataOperation.Count(x =>
+                    : (activeData.Count(x =>
                            x.ReservationStatus == ReservationStatus.CheckedIn && x.FromDate.Date == today) * 100 /
                        totalCreatedToday),
                 CheckedOut = totalCreatedToday == 0
                     ? 0
-                    : (rawDataOperation.Count(x =>
+                    : (activeData.Count(x =>
                            x.ReservationStatus == ReservationStatus.CheckedOut && x.ToDate.Date == today) * 100 /
                        totalCreatedToday),
                 Cancelled = totalCreatedToday == 0
                     ? 0
-                    : (rawDataOperation.Count(x =>
-                           x.ReservationStatus == ReservationStatus.Canceled && x.CreatedDate.Date == today) * 100 /
+                    : (activeData.Count(x =>
+                           x.ReservationStatus == ReservationStatus.Canceled && x.CancelledDate.HasValue && x.CancelledDate.Value.Date == today) * 100 /
                        totalCreatedToday)
             };
             return (weekly, todayStats);
@@ -391,6 +385,7 @@ namespace SyriaNTMP.Services
             var entity = await _reservationsWriteRepository.FirstOrDefaultAsync(x => x.ReservationId == id);
             if (entity != null)
             {
+                entity.CancelledDate = DateTime.Now;
                 entity.ReservationStatus = ReservationStatus.Canceled;
                 await _reservationsWriteRepository.UpdateAsync(entity);
                 return new ReservationResponseDto()

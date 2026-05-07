@@ -28,6 +28,8 @@ namespace SyriaNTMP.Models
         public string GuestNationality { get; set; } = string.Empty;
         public decimal TotalPrice { get; set; }
         public DateTime CreatedDate { get; set; }
+        public DateTime? CancelledDate { get; set; }
+
         public int? TotalNumberOfPropertyUnits { get; set; }
         public int? CurrencyId { get; set; }
         public string? CurrencySymbolEn { get; set; }

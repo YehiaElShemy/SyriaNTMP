@@ -307,9 +307,9 @@ export class DashboardComponent implements OnInit {
       const totalToday = checkedIn + checkedOut + cancelled;
 
       if (totalToday > 0) {
-        this.percentages.checkedIn = Math.round((checkedIn / totalToday) * 100);
-        this.percentages.checkedOut = Math.round((checkedOut / totalToday) * 100);
-        this.percentages.cancelled = Math.round((cancelled / totalToday) * 100);
+        this.percentages.checkedIn = Math.round(checkedIn);
+        this.percentages.checkedOut = Math.round(checkedOut);
+        this.percentages.cancelled = Math.round(cancelled);
         this.hasTodayData = true;
       } else {
         this.percentages = { checkedIn: 0, checkedOut: 0, cancelled: 0 };
