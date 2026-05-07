@@ -135,6 +135,11 @@ namespace SyriaNTMP.Services
                 query = query.Where(x => x.ReservationPurpose == filter.Purpose.Value);
             }
             
+            if (filter.CurrencyId.HasValue)
+            {
+                query = query.Where(x => x.CurrencyId == filter.CurrencyId.Value);
+            }
+            
             #endregion
             var rawData = await AsyncExecuter.ToListAsync(query);
 
