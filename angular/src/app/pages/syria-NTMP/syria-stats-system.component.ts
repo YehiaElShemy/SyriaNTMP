@@ -29,19 +29,20 @@ export class SyriaStatsSystemComponent implements OnInit {
       this.langItems = [
         {
           label: 'العربية',
-          command: () => this.translationService.setLanguage('ar'),
+          command: () => this.changeLanguage('ar'),
           icon: currentLang === 'ar' ? 'pi pi-check' : undefined
         },
         {
           label: 'English',
-          command: () => this.translationService.setLanguage('en'),
+          command: () => this.changeLanguage('en'),
           icon: currentLang === 'en' ? 'pi pi-check' : undefined
         }
       ];
     });
   }
   changeLanguage(culture: string) {
-    this.translationService.setLanguage(culture);  // ✅ Sends to backend!
+    this.translationService.setLanguage(culture);
+    window.location.reload();
   }
 
   ngOnInit() {
