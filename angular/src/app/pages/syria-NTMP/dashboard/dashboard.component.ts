@@ -45,6 +45,7 @@ export class DashboardComponent implements OnInit {
   currenciesOptions: LookupDto[] = [];
   propertiesOptions: LookupDto[] = [];
   starOptions: any[] = [];
+  selectedCurrencyName: string = '';
 
   lineData: any;
   opsLineOptions: any;
@@ -162,6 +163,7 @@ export class DashboardComponent implements OnInit {
   Search() {
     this.isLoading = true;
     this.error = null;
+
     this.currentFilters.currencyId = this.currentFilters.currencyId != null ? Number(this.currentFilters.currencyId) || undefined : undefined;
     this.currentFilters.fromDate = this.fromDate ? this.formatDate(this.fromDate) : null;
 
@@ -169,6 +171,9 @@ export class DashboardComponent implements OnInit {
     if (this.activeTab == DashboardTabsEnum.RevenueAndADR && (this.currentFilters.currencyId == null || this.currentFilters.currencyId == 0)) {
       this.alertService.error('dashboard.pleaseSelectACurrency');
       return;
+    }
+    if (this.activeTab == DashboardTabsEnum.RevenueAndADR) {
+      this.getCurrencyName();
     }
     this.reservationService.getDashboard(this.currentFilters).subscribe({
       next: (res: DashboardDto) => {
@@ -240,10 +245,15 @@ export class DashboardComponent implements OnInit {
     this.currentFilters.currencyId = null;
     if (tab == this.dashboardTabs.RevenueAndADR && this.currenciesOptions && this.currenciesOptions.length > 0) {
       this.currentFilters.currencyId = this.currenciesOptions[this.currenciesOptions.length - 1].id;
+      this.getCurrencyName();
       this.Search();
     } else {
       this.Search();
     }
+  }
+  getCurrencyName() {
+    this.selectedCurrencyName = this.isAr ? this.currenciesOptions.find(x => x.id == this.currentFilters.currencyId).nameAr
+      : this.currenciesOptions.find(x => x.id == this.currentFilters.currencyId).nameEn;
   }
 
 
@@ -334,7 +344,8 @@ export class DashboardComponent implements OnInit {
 
       // Donut chart for Visit Purpose tab
       this.purposeDonutData = {
-        labels: res.purposeStats.purposeDetailsDtos.map((item) => item.purpose || 'Other'),
+        labels: res.purposeStats.purposeDetailsDtos.map((item) =>
+          (this.translateService.instant('enums.ReservationPurpose.' + item.purpose)) || 'Other'),
         datasets: [{
           data: res.purposeStats.purposeDetailsDtos.map((item) => item.count),
           backgroundColor: res.purposeStats.purposeDetailsDtos.map((_, i: number) => this.purposeColors[i % this.purposeColors.length]),

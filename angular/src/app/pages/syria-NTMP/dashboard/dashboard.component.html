@@ -158,7 +158,8 @@
           <span class="purple" *ngIf="!isLoading">{{ (statsData?.revenue?.totalRevenue) }} {{ isAr ?
             statsData?.revenue?.currencySymbolAr: statsData?.revenue?.currencySymbolEn}}</span>
         </p>
-        <span class="stat-card__sub mt-1">{{ 'dashboard.portfolioAdrSub' | translate }}</span>
+        <span class="stat-card__sub mt-1">{{ 'dashboard.portfolioAdrSub' | translate
+          }} {{' ' +this.selectedCurrencyName}}</span>
       </div>
     </div>
 
@@ -523,7 +524,10 @@
           translate }}</span>
         <p class="stat-card__value font-bold m-0 mt-1">
           <span *ngIf="isLoading"><i class="pi pi-spin pi-spinner"></i></span>
-          <span class="yellow" *ngIf="!isLoading">{{ statsData?.purposeStats?.mostCommonPurpose || '-' }}</span>
+          <span class="yellow" *ngIf="!isLoading">{{'enums.ReservationPurpose.'+
+            statsData?.purposeStats?.mostCommonPurpose
+            |translate
+            }}</span>
         </p>
         <span class="stat-card__sub mt-1">{{ 'dashboard.mostCommonPurposeSub' | translate }}</span>
       </div>
@@ -557,7 +561,7 @@
               <td class="purpose-td">
                 <div class="flex items-center gap-3 justify-start">
                   <span class="purpose-dot" [style.background-color]="purposeColors[i % purposeColors.length]"></span>
-                  <span class="purpose-name">{{ item.purpose }}</span>
+                  <span class="purpose-name">{{'enums.ReservationPurpose.' + item.purpose | translate }}</span>
                 </div>
               </td>
               <td class="purpose-td purpose-count text-center">{{ item.count | number }}</td>

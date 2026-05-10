@@ -112,7 +112,7 @@
     "adrTitle": "ADR (average daily rate)",
     "revenueDescription": "Compare mean nightly rates by city for the selected period. Averages are computed from dummy reservation rows — wire to your PMS for production figures.",
     "portfolioAdr": "Total Revenue",
-    "portfolioAdrSub": "Total Revenue in USD",
+    "portfolioAdrSub": "Total Revenue in",
     "toalNight": "Total  Nights",
     "toalNightSub": "Total Number of Nights Sold",
     "peakCity": "Average Daily Rate",

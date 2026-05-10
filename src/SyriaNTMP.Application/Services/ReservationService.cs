@@ -23,7 +23,7 @@ using Volo.Abp.Domain.Repositories;
 namespace SyriaNTMP.Services
 {
     [Authorize]
-    public partial class ReservationService : ApplicationService
+    public class ReservationService : ApplicationService
     {
         private readonly IRepository<Reservations> _reservationsWriteRepository;
         private readonly IReadOnlyRepository<Reservations> _reservationsRepository;
