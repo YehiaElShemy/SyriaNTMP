@@ -376,9 +376,11 @@ namespace SyriaNTMP.Services
 
             #endregion
             var rawData = await AsyncExecuter.ToListAsync(query);
-
+            if (rawData.Count > 0)
+            {
+                            
             var startPeriod = filter.FromDate ?? rawData.Min(a => a.FromDate);
-            var endPeriod = filter.ToDate ?? rawData.Max(a => a.ToDate);
+            var endPeriod = filter.ToDate ?? rawData.Max(a => new DateTime(a.ToDate.Year, a.ToDate.Month, a.ToDate.Day, 23, 59, 59));
             // Assign to your DTO/ViewModel
             filter.FromDate = startPeriod;
 
@@ -494,6 +496,8 @@ namespace SyriaNTMP.Services
 
             };
             return dashborddto;
+            }
+            return new DashboardDto();
         }
         private FileExportDto ExportDataTOExcel(DashboardDto rawData, DashboardTabsEnum dashboardTabs, List<NationalityDto> nationalityDtos = null)
         {
