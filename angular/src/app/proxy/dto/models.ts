@@ -1,6 +1,7 @@
 import type { EntityDto, PagedAndSortedResultRequestDto } from '@abp/ng.core';
 import type { PropertyRatingEnum } from '../models/enums/property-rating-enum.enum';
 import type { ReservationPurpose } from '../models/enums/reservation-purpose.enum';
+import type { DashboardTabsEnum } from '../models/enums/dashboard-tabs-enum.enum';
 import type { ReservationStatus } from '../models/enums/reservation-status.enum';
 
 export interface AdrByCityDto {
@@ -43,6 +44,13 @@ export interface DashboardFilterDto {
   nationality?: string;
   purpose?: ReservationPurpose;
   currencyId?: number;
+  dashboardTabs?: DashboardTabsEnum;
+}
+
+export interface FileExportDto {
+  fileName?: string;
+  contentType?: string;
+  bytes: number[];
 }
 
 export interface LookupDto {
@@ -82,6 +90,7 @@ export interface PurposeDetailsDto {
   purpose?: string;
   count: number;
   purposeRate: number;
+  numCityOfGuests: number;
 }
 
 export interface PurposeDto {

@@ -3,7 +3,7 @@
   <div class="flex justify-between items-center mb-4">
     <div class="filter-actions flex gap-3 ml-auto">
       <button pButton label="{{ 'table.exportExcel' | translate }}" icon="pi pi-file-excel"
-        class="p-button-outlined text-gray-700 bg-white border-gray-300"></button>
+        class="p-button-outlined text-gray-700 bg-white border-gray-300" (click)="export()"></button>
       <button pButton label="{{ 'table.filter' | translate }}" icon="pi pi-filter"
         class="p-button-outlined text-gray-700 bg-white border-gray-300" (click)="toggleFilter()"></button>
     </div>

@@ -57,6 +57,9 @@ export class DetailedStatisticsComponent implements OnInit {
     });
     this.buildLists();
   }
+
+
+
   private initializeDateRange(): void {
     const now = new Date();
     const year = now.getFullYear();
@@ -120,19 +123,7 @@ export class DetailedStatisticsComponent implements OnInit {
   fetchReservations() {
     this.isLoading = true;
 
-    const payload: ReservationsSearchCriteria = {
-      skipCount: this.pageIndex * this.pageSize,
-      maxResultCount: this.pageSize,
-      guestNationality: this.filterNationality || null,
-      propertyName: this.filterPropertyName || null,
-      propertyRating: this.filterPropertyRating == 0 ? 0 : this.filterPropertyRating,
-      reservationNumber: this.filterReservationNumber || null,
-      reservationStatus: this.filterReservationStatus || null,
-      reservationPurpose: this.filterReservationPurpose || null,
-      dateFrom: this.filterDateFrom ? this.formatDate(this.filterDateFrom) : null,
-      dateTo: this.filterDateTo ? this.formatDate(this.filterDateTo) : null
-    };
-
+    const payload: ReservationsSearchCriteria = this.getFilterPayload();
     this.reservationService.getReservationsBySearchCriteria(payload).subscribe({
       next: (res: any) => {
         //console.log(''Real API Data:', res);
@@ -146,6 +137,21 @@ export class DetailedStatisticsComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  private getFilterPayload(isForExport: boolean = false): ReservationsSearchCriteria {
+    return {
+      skipCount: isForExport ? 0 : this.pageIndex * this.pageSize,
+      maxResultCount: isForExport ? 999 : this.pageSize,
+      guestNationality: this.filterNationality || null,
+      propertyName: this.filterPropertyName || null,
+      propertyRating: this.filterPropertyRating == 0 ? 0 : this.filterPropertyRating,
+      reservationNumber: this.filterReservationNumber || null,
+      reservationStatus: this.filterReservationStatus || null,
+      reservationPurpose: this.filterReservationPurpose || null,
+      dateFrom: this.filterDateFrom ? this.formatDate(this.filterDateFrom) : null,
+      dateTo: this.filterDateTo ? this.formatDate(this.filterDateTo) : null
+    };
   }
 
   onPageChange(event: any) {
@@ -196,5 +202,45 @@ export class DetailedStatisticsComponent implements OnInit {
       case ReservationStatus.PreviousState: return 'secondary';
       default: return 'info';
     }
+  }
+  export() {
+    const searchCriteria: ReservationsSearchCriteria = this.getFilterPayload(true);
+    const isArabic = this.translateService.currentLang === 'ar';
+    const fileName = isArabic
+      ? `حجوزات_${this.formatDate(new Date())}`
+      : `Reservations_${this.formatDate(new Date())}`;
+
+    this.reservationService.getReservationsGridToExcel(searchCriteria).subscribe(dto => {
+      // 2. Convert bytes → Blob (your code works)
+      let blob: Blob;
+      const bytesData = dto.bytes as any;
+
+      if (typeof bytesData === 'string') {
+        const byteCharacters = atob(bytesData);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        blob = new Blob([byteArray], { type: dto.contentType });
+      } else {
+        const bytes = dto.bytes || [];
+        const uint8Array = new Uint8Array(bytes.length);
+        for (let i = 0; i < bytes.length; i++) {
+          uint8Array[i] = bytes[i];
+        }
+        blob = new Blob([uint8Array], { type: dto.contentType });
+      }
+
+      // 3. RTL Arabic filename + download
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);  // Fix for some browsers
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
   }
 }

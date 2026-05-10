@@ -1,4 +1,7 @@
 import { CoreModule, provideAbpCore, withOptions } from '@abp/ng.core';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LanguageInterceptor } from './shared/interceptors/language.interceptor';
+
 import { provideAbpOAuth } from '@abp/ng.oauth';
 import { provideSettingManagementConfig } from '@abp/ng.setting-management/config';
 import { provideFeatureManagementConfig } from '@abp/ng.feature-management';
@@ -67,6 +70,11 @@ import { SErrorHandlerService } from './shared/services/s-error-handler';
       provide: HTTP_ERROR_HANDLER,
       useClass: SErrorHandlerService,
       multi: true, // Multi is required as there can be multiple handlers
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LanguageInterceptor,
+      multi: true
     },
   ],
   bootstrap: [AppComponent],

@@ -23,22 +23,25 @@ export class SyriaStatsSystemComponent implements OnInit {
   selectedView: string = 'Detailed Statistics';
   langItems: MenuItem[] | undefined;
 
-  constructor (private authService: AuthService, public translationService: TranslationService){
+  constructor(private authService: AuthService, public translationService: TranslationService) {
     effect(() => {
       const currentLang = this.translationService.currentLanguage();
       this.langItems = [
-        { 
-          label: 'العربية', 
+        {
+          label: 'العربية',
           command: () => this.translationService.setLanguage('ar'),
           icon: currentLang === 'ar' ? 'pi pi-check' : undefined
         },
-        { 
-          label: 'English', 
+        {
+          label: 'English',
           command: () => this.translationService.setLanguage('en'),
           icon: currentLang === 'en' ? 'pi pi-check' : undefined
         }
       ];
     });
+  }
+  changeLanguage(culture: string) {
+    this.translationService.setLanguage(culture);  // ✅ Sends to backend!
   }
 
   ngOnInit() {

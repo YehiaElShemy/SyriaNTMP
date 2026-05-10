@@ -2,34 +2,34 @@
 <div class="dashboard-tabs flex items-center gap-4 mb-6 p-2 rounded-xl">
 
   <button class="tab-item flex  items-center gap-2  p-1 rounded-lg font-medium transition-all"
-    [class.active]="activeTab === dashboardTabs.operations" (click)="choseTab(dashboardTabs.operations)">
+    [class.active]="activeTab === dashboardTabs.Operations" (click)="choseTab(dashboardTabs.Operations)">
     <span class="tab-title">{{ 'dashboard.operationsTitle' | translate }} </span>
     <!-- <span class="tab-subtitle">{{ 'dashboard.operationsSubtitle' | translate }}</span> -->
     <img class="svg" src="assets/images/operation.svg" alt="">
   </button>
   <button class="tab-item flex  items-center gap-2  p-1 rounded-lg font-medium transition-all"
-    [class.active]="activeTab === dashboardTabs.visitPurpose" (click)="choseTab(dashboardTabs.visitPurpose)">
+    [class.active]="activeTab === dashboardTabs.VisitPurpose" (click)="choseTab(dashboardTabs.VisitPurpose)">
     <span class="tab-title">{{ 'dashboard.visitPurpose' | translate }} </span>
     <!-- <span class="tab-subtitle">{{ 'dashboard.operationsSubtitle' | translate }}</span> -->
     <img class="svg" src="assets/images/visitPurpose.svg" alt="">
   </button>
 
   <button class="tab-item flex  items-center gap-2  p-1 rounded-lg font-medium transition-all"
-    [class.active]="activeTab === dashboardTabs.guestMix" (click)="choseTab(dashboardTabs.guestMix)">
+    [class.active]="activeTab === dashboardTabs.GuestMix" (click)="choseTab(dashboardTabs.GuestMix)">
     <span class="tab-title">{{ 'dashboard.guestMixTitle' | translate }}</span>
     <!-- <span class="tab-subtitle">{{ 'dashboard.guestMixSubtitle' | translate }}</span> -->
     <img class="svg" src="assets/images/guestMix.svg" alt="">
 
   </button>
   <button class="tab-item flex  items-center gap-2  p-1 rounded-lg font-medium transition-all"
-    [class.active]="activeTab === dashboardTabs.revenueAndADR" (click)="choseTab(dashboardTabs.revenueAndADR)">
+    [class.active]="activeTab === dashboardTabs.RevenueAndADR" (click)="choseTab(dashboardTabs.RevenueAndADR)">
     <span class="tab-title">{{ 'dashboard.revenueTitle' | translate }}</span>
     <!-- <span class="tab-subtitle">{{ 'dashboard.revenueSubtitle' | translate }}</span> -->
     <img class="svg" src="assets/images/demand.svg" alt="">
   </button>
   <button class="tab-item flex  items-center gap-2  p-1 rounded-lg font-medium transition-all"
-    [class.active]="activeTab === dashboardTabs.demandAndOccupancy"
-    (click)="choseTab(dashboardTabs.demandAndOccupancy)">
+    [class.active]="activeTab === dashboardTabs.DemandAndOccupancy"
+    (click)="choseTab(dashboardTabs.DemandAndOccupancy)">
     <span class="tab-title">{{ 'dashboard.demandTitle' | translate }}</span>
     <!-- <span class="tab-subtitle">{{ 'dashboard.demandSubtitle' | translate }}</span> -->
     <img class="svg" src="assets/images/demand2.svg" alt="">
@@ -38,7 +38,7 @@
 </div>
 
 <!-- Tab Content -->
-<div *ngIf="activeTab === dashboardTabs.guestMix" class="tab-content">
+<div *ngIf="activeTab === dashboardTabs.GuestMix" class="tab-content">
 
   <!-- Header -->
   <div class="mix-header mb-6 flex justify-between align-items-end">
@@ -52,12 +52,14 @@
       </div>
     </div>
 
-    <div class="">
+    <div class="d-flex">
       <button
         class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 bg-gray-50 w-10 h-10"
         (click)="showFilterDialog()">
         <img class="w-9 h-9" src="assets/images/filter.svg" alt="">
       </button>
+      <button pButton label="{{ 'table.exportExcel' | translate }}" icon="pi pi-file-excel"
+        class="p-button-outlined text-gray-700 bg-white border-gray-300 mx-2" (click)="exportExcel()"></button>
     </div>
   </div>
 
@@ -119,7 +121,7 @@
 
 </div>
 
-<div *ngIf="activeTab === dashboardTabs.revenueAndADR" class="tab-content">
+<div *ngIf="activeTab === dashboardTabs.RevenueAndADR" class="tab-content">
 
   <!-- Header -->
   <div class="rev-header mb-6 flex justify-between align-items-end">
@@ -130,12 +132,14 @@
         <p class="m-0">{{ 'dashboard.revenueDescription' | translate }}</p>
       </div>
     </div>
-    <div class="">
+    <div class="d-flex">
       <button
         class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 bg-gray-50 w-10 h-10"
         (click)="showFilterDialog()">
         <img class="w-9 h-9" src="assets/images/filter.svg" alt="">
       </button>
+      <button pButton label="{{ 'table.exportExcel' | translate }}" icon="pi pi-file-excel"
+        class="p-button-outlined text-gray-700 bg-white border-gray-300 mx-2" (click)="exportExcel()"></button>
     </div>
   </div>
 
@@ -229,7 +233,7 @@
 
 </div>
 
-<div *ngIf="activeTab === dashboardTabs.demandAndOccupancy" class="tab-content">
+<div *ngIf="activeTab === dashboardTabs.DemandAndOccupancy" class="tab-content">
 
   <!-- Header -->
   <div class="demand-header mb-6 flex justify-between align-items-end">
@@ -240,12 +244,14 @@
         <p class="m-0 p-0">{{ 'dashboard.demandDescription' | translate }}</p>
       </div>
     </div>
-    <div class="">
+    <div class="d-flex">
       <button
         class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 bg-gray-50 w-10 h-10"
         (click)="showFilterDialog()">
         <img class="w-9 h-9" src="assets/images/filter.svg" alt="">
       </button>
+      <button pButton label="{{ 'table.exportExcel' | translate }}" icon="pi pi-file-excel"
+        class="p-button-outlined text-gray-700 bg-white border-gray-300 mx-2" (click)="exportExcel()"></button>
     </div>
   </div>
 
@@ -308,7 +314,7 @@
 
 </div>
 
-<div *ngIf="activeTab === dashboardTabs.operations" class="tab-content">
+<div *ngIf="activeTab === dashboardTabs.Operations" class="tab-content">
 
   <!-- Header -->
   <div class="ops-header mb-6 flex justify-between align-items-end">
@@ -319,12 +325,15 @@
       <p class="ops-desc mt-1 m-0">{{ 'dashboard.operationsDescription' | translate }}</p>
     </div>
 
-    <div class="">
+    <div class="d-flex">
       <button
         class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 bg-gray-50 w-10 h-10"
         (click)="showFilterDialog()">
         <img class="w-9 h-9" src="assets/images/filter.svg" alt="">
       </button>
+
+      <button pButton label="{{ 'table.exportExcel' | translate }}" icon="pi pi-file-excel"
+        class="p-button-outlined text-gray-700 bg-white border-gray-300 mx-2" (click)="exportExcel()"></button>
     </div>
 
 
@@ -455,7 +464,7 @@
 
 </div>
 
-<div *ngIf="activeTab === dashboardTabs.visitPurpose" class="tab-content">
+<div *ngIf="activeTab === dashboardTabs.VisitPurpose" class="tab-content">
   <!-- Header -->
   <div class="demand-header mb-6 flex justify-between align-items-end">
     <div class="flex flex-col">
@@ -466,12 +475,14 @@
       </div>
     </div>
 
-    <div class="">
+    <div class="d-flex">
       <button
         class="flex justify-center items-center rounded-lg border transition-colors p-2 text-gray-500 bg-gray-50 w-10 h-10"
         (click)="showFilterDialog()">
         <img class="w-9 h-9" src="assets/images/filter.svg" alt="">
       </button>
+      <button pButton label="{{ 'table.exportExcel' | translate }}" icon="pi pi-file-excel"
+        class="p-button-outlined text-gray-700 bg-white border-gray-300 mx-2" (click)="exportExcel()"></button>
     </div>
   </div>
 
@@ -624,7 +635,7 @@
       <p-dropdown appendTo="body" [options]="purposeOptions" [(ngModel)]="currentFilters.purpose" optionLabel="label"
         optionValue="value" [placeholder]="'dashboard.allPurposes' | translate" [showClear]="true"></p-dropdown>
     </div>
-    <div class="flex flex-col gap-2" *ngIf="activeTab == dashboardTabs.revenueAndADR">
+    <div class="flex flex-col gap-2" *ngIf="activeTab == dashboardTabs.RevenueAndADR">
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.currency' | translate
         }}</label>
       <p-dropdown appendTo="body" [options]="currenciesOptions" [(ngModel)]="currentFilters.currencyId"

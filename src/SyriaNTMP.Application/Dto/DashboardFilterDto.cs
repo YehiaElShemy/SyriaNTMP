@@ -17,5 +17,6 @@ namespace SyriaNTMP.Dto
         public string? Nationality { get; set; }
         public ReservationPurpose? Purpose { get; set; }
         public int? CurrencyId { get; set; }
+        public DashboardTabsEnum DashboardTabs { get; set; }
     }
 }

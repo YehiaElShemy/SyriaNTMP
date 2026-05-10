@@ -7,15 +7,14 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { DatePickerModule } from 'primeng/datepicker';
 import { CurrencyService, ReservationService } from '../../../proxy/services';
-import { DashboardDto, WeeklyDto, PurposeDto, NationalityDto, CityOccupancyDto, AdrByCityDto, LookupDto, DashboardFilterDto, CurrencyDTO } from '@proxy/dto';
+import { DashboardDto, WeeklyDto, PurposeDto, NationalityDto, CityOccupancyDto, AdrByCityDto, LookupDto, DashboardFilterDto, CurrencyDTO, FileExportDto } from '@proxy/dto';
 import { PropertyRatingEnum } from '../../../proxy/models/enums/property-rating-enum.enum';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslationService } from 'src/app/shared/services/translation.service';
-import { ReservationPurpose } from '@proxy/models/enums';
+import { DashboardTabsEnum, ReservationPurpose } from '@proxy/models/enums';
 import { Chart } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { PageAlertService, ToasterService } from '@abp/ng.theme.shared';
-import { DashboardTabs } from 'src/app/shared/models/enums/dashbord-tabs.enum';
+import { ToasterService } from '@abp/ng.theme.shared';
 
 Chart.register(ChartDataLabels);
 
@@ -27,12 +26,12 @@ Chart.register(ChartDataLabels);
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  dashboardTabs = DashboardTabs;
+  dashboardTabs = DashboardTabsEnum;
   statsData: DashboardDto | null = null;
   isLoading = false;
   error: string | null = null;
   hasTodayData = false;
-  activeTab = DashboardTabs.guestMix;
+  activeTab = DashboardTabsEnum.GuestMix;
 
   percentages = { checkedIn: 0, checkedOut: 0, cancelled: 0 };
   fromDate: Date | null = null;
@@ -167,7 +166,7 @@ export class DashboardComponent implements OnInit {
     this.currentFilters.fromDate = this.fromDate ? this.formatDate(this.fromDate) : null;
 
     this.currentFilters.toDate = this.toDate ? this.formatDate(this.toDate) : null;
-    if (this.activeTab == DashboardTabs.revenueAndADR && (this.currentFilters.currencyId == null || this.currentFilters.currencyId == 0)) {
+    if (this.activeTab == DashboardTabsEnum.RevenueAndADR && (this.currentFilters.currencyId == null || this.currentFilters.currencyId == 0)) {
       this.alertService.error('dashboard.pleaseSelectACurrency');
       return;
     }
@@ -220,6 +219,7 @@ export class DashboardComponent implements OnInit {
     })
   }
 
+
   getCurrencies() {
     this.currencyService.getAllCurrenies({}).subscribe(
       (res: any) => {
@@ -235,10 +235,10 @@ export class DashboardComponent implements OnInit {
       }
     )
   }
-  choseTab(tab: DashboardTabs) {
+  choseTab(tab: DashboardTabsEnum) {
     this.activeTab = tab;
     this.currentFilters.currencyId = null;
-    if (tab == this.dashboardTabs.revenueAndADR && this.currenciesOptions && this.currenciesOptions.length > 0) {
+    if (tab == this.dashboardTabs.RevenueAndADR && this.currenciesOptions && this.currenciesOptions.length > 0) {
       this.currentFilters.currencyId = this.currenciesOptions[this.currenciesOptions.length - 1].id;
       this.Search();
     } else {
@@ -630,5 +630,75 @@ export class DashboardComponent implements OnInit {
         }
       }
     };
+  }
+  exportExcel() {
+    if (this.activeTab == this.dashboardTabs.VisitPurpose) {
+      this.currentFilters.dashboardTabs = this.activeTab;
+      this.reservationService.getExportPurposeToExcelByFilter(this.currentFilters).subscribe(dto => {
+        this.exportData(dto);
+      });
+    }
+    else if (this.activeTab == this.dashboardTabs.GuestMix) {
+      this.currentFilters.dashboardTabs = this.activeTab;
+      this.reservationService.getExportNationaltyToExcel(this.currentFilters).subscribe(dto => {
+        this.exportData(dto);
+      });
+    }
+    else if (this.activeTab == this.dashboardTabs.RevenueAndADR) {
+      this.currentFilters.dashboardTabs = this.activeTab;
+      this.reservationService.getExportADRToExcel(this.currentFilters).subscribe(dto => {
+        this.exportData(dto);
+      });
+    }
+    else if (this.activeTab == this.dashboardTabs.DemandAndOccupancy) {
+      this.currentFilters.dashboardTabs = this.activeTab;
+      this.reservationService.getExportOccupancyToExcel(this.currentFilters).subscribe(dto => {
+        this.exportData(dto);
+      });
+    }
+    else if (this.activeTab == this.dashboardTabs.Operations) {
+      this.currentFilters.dashboardTabs = this.activeTab;
+      this.reservationService.getExportOperationToExcelByFilter(this.currentFilters).subscribe(dto => {
+        this.exportData(dto);
+      });
+
+    }
+  }
+
+
+  private exportData(dto: FileExportDto) {
+    let blob: Blob;
+    const bytesData = dto.bytes as any;
+
+    if (typeof bytesData === 'string') {
+      const byteCharacters = atob(bytesData);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      blob = new Blob([byteArray], { type: dto.contentType });
+    } else {
+      const bytes = dto.bytes || [];
+      const uint8Array = new Uint8Array(bytes.length);
+      for (let i = 0; i < bytes.length; i++) {
+        uint8Array[i] = bytes[i];
+      }
+      blob = new Blob([uint8Array], { type: dto.contentType });
+    }
+
+    // 3. RTL Arabic filename + download
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = dto.fileName || `reservations_${this.formatDate(new Date())}`;
+
+    // 4. Trigger download
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // 5. Clean up
+    window.URL.revokeObjectURL(url);
   }
 }
