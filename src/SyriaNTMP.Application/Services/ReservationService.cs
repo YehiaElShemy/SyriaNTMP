@@ -931,7 +931,7 @@ namespace SyriaNTMP.Services
             foreach (var res in reservations)
             {
                 var overlapStart = res.FromDate > start ? res.FromDate : start;
-                var overlapEnd = res.ToDate < end ? res.ToDate.AddDays(-1) : end;
+                var overlapEnd = res.ToDate < end ? res.ToDate.AddDays(-1).Date.AddHours(23).AddMinutes(59).AddSeconds(59) : end;
                 if (overlapStart < overlapEnd)
                 {
                     var noOfNights = (overlapEnd.Date - overlapStart.Date).Days + 1;
