@@ -243,4 +243,21 @@ export class DetailedStatisticsComponent implements OnInit {
       URL.revokeObjectURL(url);
     });
   }
+
+  formatLanDate(date: string | Date): string {
+  if (!date) return '';
+
+  const d = new Date(date);
+
+  const lang = this.translateService.currentLang;
+
+  return new Intl.DateTimeFormat(
+    lang === 'ar' ? 'ar-EG' : 'en-GB',
+    {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    }
+  ).format(d);
+}
 }

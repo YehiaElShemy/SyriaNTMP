@@ -147,7 +147,7 @@
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     <div class="stat-card stat-card--purple bg-white rounded-lg p-3 border flex items-start gap-3">
       <div class="rev-stat-icon rev-stat-icon--purple rounded-lg flex justify-center items-center">
-        <i class="pi pi-dollar"></i>
+        <i class="pi pi-money-bill"></i>
       </div>
       <div class="flex flex-col">
         <span class="stat-card__label uppercase font-semibold tracking-wider">{{
@@ -166,7 +166,7 @@
     <div class="stat-card stat-card--blue bg-white rounded-lg p-3 border flex items-start gap-3">
 
       <div class="rev-stat-icon rev-stat-icon--blue rounded-lg flex justify-center items-center">
-        <i class="pi pi-users"></i>
+        <i class="pi pi-moon"></i>
       </div>
 
       <div class="flex flex-col">
@@ -639,7 +639,7 @@
       <p-dropdown appendTo="body" [options]="purposeOptions" [(ngModel)]="currentFilters.purpose" optionLabel="label"
         optionValue="value" [placeholder]="'dashboard.allPurposes' | translate" [showClear]="true"></p-dropdown>
     </div>
-    <div class="flex flex-col gap-2" *ngIf="activeTab == dashboardTabs.RevenueAndADR">
+    <div class="flex flex-col gap-2" *ngIf="activeTab === dashboardTabs.RevenueAndADR">
       <label class="font-semibold text-xs uppercase tracking-wider text-gray-500">{{ 'dashboard.currency' | translate
         }}</label>
       <p-dropdown appendTo="body" [options]="currenciesOptions" [(ngModel)]="currentFilters.currencyId"
