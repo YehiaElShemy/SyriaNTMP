@@ -85,7 +85,8 @@
       "Other": "Other",
       "WorkRoyalCourt": "Work (Royal Court)",
       "QuarantinedGuests": "Medical Guests",
-      "MinistryOfHealthStaff": "Ministry of Health Staff"
+      "MinistryOfHealthStaff": "Ministry of Health Staff",
+      "VisitingExhibitions": "Visiting Exhibitions"
     }
   },
   "dashboard": {

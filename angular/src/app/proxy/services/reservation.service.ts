@@ -105,15 +105,6 @@ export class ReservationService {
     { apiName: this.apiName,...config });
   
 
-  getExportRevenueADRToExcelByFilter = (filter: DashboardFilterDto, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, FileExportDto>({
-      method: 'GET',
-      url: '/api/app/reservation/export-revenue-aDRTo-excel',
-      params: { fromDate: filter.fromDate, toDate: filter.toDate, city: filter.city, hotelName: filter.hotelName, hotelStars: filter.hotelStars, nationality: filter.nationality, purpose: filter.purpose, currencyId: filter.currencyId, dashboardTabs: filter.dashboardTabs },
-    },
-    { apiName: this.apiName,...config });
-  
-
   getNationalities = (config?: Partial<Rest.Config>) =>
     this.restService.request<any, LookupDto[]>({
       method: 'GET',

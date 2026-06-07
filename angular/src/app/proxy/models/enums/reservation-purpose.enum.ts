@@ -11,6 +11,7 @@ export enum ReservationPurpose {
   WorkRoyalCourt = 8,
   QuarantinedGuests = 9,
   MinistryOfHealthStaff = 10,
+  VisitingExhibitions = 11,
 }
 
 export const reservationPurposeOptions = mapEnumToOptions(ReservationPurpose);

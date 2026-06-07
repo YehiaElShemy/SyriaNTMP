@@ -1778,11 +1778,11 @@
               "allowAnonymous": false,
               "implementFrom": "SyriaNTMP.Services.ReservationService"
             },
-            "GetExportRevenueADRToExcelByFilter": {
-              "uniqueName": "GetExportRevenueADRToExcelByFilter",
-              "name": "GetExportRevenueADRToExcel",
+            "GetExportOperationToExcelByFilter": {
+              "uniqueName": "GetExportOperationToExcelByFilter",
+              "name": "GetExportOperationToExcel",
               "httpMethod": "GET",
-              "url": "api/app/reservation/export-revenue-aDRTo-excel",
+              "url": "api/app/reservation/export-operation-to-excel",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
@@ -2226,139 +2226,6 @@
               "returnValue": {
                 "type": "System.Collections.Generic.List<SyriaNTMP.Dto.LookupDto>",
                 "typeSimple": "[SyriaNTMP.Dto.LookupDto]"
-              },
-              "allowAnonymous": false,
-              "implementFrom": "SyriaNTMP.Services.ReservationService"
-            },
-            "GetExportOperationToExcelByFilter": {
-              "uniqueName": "GetExportOperationToExcelByFilter",
-              "name": "GetExportOperationToExcel",
-              "httpMethod": "GET",
-              "url": "api/app/reservation/export-operation-to-excel",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "filter",
-                  "typeAsString": "SyriaNTMP.Dto.DashboardFilterDto, SyriaNTMP.Application",
-                  "type": "SyriaNTMP.Dto.DashboardFilterDto",
-                  "typeSimple": "SyriaNTMP.Dto.DashboardFilterDto",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "filter",
-                  "name": "FromDate",
-                  "jsonName": null,
-                  "type": "System.DateTime?",
-                  "typeSimple": "string?",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "filter"
-                },
-                {
-                  "nameOnMethod": "filter",
-                  "name": "ToDate",
-                  "jsonName": null,
-                  "type": "System.DateTime?",
-                  "typeSimple": "string?",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "filter"
-                },
-                {
-                  "nameOnMethod": "filter",
-                  "name": "City",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "filter"
-                },
-                {
-                  "nameOnMethod": "filter",
-                  "name": "HotelName",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "filter"
-                },
-                {
-                  "nameOnMethod": "filter",
-                  "name": "HotelStars",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "filter"
-                },
-                {
-                  "nameOnMethod": "filter",
-                  "name": "Nationality",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "filter"
-                },
-                {
-                  "nameOnMethod": "filter",
-                  "name": "Purpose",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "filter"
-                },
-                {
-                  "nameOnMethod": "filter",
-                  "name": "CurrencyId",
-                  "jsonName": null,
-                  "type": "System.Int32?",
-                  "typeSimple": "number?",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "filter"
-                },
-                {
-                  "nameOnMethod": "filter",
-                  "name": "DashboardTabs",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "filter"
-                }
-              ],
-              "returnValue": {
-                "type": "SyriaNTMP.Dto.FileExportDto",
-                "typeSimple": "SyriaNTMP.Dto.FileExportDto"
               },
               "allowAnonymous": false,
               "implementFrom": "SyriaNTMP.Services.ReservationService"
@@ -5936,7 +5803,8 @@
         "Other",
         "WorkRoyalCourt",
         "QuarantinedGuests",
-        "MinistryOfHealthStaff"
+        "MinistryOfHealthStaff",
+        "VisitingExhibitions"
       ],
       "enumValues": [
         1,
@@ -5948,7 +5816,8 @@
         7,
         8,
         9,
-        10
+        10,
+        11
       ],
       "genericArguments": null,
       "properties": null

@@ -11,6 +11,7 @@
         Other = 7,
         WorkRoyalCourt = 8,
         QuarantinedGuests = 9,
-        MinistryOfHealthStaff = 10
+        MinistryOfHealthStaff = 10,
+        VisitingExhibitions=11
     }
 }
